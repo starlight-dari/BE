@@ -4,7 +4,7 @@ import com.example.startlight.member.entity.Member;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "pet")
+@Table(name = "Pet")
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

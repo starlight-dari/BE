@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chatMessage")
+@Table(name = "ChatMessage")
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

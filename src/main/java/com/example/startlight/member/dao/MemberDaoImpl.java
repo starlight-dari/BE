@@ -29,6 +29,15 @@ public class MemberDaoImpl implements MemberDao{
     }
 
     @Override
+    public Member selectMemberByEmail(String email) {
+        Optional<Member> member = memberRepository.findMemberByEmail(email);
+        if(member.isPresent()) {
+            return member.get();
+        }
+        throw new NoSuchElementException("Member not found with email: " + email);
+    }
+
+    @Override
     @Transactional
     public Member updateMemberName(Long id, String nickname) {
         Member member = selectMember(id);

@@ -7,6 +7,8 @@ public interface MemberDao {
 
     Member selectMember(Long id);
 
+    Member selectMemberByEmail(String email);
+
     Member updateMemberName(Long id, String nickname);
 
     void deleteMember(Long id);

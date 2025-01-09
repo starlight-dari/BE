@@ -27,6 +27,7 @@ public class Member {
     @Column(nullable = false)
     private String profile_img;
 
+    @Column(nullable = false)
     private String email;
 
     private String st_nickname;

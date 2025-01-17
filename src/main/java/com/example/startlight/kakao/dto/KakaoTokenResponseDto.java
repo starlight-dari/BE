@@ -1,4 +1,4 @@
-package com.example.startlight.kakao;
+package com.example.startlight.kakao.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

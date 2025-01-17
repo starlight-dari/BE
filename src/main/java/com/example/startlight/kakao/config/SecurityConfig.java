@@ -31,9 +31,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login.html", "/api/auth/kakao/callback", "/static/**").permitAll()
+                        .requestMatchers("/login.html", "/api/auth/kakao/callback/**", "/static/**").permitAll()
                         .requestMatchers("/member/**","/pet/**").permitAll()
-                        .requestMatchers("/api/auth/kakao/**").permitAll() //토큰 인증이 필요하지 않은경우 설정 -- 인증이 필요한 경로가 모두에게 허용되면 익명사용자 설정이 될 수 있음
+                        .requestMatchers("/api/auth/kakao/**","/api/auth/**").permitAll() //토큰 인증이 필요하지 않은경우 설정 -- 인증이 필요한 경로가 모두에게 허용되면 익명사용자 설정이 될 수 있음
                         .requestMatchers("/user/updateStyle", "/user/updateInfo", "/user/upload","/favorites/getFav","/favorites/remove","/favorites/add",
                                 "/answer/update"
                         ).authenticated()//사용자 인증 필요한 경우

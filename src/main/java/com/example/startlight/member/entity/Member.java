@@ -18,7 +18,6 @@ import java.util.List;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long member_id;
 
     @Column(nullable = false)
@@ -26,9 +25,6 @@ public class Member {
 
     @Column(nullable = false)
     private String profile_img;
-
-    @Column(nullable = false)
-    private String email;
 
     private String st_nickname;
 
@@ -42,7 +38,6 @@ public class Member {
         return Member.builder()
                 .kk_nickname(dto.getKk_nickname())
                 .profile_img(dto.getProfile_img())
-                .email(dto.getEmail())
                 .st_nickname(dto.getSt_nickname()).build();
     }
 }

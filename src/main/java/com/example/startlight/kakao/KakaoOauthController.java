@@ -1,9 +1,12 @@
 package com.example.startlight.kakao;
 
 import com.example.startlight.kakao.config.JWTUtils;
+import com.example.startlight.kakao.dto.KakaoUserCreateDto;
 import com.example.startlight.kakao.dto.KakaoUserInfoResponseDto;
+import com.example.startlight.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,15 +20,12 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth/kakao")
 public class KakaoOauthController {
     private final KakaoService kakaoService;
     private final JWTUtils jwtTokenProvider;
-
-    public KakaoOauthController(KakaoService kakaoService, JWTUtils jwtTokenProvider) {
-        this.kakaoService = kakaoService;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private final MemberService memberService;
 
     @GetMapping("/callback")
     public ResponseEntity<?> kakaoLogin(HttpServletRequest request, HttpServletResponse response) {
@@ -61,6 +61,12 @@ public class KakaoOauthController {
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
             log.info(authentication.getPrincipal().toString());
+
+            KakaoUserCreateDto kakaoUserCreateDto = KakaoUserCreateDto.builder().id(userInfo.getId())
+                            .nickName(userInfo.getKakaoAccount().profile.getNickName())
+                                    .profileImageUrl(userInfo.getKakaoAccount().profile.getProfileImageUrl()).build();
+
+            memberService.loginMember(kakaoUserCreateDto);
 
             // 6. 응답 반환
             return ResponseEntity.ok(Map.of(

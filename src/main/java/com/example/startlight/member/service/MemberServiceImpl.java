@@ -5,16 +5,27 @@ import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.dto.MemberDto;
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.member.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
     private final MemberDao memberDao;
     private final MemberRepository memberRepository;
+
     @Override
     public MemberDto createMember(MemberDto memberDto) {
         Member member = memberDao.createMember(Member.toEntity(memberDto));
@@ -22,9 +33,18 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDto selectMember(Long id) {
-        Member member = memberDao.selectMember(id);
-        return MemberDto.toDto(member);
+    public MemberDto selectCurrentMember() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Authentication: {}", authentication);
+
+        if (authentication != null && authentication.getPrincipal() instanceof Map) {
+            Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
+            Long id =  (Long) principal.get("id");
+            Member member = memberDao.selectMember(id);
+            return MemberDto.toDto(member);
+        }
+
+        throw new IllegalStateException("User is not authenticated");
     }
 
     @Override

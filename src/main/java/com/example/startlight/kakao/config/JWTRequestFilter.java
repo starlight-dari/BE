@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
+@Slf4j
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JWTRequestFilter.class);
@@ -28,23 +30,30 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         logger.debug("Entering JWTRequestFilter");
+        logger.debug(response.toString());
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            logger.debug("Cookies found: " + Arrays.toString(cookies));
+            // g_state 쿠키 필터링 및 제거
+            cookies = Arrays.stream(cookies)
+                    .filter(cookie -> !cookie.getName().equals("g_state"))  // g_state 쿠키 제외
+                    .toArray(Cookie[]::new);
+
+            logger.info("Cookies after filtering: " + Arrays.toString(cookies));
+
             Cookie authCookie = Arrays.stream(cookies)
                     .filter(cookie -> cookie.getName().equals("AUTH-TOKEN"))
                     .findAny().orElse(null);
             if (authCookie != null) {
-                logger.debug("Auth Cookie found: " + authCookie.getValue());
+                logger.info("Auth Cookie found: " + authCookie.getValue());
                 Authentication authentication = jwtUtils.verifyAndGetAuthentication(authCookie.getValue());
                 if (authentication != null) {
-                    logger.debug("Authentication successful: " + authentication);
+                    logger.info("Authentication successful: " + authentication);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else {
-                    logger.debug("Authentication failed");
+                    logger.info("Authentication failed");
                 }
             } else {
-                logger.debug("Auth Cookie not found");
+                logger.info("Auth Cookie not found");
             }
         } else {
             logger.debug("No cookies found");

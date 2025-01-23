@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 public class PetDto {
 
-    private String member_email;
+    private Long member_id;
 
     private String pet_img;
 
@@ -26,7 +26,7 @@ public class PetDto {
 
     public static PetDto toDto(Pet pet) {
         return PetDto.builder()
-                .member_email(pet.getMember().getEmail())
+                .member_id(pet.getMember().getMember_id())
                 .pet_img(pet.getPet_img())
                 .pet_name(pet.getPet_name())
                 .species(pet.getSpecies())

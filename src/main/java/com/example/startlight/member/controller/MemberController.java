@@ -23,10 +23,8 @@ public class MemberController {
     }
 
     @GetMapping("/select")
-    public ResponseEntity<MemberDto> selectUser(
-            @RequestParam Long id
-    ) {
-        MemberDto memberDto = memberService.selectMember(id);
+    public ResponseEntity<MemberDto> selectUser() {
+        MemberDto memberDto = memberService.selectCurrentMember();
         return ResponseEntity.status(HttpStatus.OK).body(memberDto);
     }
 

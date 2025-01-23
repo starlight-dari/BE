@@ -32,11 +32,9 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login.html", "/api/auth/kakao/callback/**", "/static/**").permitAll()
-                        .requestMatchers("/member/**","/pet/**").permitAll()
+                        .requestMatchers("/pet/**").permitAll()
                         .requestMatchers("/api/auth/kakao/**","/api/auth/**").permitAll() //토큰 인증이 필요하지 않은경우 설정 -- 인증이 필요한 경로가 모두에게 허용되면 익명사용자 설정이 될 수 있음
-                        .requestMatchers("/user/updateStyle", "/user/updateInfo", "/user/upload","/favorites/getFav","/favorites/remove","/favorites/add",
-                                "/answer/update"
-                        ).authenticated()//사용자 인증 필요한 경우
+                        .requestMatchers("/member/select").authenticated()//사용자 인증 필요한 경우
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -46,9 +44,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type","X-Requested-With"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

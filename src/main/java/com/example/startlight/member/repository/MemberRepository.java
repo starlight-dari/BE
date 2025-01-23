@@ -8,6 +8,4 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    @Query("SELECT m FROM Member m WHERE m.email = :email")
-    Optional<Member> findMemberByEmail(@Param("email") String email);
 }

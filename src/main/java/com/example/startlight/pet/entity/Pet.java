@@ -1,10 +1,12 @@
 package com.example.startlight.pet.entity;
 
-import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.entity.Member;
+import com.example.startlight.member.repository.MemberRepository;
 import com.example.startlight.pet.dto.PetDto;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Optional;
 
 @Entity
 @Table(name = "Pet")
@@ -32,15 +34,15 @@ public class Pet {
 
     private String death_date;
 
-    public static Pet toEntity(PetDto dto, MemberDao memberDao) {
-        Member member = memberDao.selectMemberByEmail(dto.getMember_email());
-        if (member == null) {
-            throw new IllegalArgumentException("Member not found for email: " + dto.getMember_email());
+    public static Pet toEntity(PetDto dto, MemberRepository memberRepository) {
+        Optional<Member> member = memberRepository.findById(dto.getMember_id());
+        if (member.isEmpty()) {
+            throw new IllegalArgumentException("Member not found for email: " + dto.getMember_id());
         }
 
         // Pet 엔티티 생성
         return Pet.builder()
-                .member(member)
+                .member(member.get())
                 .pet_img(dto.getPet_img())
                 .pet_name(dto.getPet_name())
                 .species(dto.getSpecies())

@@ -3,6 +3,8 @@ package com.example.startlight.kakao;
 import com.example.startlight.kakao.config.JWTUtils;
 import com.example.startlight.kakao.dto.KakaoUserCreateDto;
 import com.example.startlight.kakao.dto.KakaoUserInfoResponseDto;
+import com.example.startlight.member.dto.MemberDto;
+import com.example.startlight.member.entity.Member;
 import com.example.startlight.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,13 +54,19 @@ public class KakaoOauthController {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
+            boolean isSecure = request.getScheme().equals("https");
+            String sameSiteValue = isSecure ? "None" : "Lax";
+
             final ResponseCookie cookie = ResponseCookie.from("AUTH-TOKEN", jwtToken)
                     .httpOnly(true)
                     .maxAge(7 * 24 * 3600)
                     .path("/")
-                    .secure(false)
+                    .secure(isSecure)
+                    .sameSite(sameSiteValue)
                     .build();
+
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+            response.setHeader("Access-Control-Expose-Headers", "Set-Cookie");
 
             log.info(authentication.getPrincipal().toString());
 
@@ -67,6 +75,14 @@ public class KakaoOauthController {
                                     .profileImageUrl(userInfo.getKakaoAccount().profile.getProfileImageUrl()).build();
 
             memberService.loginMember(kakaoUserCreateDto);
+
+            Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+
+            if (authentication1 != null && authentication1.getPrincipal() instanceof Map) {
+                Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
+                Long id =  (Long) principal.get("id");
+                log.info("Kakao User ID: {}", id);
+            }
 
             // 6. 응답 반환
             return ResponseEntity.ok(Map.of(

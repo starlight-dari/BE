@@ -1,7 +1,9 @@
 package com.example.startlight.pet.dao;
 
+import com.example.startlight.pet.dto.PetUpdateReqDto;
 import com.example.startlight.pet.entity.Pet;
 import com.example.startlight.pet.repository.PetRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +30,20 @@ public class PetDaoImpl implements PetDao{
     }
 
     @Override
-    public Pet updatePet(Pet pet) {
-        return null;
+    @Transactional
+    public Pet updatePet(PetUpdateReqDto petUpdateReqDto) {
+        Optional<Pet> selectedPet = petRepository.findById(petUpdateReqDto.getPet_id());
+        if(selectedPet.isPresent()) {
+            Pet pet = selectedPet.get();
+            Optional.ofNullable(petUpdateReqDto.getPet_name()).ifPresent(pet::setPet_name);
+            Optional.ofNullable(petUpdateReqDto.getPet_img()).ifPresent(pet::setPet_img);
+            Optional.ofNullable(petUpdateReqDto.getSpecies()).ifPresent(pet::setSpecies);
+            Optional.ofNullable(petUpdateReqDto.getGender()).ifPresent(pet::setGender);
+            Optional.ofNullable(petUpdateReqDto.getBirth_date()).ifPresent(pet::setBirth_date);
+            Optional.ofNullable(petUpdateReqDto.getDeath_date()).ifPresent(pet::setDeath_date);
+            Optional.ofNullable(petUpdateReqDto.getPersonality()).ifPresent(pet::setPersonality);
+            return pet;
+        }
+        throw new NoSuchElementException("Member not found with id: " + petUpdateReqDto.getPet_id());
     }
 }

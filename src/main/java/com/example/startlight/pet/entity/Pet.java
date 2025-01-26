@@ -2,7 +2,7 @@ package com.example.startlight.pet.entity;
 
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.member.repository.MemberRepository;
-import com.example.startlight.pet.dto.PetDto;
+import com.example.startlight.pet.dto.PetReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,19 +25,24 @@ public class Pet {
 
     private String pet_img;
 
+    private String species;
+
+    @Column(nullable = false)
+    private Gender gender;
+
     @Column(nullable = false)
     private String pet_name;
-
-    private String species;
 
     private String birth_date;
 
     private String death_date;
 
-    public static Pet toEntity(PetDto dto, MemberRepository memberRepository) {
-        Optional<Member> member = memberRepository.findById(dto.getMember_id());
+    private Personality personality;
+
+    public static Pet toEntity(PetReqDto dto, Long userId, MemberRepository memberRepository) {
+        Optional<Member> member = memberRepository.findById(userId);
         if (member.isEmpty()) {
-            throw new IllegalArgumentException("Member not found for email: " + dto.getMember_id());
+            throw new IllegalArgumentException("Member not found for email: " + userId);
         }
 
         // Pet 엔티티 생성
@@ -46,8 +51,10 @@ public class Pet {
                 .pet_img(dto.getPet_img())
                 .pet_name(dto.getPet_name())
                 .species(dto.getSpecies())
+                .gender(dto.getGender())
                 .birth_date(dto.getBirth_date())
                 .death_date(dto.getDeath_date())
+                .personality(dto.getPersonality())
                 .build();
     }
 }

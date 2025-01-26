@@ -1,5 +1,6 @@
 package com.example.startlight.pet.dao;
 
+import com.example.startlight.pet.dto.PetUpdateReqDto;
 import com.example.startlight.pet.entity.Pet;
 
 public interface PetDao {
@@ -7,5 +8,5 @@ public interface PetDao {
 
     Pet selectPet(Long pet_id);
 
-    Pet updatePet(Pet pet);
+    Pet updatePet(PetUpdateReqDto petUpdateReqDto);
 }

@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -18,6 +19,11 @@ public class PetDaoImpl implements PetDao{
     @Override
     public Pet createPet(Pet pet) {
         return petRepository.save(pet);
+    }
+
+    @Override
+    public List<Pet> selectAllPet(Long memberId) {
+        return petRepository.findByMemberId(memberId);
     }
 
     @Override

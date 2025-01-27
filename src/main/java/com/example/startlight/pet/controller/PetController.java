@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/pet")
@@ -27,5 +29,11 @@ public class PetController {
     public ResponseEntity<PetRepDto> updatePet(@RequestBody PetUpdateReqDto petUpdateReqDto) {
         PetRepDto responsePetRepDto = petService.updatePet(petUpdateReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(responsePetRepDto);
+    }
+    
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PetRepDto>> getAllPets() {
+        List<PetRepDto> petRepDtoList = petService.getPets();
+        return ResponseEntity.status(HttpStatus.OK).body(petRepDtoList);
     }
 }

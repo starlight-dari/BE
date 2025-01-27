@@ -9,6 +9,9 @@ import com.example.startlight.pet.entity.Pet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PetServiceImpl implements PetService{
@@ -26,5 +29,15 @@ public class PetServiceImpl implements PetService{
     public PetRepDto updatePet(PetUpdateReqDto petUpdateReqDto) {
         Pet pet = petDao.updatePet(petUpdateReqDto);
         return PetRepDto.toDto(pet);
+    }
+
+    @Override
+    public List<PetRepDto> getPets() {
+        //Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        List<Pet> pets = petDao.selectAllPet(userId);
+        return pets.stream()
+                .map(PetRepDto::toDto)
+                .collect(Collectors.toList());
     }
 }

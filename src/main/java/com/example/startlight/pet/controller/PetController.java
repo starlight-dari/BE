@@ -30,7 +30,7 @@ public class PetController {
         PetRepDto responsePetRepDto = petService.updatePet(petUpdateReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(responsePetRepDto);
     }
-    
+
     @GetMapping("/getAll")
     public ResponseEntity<List<PetRepDto>> getAllPets() {
         List<PetRepDto> petRepDtoList = petService.getPets();

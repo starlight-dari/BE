@@ -32,7 +32,7 @@ public class MemberController {
     public ResponseEntity<MemberDto> updateUserName(
             @RequestBody MemberRequestDto memberRequestDto
             ) {
-        MemberDto memberDto = memberService.updateMemberName(memberRequestDto.getId(), memberRequestDto.getNickname());
+        MemberDto memberDto = memberService.updateMemberName(memberRequestDto.getNickname());
         return ResponseEntity.status(HttpStatus.OK).body(memberDto);
     }
 

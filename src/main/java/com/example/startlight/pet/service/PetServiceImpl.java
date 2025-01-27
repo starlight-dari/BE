@@ -19,7 +19,8 @@ public class PetServiceImpl implements PetService{
     private final MemberRepository memberRepository;
     @Override
     public PetRepDto createPet(PetReqDto petReqDto) {
-        //Long userId = UserUtil.getCurrentUserId();
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
         Long userId = 3879188713L;
         Pet pet = petDao.createPet(Pet.toEntity(petReqDto,userId,memberRepository));
         return PetRepDto.toDto(pet);
@@ -33,7 +34,8 @@ public class PetServiceImpl implements PetService{
 
     @Override
     public List<PetRepDto> getPets() {
-        //Long userId = UserUtil.getCurrentUserId();
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
         Long userId = 3879188713L;
         List<Pet> pets = petDao.selectAllPet(userId);
         return pets.stream()

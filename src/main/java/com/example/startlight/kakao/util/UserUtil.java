@@ -2,25 +2,19 @@ package com.example.startlight.kakao.util;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Map;
 
 public class UserUtil {
-    public static String getCurrentUserEmail() {
+    public static Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //인증 객체에 Principal로 얻은 정보 저장
-        if(authentication == null || !authentication.isAuthenticated()) //인증값이 false이거나 null인지 확인
-        {
-            return null;
+
+        if (authentication != null && authentication.getPrincipal() instanceof Map) {
+            Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
+            Long id =  (Long) principal.get("id");
+            return id;
         }
 
-        Object principal = authentication.getPrincipal(); //authentication 이 비어있지 않은걸 확인했으니 그 값을 저장
-        if (principal instanceof UserDetails) {
-            System.out.println( ((UserDetails) principal).getUsername());
-            return ((UserDetails) principal).getUsername();
-
-        } else {
-            System.out.println(principal.toString());
-            return principal.toString();
-        }
+        throw new IllegalStateException("User is not authenticated");
     }
 }

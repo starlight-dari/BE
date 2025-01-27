@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -48,8 +49,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDto updateMemberName(Long id, String nickname) {
-        Member member = memberDao.updateMemberName(id, nickname);
+    public MemberDto updateMemberName(String nickname) {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        Member member = memberDao.updateMemberName(userId,nickname);
         return MemberDto.toDto(member);
     }
 

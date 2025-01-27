@@ -1,7 +1,13 @@
 package com.example.startlight.pet.service;
 
-import com.example.startlight.pet.dto.PetDto;
+import com.example.startlight.pet.dto.PetRepDto;
+import com.example.startlight.pet.dto.PetReqDto;
+import com.example.startlight.pet.dto.PetUpdateReqDto;
+
+import java.util.List;
 
 public interface PetService {
-    PetDto createPet(PetDto petDto);
+    PetRepDto createPet(PetReqDto petReqDto);
+    PetRepDto updatePet(PetUpdateReqDto petUpdateReqDto);
+    List<PetRepDto> getPets();
 }

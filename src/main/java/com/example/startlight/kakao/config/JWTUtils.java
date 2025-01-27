@@ -1,10 +1,7 @@
 package com.example.startlight.kakao.config;
 
 import com.example.startlight.kakao.dto.KakaoUserInfoResponseDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +30,7 @@ public class JWTUtils {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String createToken(KakaoUserInfoResponseDto userInfoResponseDto, boolean rememberMe) {
+    public String createToken(KakaoUserInfoResponseDto userInfoResponseDto, String kakaoAccessToken, boolean rememberMe) {
         long now = (new Date()).getTime();
         Date validity = rememberMe ? new Date(now + TOKEN_VALIDITY_REMEMBER) : new Date(now + TOKEN_VALIDITY);
 
@@ -41,6 +38,7 @@ public class JWTUtils {
                 .setSubject(String.valueOf(userInfoResponseDto.getId())) // id를 Subject로 설정
                 .claim("id", userInfoResponseDto.getId()) // id 클레임 추가
                 .claim("nickname", userInfoResponseDto.getKakaoAccount().profile.nickName) // 추가 정보 예시
+                .claim("kakaoAccessToken", kakaoAccessToken)
                 .setIssuedAt(new Date())
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -75,12 +73,23 @@ public class JWTUtils {
         }
     }
 
-    public String extractEmailFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.get("email", String.class);
+    public String extractKakaoAccessToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            if (claims.getExpiration().before(new Date())) {
+                throw new RuntimeException("Token expired");
+            }
+            return claims.get("kakaoAccessToken", String.class);
+        } catch (ExpiredJwtException e) {
+            throw new RuntimeException("Token expired", e);
+        } catch (JwtException e) {
+            throw new RuntimeException("Invalid token", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error parsing token", e);
+        }
     }
 }

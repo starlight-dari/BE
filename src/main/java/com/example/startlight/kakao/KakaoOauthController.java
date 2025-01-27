@@ -3,11 +3,10 @@ package com.example.startlight.kakao;
 import com.example.startlight.kakao.config.JWTUtils;
 import com.example.startlight.kakao.dto.KakaoUserCreateDto;
 import com.example.startlight.kakao.dto.KakaoUserInfoResponseDto;
-import com.example.startlight.member.dto.MemberDto;
-import com.example.startlight.member.entity.Member;
 import com.example.startlight.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -46,7 +45,7 @@ public class KakaoOauthController {
 
             // 3. JWT 생성
             boolean rememberMe = false; // 예: 클라이언트 요청에 따라 결정
-            String jwtToken = jwtTokenProvider.createToken(userInfo, rememberMe);
+            String jwtToken = jwtTokenProvider.createToken(userInfo, accessToken, rememberMe);
 
             // 5. 인증 객체 확인 (로그 추가)
             Authentication authentication = jwtTokenProvider.verifyAndGetAuthentication(jwtToken);
@@ -95,6 +94,68 @@ public class KakaoOauthController {
             log.error("Error during Kakao login", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Login failed: " + e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> kakaoLogout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+        boolean isSecure = request.getScheme().equals("https");
+        String sameSiteValue = isSecure ? "None" : "Lax";
+        try {
+            // 1. 쿠키에서 AUTH-TOKEN 추출
+            Cookie[] cookies = request.getCookies();
+            String jwtToken = null;
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("AUTH-TOKEN".equals(cookie.getName())) {
+                        jwtToken = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+
+            if (jwtToken == null || jwtToken.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No valid session found.");
+            }
+
+            log.info("Received JWT Token from Cookie: {}", jwtToken);
+
+            // 2. JWT 검증 및 카카오 액세스 토큰 추출
+            String kakaoAccessToken = jwtTokenProvider.extractKakaoAccessToken(jwtToken);
+            if (kakaoAccessToken == null || kakaoAccessToken.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");
+            }
+
+            // 3. 카카오 로그아웃 요청
+            boolean logoutSuccess = kakaoService.logoutFromKakao(kakaoAccessToken);
+            if (!logoutSuccess) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to logout from Kakao.");
+            }
+
+            // 4. 쿠키 만료 처리 (클라이언트 측 자동 삭제)
+            ResponseCookie expiredCookie = ResponseCookie.from("AUTH-TOKEN", "")
+                    .httpOnly(true)  // 보안 강화를 위해 httpOnly 유지
+                    .maxAge(0)  // 쿠키 만료
+                    .path("/")
+                    .secure(isSecure)
+                    .sameSite(sameSiteValue)
+                    .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE, expiredCookie.toString());
+            log.info(logoutSuccess ? "Logout successful!" : "Logout failed!");
+
+            return ResponseEntity.ok(Map.of("message", "Logout successful"));
+
+        } catch (Exception e) {
+            log.error("Error during Kakao logout", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Logout failed: " + e.getMessage());
         }
     }
 }

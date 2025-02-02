@@ -1,0 +1,33 @@
+package com.example.startlight.starList.controller;
+
+import com.example.startlight.starList.dto.StarListCreateRequest;
+import com.example.startlight.starList.dto.StarListCreateResponse;
+import com.example.startlight.starList.dto.StarListRepDto;
+import com.example.startlight.starList.dto.StarListReqDto;
+import com.example.startlight.starList.service.StarListService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/starlist")
+public class StarListController {
+    private final StarListService starListService;
+
+    @PostMapping("/create")
+    public ResponseEntity<StarListCreateResponse> createStarList(@RequestBody StarListCreateRequest request) {
+        List<StarListRepDto> list = starListService.createList(request.getPetId(), request.getStarList());
+        StarListCreateResponse response = StarListCreateResponse.builder()
+                .petId(request.getPetId())
+                .starList(list).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+}

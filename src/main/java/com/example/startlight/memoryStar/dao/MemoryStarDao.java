@@ -1,6 +1,6 @@
 package com.example.startlight.memoryStar.dao;
 
-import com.example.startlight.memoryStar.MemoryStarRepository;
+import com.example.startlight.memoryStar.repository.MemoryStarRepository;
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

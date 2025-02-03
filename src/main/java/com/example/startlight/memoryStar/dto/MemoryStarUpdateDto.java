@@ -1,0 +1,27 @@
+package com.example.startlight.memoryStar.dto;
+
+import com.example.startlight.memoryStar.entity.ActivityCtg;
+import com.example.startlight.memoryStar.entity.EmotionCtg;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class MemoryStarUpdateDto {
+
+    @NotBlank
+    private Long memory_id;
+
+    private String name;
+
+    private ActivityCtg activityCtg;
+
+    private EmotionCtg emotionCtg;
+
+    private String content;
+
+    private String img_url;
+
+    private Boolean shared;
+}

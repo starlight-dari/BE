@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Table(name="StarList")
 public class StarList {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long starList_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long star_id;
 
     @ManyToOne
     private Pet pet;

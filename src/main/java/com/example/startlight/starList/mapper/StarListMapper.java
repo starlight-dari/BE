@@ -4,10 +4,8 @@ import com.example.startlight.pet.entity.Pet;
 import com.example.startlight.starList.dto.StarListRepDto;
 import com.example.startlight.starList.dto.StarListReqDto;
 import com.example.startlight.starList.entity.StarList;
-import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

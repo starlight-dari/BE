@@ -24,7 +24,7 @@ public class StarListDao {
         return starListRepository.findByPetId(petId);
     }
 
-    public StarList findStarListById(Integer id) {
+    public StarList findStarListById(Long id) {
         return starListRepository.findById(id).orElse(null);
     }
 

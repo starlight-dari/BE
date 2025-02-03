@@ -1,13 +1,13 @@
 package com.example.startlight.memoryStar.entity;
 
+import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
+import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.starList.entity.StarList;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -27,6 +27,8 @@ public class MemoryStar {
     private Long memory_id;
 
     @OneToOne
+    @JoinColumn(name = "star_id", nullable = true) // ✅ NULL 허용
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private StarList starList;
 
     @Column(nullable = false)
@@ -48,4 +50,13 @@ public class MemoryStar {
 
     @Column(nullable = false)
     private String img_url;
+
+    public void updateMemoryStar(MemoryStarUpdateDto dto) {
+        this.name = dto.getName();
+        this.activityCtg = dto.getActivityCtg();
+        this.emotionCtg = dto.getEmotionCtg();
+        this.content = dto.getContent();
+        this.img_url = dto.getImg_url();
+        this.shared = dto.getShared();
+    }
 }

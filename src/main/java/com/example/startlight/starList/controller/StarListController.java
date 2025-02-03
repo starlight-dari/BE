@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/starlist")
+@RequestMapping("/star")
 public class StarListController {
     private final StarListService starListService;
 

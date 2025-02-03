@@ -3,10 +3,9 @@ package com.example.startlight.memoryStar.service;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
 import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
+import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import com.example.startlight.memoryStar.mapper.MemoryStarMapper;
-import com.example.startlight.pet.dao.PetDao;
-import com.example.startlight.pet.entity.Pet;
 import com.example.startlight.starList.dao.StarListDao;
 import com.example.startlight.starList.entity.StarList;
 import jakarta.transaction.Transactional;
@@ -33,5 +32,14 @@ public class MemoryStarService {
         MemoryStar memoryStar = mapper.toEntity(memoryStarReqDto, starListById);
         MemoryStar createdStar = memoryStarDao.createMemoryStar(memoryStar);
         return mapper.toDto(createdStar);
+    }
+
+    public MemoryStarRepDto updateMemoryStar(MemoryStarUpdateDto memoryStarUpdateDto) {
+        MemoryStar memoryStar = memoryStarDao.updateMemoryStar(memoryStarUpdateDto);
+        return mapper.toDto(memoryStar);
+    }
+
+    public void deleteMemoryStar(Long id) {
+        memoryStarDao.deleteMemoryStarById(id);
     }
 }

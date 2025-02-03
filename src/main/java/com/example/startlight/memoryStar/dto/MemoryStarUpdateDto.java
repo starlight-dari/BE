@@ -8,10 +8,10 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemoryStarReqDto {
+public class MemoryStarUpdateDto {
 
     @NotBlank
-    private Long star_id;
+    private Long memory_id;
 
     private String name;
 
@@ -24,5 +24,4 @@ public class MemoryStarReqDto {
     private String img_url;
 
     private Boolean shared;
-
 }

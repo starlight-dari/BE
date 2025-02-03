@@ -7,6 +7,7 @@ import com.example.startlight.starList.dao.StarListDao;
 import com.example.startlight.starList.dto.StarListRepDto;
 import com.example.startlight.starList.dto.StarListReqDto;
 import com.example.startlight.starList.entity.StarList;
+import com.example.startlight.starList.mapper.StarListMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +19,18 @@ import java.util.stream.Collectors;
 public class StarListService {
     private final StarListDao starListDao;
     private final PetDao petDao;
+    private final StarListMapper mapper = StarListMapper.INSTANCE;
 
     public List<StarListRepDto> createList(Long petId, List<StarListReqDto> starListReqDtos) {
         Pet selectedPet = petDao.selectPet(petId);
-        List<StarList> starLists = starListReqDtos.stream()
-                .map(starListReqDto -> StarList.builder()
-                        .pet(selectedPet)  // Pet 정보 가져오기
-                        .x_star(starListReqDto.getX_star())
-                        .y_star(starListReqDto.getY_star())
-                        .build()
-                ).collect(Collectors.toList()); // 리스트로 변환
+
+        // DTO → Entity 변환
+        List<StarList> starLists = mapper.toEntityList(starListReqDtos, selectedPet);
+
+        // DB 저장
         List<StarList> createdStarList = starListDao.createStarList(starLists);
-        List<StarListRepDto> starListReqDtoList = createdStarList.stream()
-                .map(starList -> StarListRepDto.builder()
-                        .starList_id(starList.getStarList_id())
-                        .x_star(starList.getX_star())
-                        .y_star(starList.getY_star()).build()).collect(Collectors.toList());
-        return starListReqDtoList;
+
+        // Entity → DTO 변환
+        return mapper.toDtoList(createdStarList);
     }
 }

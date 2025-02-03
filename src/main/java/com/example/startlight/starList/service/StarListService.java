@@ -33,4 +33,9 @@ public class StarListService {
         // Entity → DTO 변환
         return mapper.toDtoList(createdStarList);
     }
+
+    public List<StarListRepDto> getList(Long petId) {
+        List<StarList> starList = starListDao.findAllStarList(petId);
+        return mapper.toDtoList(starList);
+    }
 }

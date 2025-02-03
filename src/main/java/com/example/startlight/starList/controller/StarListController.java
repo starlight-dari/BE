@@ -3,15 +3,11 @@ package com.example.startlight.starList.controller;
 import com.example.startlight.starList.dto.StarListCreateRequest;
 import com.example.startlight.starList.dto.StarListCreateResponse;
 import com.example.startlight.starList.dto.StarListRepDto;
-import com.example.startlight.starList.dto.StarListReqDto;
 import com.example.startlight.starList.service.StarListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +24,15 @@ public class StarListController {
                 .petId(request.getPetId())
                 .starList(list).build();
 
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/getList")
+    public ResponseEntity<StarListCreateResponse> getList(@RequestParam Long petId) {
+        List<StarListRepDto> list = starListService.getList(petId);
+        StarListCreateResponse response = StarListCreateResponse.builder()
+                .petId(petId)
+                .starList(list).build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

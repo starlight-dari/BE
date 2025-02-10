@@ -1,10 +1,8 @@
 package com.example.startlight.starList.dao;
 
-import com.example.startlight.pet.dao.PetDao;
-import com.example.startlight.pet.entity.Pet;
-import com.example.startlight.pet.repository.PetRepository;
 import com.example.startlight.starList.entity.StarList;
 import com.example.startlight.starList.repository.StarListRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +26,10 @@ public class StarListDao {
         return starListRepository.findById(id).orElse(null);
     }
 
+    @Transactional
+    public StarList updateStarWritten(Long id) {
+        StarList starList = findStarListById(id);
+        starList.updateStarList();
+        return starList;
+    }
 }

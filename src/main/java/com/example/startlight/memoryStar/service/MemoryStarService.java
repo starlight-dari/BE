@@ -31,6 +31,7 @@ public class MemoryStarService {
         StarList starListById = starListDao.findStarListById(memoryStarReqDto.getStar_id());
         MemoryStar memoryStar = mapper.toEntity(memoryStarReqDto, starListById);
         MemoryStar createdStar = memoryStarDao.createMemoryStar(memoryStar);
+        starListDao.updateStarWritten(memoryStarReqDto.getStar_id());
         return mapper.toDto(createdStar);
     }
 

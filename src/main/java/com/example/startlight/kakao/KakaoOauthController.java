@@ -71,6 +71,7 @@ public class KakaoOauthController {
 
             KakaoUserCreateDto kakaoUserCreateDto = KakaoUserCreateDto.builder().id(userInfo.getId())
                             .nickName(userInfo.getKakaoAccount().profile.getNickName())
+                    .email(userInfo.getKakaoAccount().email)
                                     .profileImageUrl(userInfo.getKakaoAccount().profile.getProfileImageUrl()).build();
 
             memberService.loginMember(kakaoUserCreateDto);

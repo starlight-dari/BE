@@ -48,7 +48,6 @@ public class Pet {
         // Pet 엔티티 생성
         return Pet.builder()
                 .member(member.get())
-                .pet_img(dto.getPet_img())
                 .pet_name(dto.getPet_name())
                 .species(dto.getSpecies())
                 .gender(dto.getGender())

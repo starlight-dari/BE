@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface PetService {
-    PetRepDto createPet(MultipartFile petImgFile, PetReqDto petReqDto) throws IOException;
+    PetRepDto createPet(PetReqDto petReqDto) throws IOException;
     PetRepDto updatePet(PetUpdateReqDto petUpdateReqDto);
     List<PetRepDto> getPets();
 }

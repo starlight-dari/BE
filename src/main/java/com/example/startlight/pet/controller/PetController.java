@@ -25,12 +25,9 @@ public class PetController {
 
     @PostMapping(path = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PetRepDto> createPet(
-            @RequestPart("petImgFile") MultipartFile petImgFile,
-            @RequestPart("petReqDto") String petReqDtoJson
+            @ModelAttribute PetReqDto petReqDto
     ) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        PetReqDto petReqDto = objectMapper.readValue(petReqDtoJson, PetReqDto.class);
-        PetRepDto responsePetRepDto = petService.createPet(petImgFile,petReqDto);
+        PetRepDto responsePetRepDto = petService.createPet(petReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(responsePetRepDto);
     }
 

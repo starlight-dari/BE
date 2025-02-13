@@ -4,10 +4,16 @@ import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
 import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
 import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.memoryStar.service.MemoryStarService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 public class MemoryStarContoller {
     private final MemoryStarService memoryStarService;
 
-    @PostMapping("/create")
+    @PostMapping(path = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MemoryStarRepDto> createMemoryStar(
-            @RequestBody MemoryStarReqDto memoryStarReqDto
-    ) {
+            @ModelAttribute MemoryStarReqDto memoryStarReqDto
+    ) throws IOException {
         MemoryStarRepDto memoryStar = memoryStarService.createMemoryStar(memoryStarReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStar);
     }

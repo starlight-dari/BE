@@ -19,9 +19,30 @@ public class S3Service {
 
     private final AmazonS3Client amazonS3Client;
 
-    public String uploadFile(MultipartFile file, String petId) throws IOException {
+    public String uploadPetImg(MultipartFile file, String petId) throws IOException {
         // 사용자 ID와 고정 파일 이름을 결합하여 고유한 경로 생성
         String key = "petImgs/" + petId + ".jpg";
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(file.getSize());
+        objectMetadata.setContentType(file.getContentType());
+
+        String uploadFileUrl = "";
+
+        try (InputStream inputStream = file.getInputStream()) {
+            // 파일 업로드
+            amazonS3Client.putObject(bucketName, key, inputStream, objectMetadata);
+            uploadFileUrl = amazonS3Client.getUrl(bucketName, key).toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload file to S3", e);
+        }
+
+        return uploadFileUrl;
+    }
+
+    public String uploadMemoryImg(MultipartFile file, Long memoryId) throws IOException {
+        // 사용자 ID와 고정 파일 이름을 결합하여 고유한 경로 생성
+        String key = "memoryImgs/" + memoryId.toString() + ".jpg";
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());

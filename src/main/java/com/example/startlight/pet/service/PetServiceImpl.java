@@ -30,7 +30,7 @@ public class PetServiceImpl implements PetService{
         // Long userId = UserUtil.getCurrentUserId();
         Long userId = 3879188713L;
         Pet pet = petDao.createPet(Pet.toEntity(petReqDto,userId,memberRepository));
-        String uploadFile = s3Service.uploadFile(petReqDto.getPet_img(), String.valueOf(pet.getPet_id()));
+        String uploadFile = s3Service.uploadPetImg(petReqDto.getPet_img(), String.valueOf(pet.getPet_id()));
         pet.setPet_img(uploadFile);
         return PetRepDto.toDto(pet);
     }

@@ -42,7 +42,6 @@ public class PetDaoImpl implements PetDao{
         if(selectedPet.isPresent()) {
             Pet pet = selectedPet.get();
             Optional.ofNullable(petUpdateReqDto.getPet_name()).ifPresent(pet::setPet_name);
-            //Optional.ofNullable(petUpdateReqDto.getPet_img()).ifPresent(pet::setPet_img);
             Optional.ofNullable(petUpdateReqDto.getSpecies()).ifPresent(pet::setSpecies);
             Optional.ofNullable(petUpdateReqDto.getGender()).ifPresent(pet::setGender);
             Optional.ofNullable(petUpdateReqDto.getBirth_date()).ifPresent(pet::setBirth_date);

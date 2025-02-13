@@ -37,8 +37,8 @@ public class MemoryStarContoller {
 
     @PatchMapping("/update")
     public ResponseEntity<MemoryStarRepDto> updateMemoryStar(
-            @RequestBody MemoryStarUpdateDto memoryStarReqDto
-    ) {
+            @ModelAttribute MemoryStarUpdateDto memoryStarReqDto
+    ) throws IOException {
         MemoryStarRepDto memoryStar = memoryStarService.updateMemoryStar(memoryStarReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStar);
     }

@@ -56,7 +56,6 @@ public class MemoryStar {
         this.activityCtg = dto.getActivityCtg();
         this.emotionCtg = dto.getEmotionCtg();
         this.content = dto.getContent();
-        this.img_url = dto.getImg_url();
         this.shared = dto.getShared();
     }
 

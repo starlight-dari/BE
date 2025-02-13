@@ -41,8 +41,10 @@ public class MemoryStarService {
         return mapper.toDto(createdStar);
     }
 
-    public MemoryStarRepDto updateMemoryStar(MemoryStarUpdateDto memoryStarUpdateDto) {
+    public MemoryStarRepDto updateMemoryStar(MemoryStarUpdateDto memoryStarUpdateDto) throws IOException {
         MemoryStar memoryStar = memoryStarDao.updateMemoryStar(memoryStarUpdateDto);
+        String uploadMemoryImg = s3Service.uploadMemoryImg(memoryStarUpdateDto.getImg_url(), memoryStarUpdateDto.getMemory_id());
+        memoryStar.setImg_url(uploadMemoryImg);
         return mapper.toDto(memoryStar);
     }
 

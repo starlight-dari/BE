@@ -3,6 +3,7 @@ package com.example.startlight.memoryStar.service;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
 import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
+import com.example.startlight.memoryStar.dto.MemoryStarSimpleRepDto;
 import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import com.example.startlight.memoryStar.mapper.MemoryStarMapper;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -50,5 +52,10 @@ public class MemoryStarService {
 
     public void deleteMemoryStar(Long id) {
         memoryStarDao.deleteMemoryStarById(id);
+    }
+
+    public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {
+        List<MemoryStar> allPublicMemoryStar = memoryStarDao.getAllPublicMemoryStar();
+        return mapper.toSimpleRepDtoList(allPublicMemoryStar);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.startlight.memoryStar.dao;
 
-import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
 import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.memoryStar.repository.MemoryStarRepository;
 import com.example.startlight.memoryStar.entity.MemoryStar;
@@ -8,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -42,5 +42,9 @@ public class MemoryStarDao {
 
     public void deleteMemoryStarById(Long id) {
         memoryStarRepository.deleteById(id);
+    }
+
+    public List<MemoryStar> getAllPublicMemoryStar() {
+        return memoryStarRepository.findAllByShared(true);
     }
 }

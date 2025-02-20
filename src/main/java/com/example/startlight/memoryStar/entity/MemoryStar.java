@@ -48,7 +48,7 @@ public class MemoryStar {
 
     private Long likes;
 
-    @Column(nullable = false)
+    @Setter
     private String img_url;
 
     public void updateMemoryStar(MemoryStarUpdateDto dto) {
@@ -56,7 +56,7 @@ public class MemoryStar {
         this.activityCtg = dto.getActivityCtg();
         this.emotionCtg = dto.getEmotionCtg();
         this.content = dto.getContent();
-        this.img_url = dto.getImg_url();
         this.shared = dto.getShared();
     }
+
 }

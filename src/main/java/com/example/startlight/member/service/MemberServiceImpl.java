@@ -72,6 +72,7 @@ public class MemberServiceImpl implements MemberService{
         else {
             Member member = Member.builder().member_id(kakaoUserCreateDto.getId())
                     .kk_nickname(kakaoUserCreateDto.getNickName())
+                    .email(kakaoUserCreateDto.getEmail())
                     .profile_img(kakaoUserCreateDto.getProfileImageUrl()).build();
             memberDao.createMember(member);
             return MemberDto.toDto(member);

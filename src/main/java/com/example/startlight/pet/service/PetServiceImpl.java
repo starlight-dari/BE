@@ -6,9 +6,13 @@ import com.example.startlight.pet.dto.PetRepDto;
 import com.example.startlight.pet.dto.PetReqDto;
 import com.example.startlight.pet.dto.PetUpdateReqDto;
 import com.example.startlight.pet.entity.Pet;
+import com.example.startlight.s3.service.S3Service;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,13 +20,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PetServiceImpl implements PetService{
     private final PetDao petDao;
+    private final S3Service s3Service;
     private final MemberRepository memberRepository;
+
     @Override
-    public PetRepDto createPet(PetReqDto petReqDto) {
+    @Transactional
+    public PetRepDto createPet(PetReqDto petReqDto) throws IOException {
         //TODO
         // Long userId = UserUtil.getCurrentUserId();
         Long userId = 3879188713L;
         Pet pet = petDao.createPet(Pet.toEntity(petReqDto,userId,memberRepository));
+        String uploadFile = s3Service.uploadPetImg(petReqDto.getPet_img(), String.valueOf(pet.getPet_id()));
+        pet.setPet_img(uploadFile);
         return PetRepDto.toDto(pet);
     }
 

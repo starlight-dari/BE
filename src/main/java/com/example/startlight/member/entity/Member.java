@@ -26,6 +26,8 @@ public class Member {
     @Column(nullable = false)
     private String profile_img;
 
+    private String email;
+
     private String st_nickname;
 
     @OneToMany
@@ -38,6 +40,7 @@ public class Member {
         return Member.builder()
                 .kk_nickname(dto.getKk_nickname())
                 .profile_img(dto.getProfile_img())
+                .email(dto.getEmail())
                 .st_nickname(dto.getSt_nickname()).build();
     }
 }

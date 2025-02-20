@@ -11,4 +11,5 @@ public class StarListRepDto {
     private Long star_id;
     private Long x_star;
     private Long y_star;
+    private Boolean written;
 }

@@ -12,5 +12,6 @@ import lombok.Setter;
 public class KakaoUserCreateDto {
     public Long id;
     public String nickName;
+    private String email;
     public String profileImageUrl;
 }

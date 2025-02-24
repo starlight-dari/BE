@@ -3,6 +3,7 @@ package com.example.startlight.memComment.service;
 import com.example.startlight.memComment.dao.MemCommentDao;
 import com.example.startlight.memComment.dto.MemCommentRepDto;
 import com.example.startlight.memComment.dto.MemCommentReqDto;
+import com.example.startlight.memComment.dto.MemCommentUpdateReqDto;
 import com.example.startlight.memComment.entity.MemComment;
 import com.example.startlight.memComment.mapper.MemCommentMapper;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
@@ -35,5 +36,20 @@ public class MemCommentService {
                 .content(memComment1.getContent())
                 .writer_id(memComment1.getWriter_id())
                 .build();
+    }
+
+    public MemCommentRepDto updateMemComment(MemCommentUpdateReqDto dto) {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        MemComment memComment = memCommentDao.update(dto.getComment_id(), userId, dto.getContent());
+        return mapper.toDto(memComment);
+    }
+
+    public void deleteMemComment(Long comment_id) {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        memCommentDao.delete(userId, comment_id);
     }
 }

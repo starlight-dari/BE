@@ -55,4 +55,16 @@ public class MemoryStarContoller {
         List<MemoryStarSimpleRepDto> allPublicMemoryStar = memoryStarService.findAllPublicMemoryStar();
         return ResponseEntity.status(HttpStatus.OK).body(allPublicMemoryStar);
     }
+
+    @PostMapping("/createLike")
+    public ResponseEntity<MemoryStarRepDto> createLikeMemoryStar(@RequestParam Long memoryId) {
+        MemoryStarRepDto memoryStarRepDto = memoryStarService.createLike(memoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
+    }
+
+    @PostMapping("/deleteLike")
+    public ResponseEntity<MemoryStarRepDto> deleteLikeMemoryStar(@RequestParam Long memoryId) {
+        MemoryStarRepDto memoryStarRepDto = memoryStarService.deleteLike(memoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
+    }
 }

@@ -1,12 +1,13 @@
 package com.example.startlight.memoryStar.entity;
 
 import com.example.startlight.memComment.entity.MemComment;
-import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
+import com.example.startlight.memLike.entity.MemLike;
 import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.starList.entity.StarList;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
@@ -45,18 +46,29 @@ public class MemoryStar {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Builder.Default
     @ColumnDefault("false")
-    private Boolean shared;
+    @Column(nullable = false)
+    private Boolean shared = false;  // 기본값 설정
 
-    private Long likes;
+    @Builder.Default
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private Long likes = 0L;  // 기본값 설정
 
-    private Long commentNumber;
+    @Builder.Default
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    private Long commentNumber = 0L;  // 기본값 설정
 
     @Setter
     private String img_url;
 
     @OneToMany
     private List<MemComment> memComments;
+
+    @OneToMany
+    private List<MemLike> memLikes;
     
     public void updateMemoryStar(MemoryStarUpdateDto dto) {
         this.name = dto.getName();
@@ -66,4 +78,19 @@ public class MemoryStar {
         this.shared = dto.getShared();
     }
 
+    public void createLike() {
+        this.likes++;
+    }
+
+    public void deleteLike() {
+        this.likes--;
+    }
+
+    public void createComment() {
+        this.commentNumber++;
+    }
+
+    public void deleteComment() {
+        this.commentNumber--;
+    }
 }

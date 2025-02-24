@@ -5,10 +5,12 @@ import com.example.startlight.memoryStar.entity.EmotionCtg;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
 public class MemoryStarRepDto {
     private Long memory_id;
@@ -29,6 +31,10 @@ public class MemoryStarRepDto {
     private Boolean shared;
 
     private Long likes;
+
+    private Long commentNumber;
+
+    private Boolean isLiked;
 
     private String img_url;
 }

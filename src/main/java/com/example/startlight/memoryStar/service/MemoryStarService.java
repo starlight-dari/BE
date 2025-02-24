@@ -33,7 +33,14 @@ public class MemoryStarService {
 
     public MemoryStarRepDto selectStarById(Long id) {
         MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(id);
-        return mapper.toDto(memoryStar);
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        boolean ifLiked = memoryStarDao.findIfLiked(id, userId);
+        System.out.println(ifLiked);
+        MemoryStarRepDto dto = mapper.toDto(memoryStar);
+        dto.setIsLiked(ifLiked);
+        return dto;
     }
 
     public MemoryStarRepDto createMemoryStar(MemoryStarReqDto memoryStarReqDto) throws IOException {
@@ -61,5 +68,25 @@ public class MemoryStarService {
     public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {
         List<MemoryStar> allPublicMemoryStar = memoryStarDao.getAllPublicMemoryStar();
         return mapper.toSimpleRepDtoList(allPublicMemoryStar);
+    }
+
+    public MemoryStarRepDto createLike(Long id) {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        MemoryStar memoryStar = memoryStarDao.pressLike(id, userId);
+        MemoryStarRepDto dto = mapper.toDto(memoryStar);
+        dto.setIsLiked(true);
+        return dto;
+    }
+
+    public MemoryStarRepDto deleteLike(Long id) {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        MemoryStar memoryStar = memoryStarDao.deleteLike(id, userId);
+        MemoryStarRepDto dto = mapper.toDto(memoryStar);
+        dto.setIsLiked(false);
+        return dto;
     }
 }

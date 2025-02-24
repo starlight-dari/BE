@@ -5,6 +5,7 @@ import com.example.startlight.pet.entity.Pet;
 import com.example.startlight.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class Member {
 
     private String st_nickname;
 
+    @ColumnDefault("0")
+    private Long memory_num;
+
     @OneToMany
     private List<Post> posts;
 
@@ -42,5 +46,9 @@ public class Member {
                 .profile_img(dto.getProfile_img())
                 .email(dto.getEmail())
                 .st_nickname(dto.getSt_nickname()).build();
+    }
+
+    public void updateMemoryNum() {
+        this.memory_num += 1;
     }
 }

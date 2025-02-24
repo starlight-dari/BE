@@ -1,6 +1,7 @@
 package com.example.startlight.member.service;
 
 import com.example.startlight.kakao.dto.KakaoUserCreateDto;
+import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.dto.MemberDto;
 import com.example.startlight.member.entity.Member;
@@ -77,5 +78,12 @@ public class MemberServiceImpl implements MemberService{
             memberDao.createMember(member);
             return MemberDto.toDto(member);
         }
+    }
+
+    @Override
+    public void updateMemberMemory() {
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        memberDao.updateMemberMemory(userId);
     }
 }

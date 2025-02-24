@@ -1,10 +1,7 @@
 package com.example.startlight.memoryStar.contoller;
 
 import com.example.startlight.memComment.dto.MemCommentRepDto;
-import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
-import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
-import com.example.startlight.memoryStar.dto.MemoryStarSimpleRepDto;
-import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
+import com.example.startlight.memoryStar.dto.*;
 import com.example.startlight.memoryStar.service.MemoryStarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,8 +27,8 @@ public class MemoryStarContoller {
     }
 
     @GetMapping("/selectEach")
-    public ResponseEntity<MemoryStarRepDto> selectMemoryStar(@RequestParam Long memoryId) {
-        MemoryStarRepDto memoryStarRepDto = memoryStarService.selectStarById(memoryId);
+    public ResponseEntity<MemoryStarRepWithComDto> selectMemoryStar(@RequestParam Long memoryId) {
+        MemoryStarRepWithComDto memoryStarRepDto = memoryStarService.selectStarById(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
     }
 

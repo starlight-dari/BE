@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -42,5 +44,9 @@ public class MemCommentDao {
         }
 
         memCommentRepository.deleteById(comment_id);
+    }
+
+    public List<MemComment> findAllByMemoryId(Long memory_id) {
+        return memCommentRepository.findAllByMemoryStar_Memory_id(memory_id);
     }
 }

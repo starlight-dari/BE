@@ -1,12 +1,11 @@
 package com.example.startlight.memoryStar.service;
 
-import com.example.startlight.member.dao.MemberDao;
+import com.example.startlight.memComment.dto.MemCommentRepDto;
+import com.example.startlight.memComment.dto.MemCommentUpdateReqDto;
+import com.example.startlight.memComment.service.MemCommentService;
 import com.example.startlight.member.service.MemberService;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
-import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
-import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
-import com.example.startlight.memoryStar.dto.MemoryStarSimpleRepDto;
-import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
+import com.example.startlight.memoryStar.dto.*;
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import com.example.startlight.memoryStar.mapper.MemoryStarMapper;
 import com.example.startlight.s3.service.S3Service;
@@ -27,19 +26,25 @@ import java.util.List;
 public class MemoryStarService {
     private final MemoryStarDao memoryStarDao;
     private final StarListDao starListDao;
+    private final MemCommentService memCommentService;
     private final MemberService memberService;
     private final S3Service s3Service;
     private final MemoryStarMapper mapper = MemoryStarMapper.INSTANCE;
 
-    public MemoryStarRepDto selectStarById(Long id) {
+    public MemoryStarRepWithComDto selectStarById(Long id) {
         MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(id);
+
         //TODO
         // Long userId = UserUtil.getCurrentUserId();
         Long userId = 3879188713L;
         boolean ifLiked = memoryStarDao.findIfLiked(id, userId);
         System.out.println(ifLiked);
-        MemoryStarRepDto dto = mapper.toDto(memoryStar);
+        MemoryStarRepWithComDto dto = mapper.toWithComDto(memoryStar);
         dto.setIsLiked(ifLiked);
+
+        List<MemCommentRepDto> allByMemoryId = memCommentService.findAllByMemoryId(id);
+        dto.setMemComments(allByMemoryId);
+
         return dto;
     }
 

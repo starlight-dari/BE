@@ -12,6 +12,9 @@ import com.example.startlight.memoryStar.mapper.MemoryStarMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class MemCommentService {
@@ -51,5 +54,10 @@ public class MemCommentService {
         // Long userId = UserUtil.getCurrentUserId();
         Long userId = 3879188713L;
         memCommentDao.delete(userId, comment_id);
+    }
+
+    public List<MemCommentRepDto> findAllByMemoryId(Long memory_id) {
+        List<MemComment> allByMemoryId = memCommentDao.findAllByMemoryId(memory_id);
+        return allByMemoryId.stream().map(mapper::toDto).collect(Collectors.toList());
     }
 }

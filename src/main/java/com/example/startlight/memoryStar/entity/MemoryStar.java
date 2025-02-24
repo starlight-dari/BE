@@ -1,5 +1,6 @@
 package com.example.startlight.memoryStar.entity;
 
+import com.example.startlight.memComment.entity.MemComment;
 import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
 import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.starList.entity.StarList;
@@ -12,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -48,9 +50,14 @@ public class MemoryStar {
 
     private Long likes;
 
+    private Long commentNumber;
+
     @Setter
     private String img_url;
 
+    @OneToMany
+    private List<MemComment> memComments;
+    
     public void updateMemoryStar(MemoryStarUpdateDto dto) {
         this.name = dto.getName();
         this.activityCtg = dto.getActivityCtg();

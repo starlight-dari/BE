@@ -13,4 +13,6 @@ public interface MemberService {
     void deleteMember(Long id);
 
     MemberDto loginMember(KakaoUserCreateDto kakaoUserCreateDto);
+
+    void updateMemberMemory();
 }

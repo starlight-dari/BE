@@ -1,5 +1,6 @@
 package com.example.startlight.memoryStar.dao;
 
+import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.memoryStar.repository.MemoryStarRepository;
 import com.example.startlight.memoryStar.entity.MemoryStar;

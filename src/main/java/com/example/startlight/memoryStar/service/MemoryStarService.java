@@ -1,5 +1,7 @@
 package com.example.startlight.memoryStar.service;
 
+import com.example.startlight.member.dao.MemberDao;
+import com.example.startlight.member.service.MemberService;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
 import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
@@ -25,6 +27,7 @@ import java.util.List;
 public class MemoryStarService {
     private final MemoryStarDao memoryStarDao;
     private final StarListDao starListDao;
+    private final MemberService memberService;
     private final S3Service s3Service;
     private final MemoryStarMapper mapper = MemoryStarMapper.INSTANCE;
 
@@ -40,6 +43,7 @@ public class MemoryStarService {
         String memoryImgUrls = s3Service.uploadMemoryImg(memoryStarReqDto.getImg_url(), createdStar.getMemory_id());
         createdStar.setImg_url(memoryImgUrls);
         starListDao.updateStarWritten(memoryStarReqDto.getStar_id());
+        memberService.updateMemberMemory();
         return mapper.toDto(createdStar);
     }
 

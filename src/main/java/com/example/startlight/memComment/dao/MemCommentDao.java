@@ -3,6 +3,7 @@ package com.example.startlight.memComment.dao;
 import com.example.startlight.exception.UnauthorizedAccessException;
 import com.example.startlight.memComment.entity.MemComment;
 import com.example.startlight.memComment.repository.MemCommentRepository;
+import com.example.startlight.memoryStar.entity.MemoryStar;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,11 @@ import java.util.List;
 public class MemCommentDao {
     private final MemCommentRepository memCommentRepository;
 
+    @Transactional
     public MemComment create(MemComment memComment) {
-        return memCommentRepository.save(memComment);
+        MemComment comment = memCommentRepository.save(memComment);
+        memComment.getMemoryStar().createComment();
+        return comment;
     }
 
     @Transactional
@@ -44,6 +48,7 @@ public class MemCommentDao {
         }
 
         memCommentRepository.deleteById(comment_id);
+        memComment.getMemoryStar().deleteComment();
     }
 
     public List<MemComment> findAllByMemoryId(Long memory_id) {

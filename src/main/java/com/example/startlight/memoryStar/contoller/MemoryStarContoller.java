@@ -1,5 +1,6 @@
 package com.example.startlight.memoryStar.contoller;
 
+import com.example.startlight.memComment.dto.MemCommentRepDto;
 import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
 import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
 import com.example.startlight.memoryStar.dto.MemoryStarSimpleRepDto;
@@ -55,6 +56,8 @@ public class MemoryStarContoller {
         List<MemoryStarSimpleRepDto> allPublicMemoryStar = memoryStarService.findAllPublicMemoryStar();
         return ResponseEntity.status(HttpStatus.OK).body(allPublicMemoryStar);
     }
+
+    //like
 
     @PostMapping("/createLike")
     public ResponseEntity<MemoryStarRepDto> createLikeMemoryStar(@RequestParam Long memoryId) {

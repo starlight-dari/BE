@@ -1,10 +1,8 @@
 package com.example.startlight.memoryStar.dao;
 
 import com.example.startlight.kakao.util.UserUtil;
-import com.example.startlight.memComment.entity.MemComment;
 import com.example.startlight.memLike.entity.MemLike;
 import com.example.startlight.memLike.repository.MemLikeRepository;
-import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.memoryStar.repository.MemoryStarRepository;
 import com.example.startlight.memoryStar.entity.MemoryStar;
@@ -53,6 +51,8 @@ public class MemoryStarDao {
     public List<MemoryStar> getAllPublicMemoryStar() {
         return memoryStarRepository.findBySharedTrue();
     }
+
+    //like
 
     public MemoryStar pressLike(Long id, Long userId) {
         MemoryStar memoryStar = selectMemoryStarById(id);

@@ -2,8 +2,13 @@ package com.example.startlight.memComment.entity;
 
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="MemComment")
 public class MemComment {
     @Id
@@ -11,6 +16,7 @@ public class MemComment {
     private Long comment_id;
 
     @ManyToOne
+    @JoinColumn(name = "memory_id")
     private MemoryStar memoryStar;
 
     @Column(nullable = false)

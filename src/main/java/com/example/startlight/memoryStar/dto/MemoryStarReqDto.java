@@ -5,14 +5,18 @@ import com.example.startlight.memoryStar.entity.EmotionCtg;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @Builder
 public class MemoryStarReqDto {
 
     @NotBlank
     private Long star_id;
+
+    private Long writer_id;
 
     private String name;
 

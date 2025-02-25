@@ -17,6 +17,8 @@ public class MemoryStarRepDto {
 
     private Long star_id;
 
+    private Long writer_id;
+
     private String name;
 
     private ActivityCtg activityCtg;
@@ -28,7 +30,12 @@ public class MemoryStarRepDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime createdAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime updatedAt;
+
     private Boolean shared;
+
+    private Boolean updated;
 
     private Long likes;
 

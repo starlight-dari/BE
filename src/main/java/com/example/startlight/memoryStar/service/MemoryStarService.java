@@ -39,17 +39,24 @@ public class MemoryStarService {
         Long userId = 3879188713L;
         boolean ifLiked = memoryStarDao.findIfLiked(id, userId);
         System.out.println(ifLiked);
-        MemoryStarRepWithComDto dto = mapper.toWithComDto(memoryStar);
-        dto.setIsLiked(ifLiked);
+        MemoryStarRepDto mapperDto = mapper.toDto(memoryStar);
 
         List<MemCommentRepDto> allByMemoryId = memCommentService.findAllByMemoryId(id);
-        dto.setMemComments(allByMemoryId);
 
+        MemoryStarRepWithComDto dto = MemoryStarRepWithComDto.builder()
+                .memoryStarRepDto(mapperDto)
+                .memComments(allByMemoryId).build();
+
+        dto.getMemoryStarRepDto().setIsLiked(ifLiked);
         return dto;
     }
 
     public MemoryStarRepDto createMemoryStar(MemoryStarReqDto memoryStarReqDto) throws IOException {
         StarList starListById = starListDao.findStarListById(memoryStarReqDto.getStar_id());
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        memoryStarReqDto.setWriter_id(userId);
         MemoryStar memoryStar = mapper.toEntity(memoryStarReqDto, starListById);
         MemoryStar createdStar = memoryStarDao.createMemoryStar(memoryStar);
         String memoryImgUrls = s3Service.uploadMemoryImg(memoryStarReqDto.getImg_url(), createdStar.getMemory_id());
@@ -59,15 +66,26 @@ public class MemoryStarService {
         return mapper.toDto(createdStar);
     }
 
-    public MemoryStarRepDto updateMemoryStar(MemoryStarUpdateDto memoryStarUpdateDto) throws IOException {
-        MemoryStar memoryStar = memoryStarDao.updateMemoryStar(memoryStarUpdateDto);
+    public MemoryStarRepWithComDto updateMemoryStar(MemoryStarUpdateDto memoryStarUpdateDto) throws IOException {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        MemoryStar memoryStar = memoryStarDao.updateMemoryStar(userId, memoryStarUpdateDto);
         String uploadMemoryImg = s3Service.uploadMemoryImg(memoryStarUpdateDto.getImg_url(), memoryStarUpdateDto.getMemory_id());
         memoryStar.setImg_url(uploadMemoryImg);
-        return mapper.toDto(memoryStar);
+        MemoryStarRepDto dto = mapper.toDto(memoryStar);
+        List<MemCommentRepDto> allByMemoryId = memCommentService.findAllByMemoryId(memoryStar.getMemory_id());
+
+        return MemoryStarRepWithComDto.builder()
+                .memoryStarRepDto(dto)
+                .memComments(allByMemoryId).build();
     }
 
     public void deleteMemoryStar(Long id) {
-        memoryStarDao.deleteMemoryStarById(id);
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        memoryStarDao.deleteMemoryStarById(userId, id);
     }
 
     public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {

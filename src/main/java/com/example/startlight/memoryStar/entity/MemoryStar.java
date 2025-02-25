@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -35,6 +36,9 @@ public class MemoryStar {
     private StarList starList;
 
     @Column(nullable = false)
+    private Long writer_id;
+
+    @Column(nullable = false)
     private String name;
 
     private ActivityCtg activityCtg;
@@ -46,10 +50,16 @@ public class MemoryStar {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     @Builder.Default
     @ColumnDefault("false")
     @Column(nullable = false)
     private Boolean shared = false;  // 기본값 설정
+
+    @Builder.Default
+    private Boolean updated = false;
 
     @Builder.Default
     @ColumnDefault("0")
@@ -76,6 +86,7 @@ public class MemoryStar {
         this.emotionCtg = dto.getEmotionCtg();
         this.content = dto.getContent();
         this.shared = dto.getShared();
+        this.updated = true;
     }
 
     public void createLike() {

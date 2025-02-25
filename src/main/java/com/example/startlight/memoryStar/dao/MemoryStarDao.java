@@ -1,5 +1,6 @@
 package com.example.startlight.memoryStar.dao;
 
+import com.example.startlight.exception.UnauthorizedAccessException;
 import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.memLike.entity.MemLike;
 import com.example.startlight.memLike.repository.MemLikeRepository;
@@ -34,18 +35,29 @@ public class MemoryStarDao {
     }
 
     @Transactional
-    public MemoryStar updateMemoryStar(MemoryStarUpdateDto memoryStarUpdateDto) {
+    public MemoryStar updateMemoryStar(Long userId, MemoryStarUpdateDto memoryStarUpdateDto) {
         Optional<MemoryStar> starOptional = memoryStarRepository.findById(memoryStarUpdateDto.getMemory_id());
         if(starOptional.isPresent()) {
             MemoryStar memoryStar = starOptional.get();
-            memoryStar.updateMemoryStar(memoryStarUpdateDto);
-            return memoryStar;
+            if (memoryStar.getWriter_id().equals(userId)) {
+                memoryStar.updateMemoryStar(memoryStarUpdateDto);
+                return memoryStar;
+            }
+            else {
+                throw new UnauthorizedAccessException("자신이 작성한 글만 수정할 수 있습니다.");
+            }
         }
         throw new NoSuchElementException("Memory Star not found with id: " + memoryStarUpdateDto.getMemory_id());
     }
 
-    public void deleteMemoryStarById(Long id) {
-        memoryStarRepository.deleteById(id);
+    public void deleteMemoryStarById(Long userId, Long id) {
+        MemoryStar memoryStar = memoryStarRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Memory Star not found with id: " + id));
+        if (memoryStar.getWriter_id().equals(userId)) {
+            memoryStarRepository.deleteById(id);
+        }
+        else {
+            throw new UnauthorizedAccessException("자신이 작성한 글만 삭제할 수 있습니다.");
+        }
     }
 
     public List<MemoryStar> getAllPublicMemoryStar() {

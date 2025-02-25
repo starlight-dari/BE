@@ -23,9 +23,6 @@ public interface MemoryStarMapper {
     @Mapping(source = "starList.star_id", target = "star_id")
     MemoryStarRepDto toDto(MemoryStar memoryStar);
 
-    @Mapping(source = "starList.star_id", target = "star_id")
-    MemoryStarRepWithComDto toWithComDto(MemoryStar memoryStar);
-
     MemoryStarSimpleRepDto toSimpleRepDto(MemoryStar memoryStar);
     List<MemoryStarSimpleRepDto> toSimpleRepDtoList(List<MemoryStar> memoryStars);
 }

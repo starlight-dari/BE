@@ -33,12 +33,7 @@ public class MemCommentService {
                 .memoryStar(memoryStar)
                 .build();
         MemComment memComment1 = memCommentDao.create(memComment);
-        return MemCommentRepDto.builder()
-                .comment_id(memComment1.getComment_id())
-                .memory_id(memComment1.getMemoryStar().getMemory_id())
-                .content(memComment1.getContent())
-                .writer_id(memComment1.getWriter_id())
-                .build();
+        return mapper.toDto(memComment1);
     }
 
     public MemCommentRepDto updateMemComment(MemCommentUpdateReqDto dto) {

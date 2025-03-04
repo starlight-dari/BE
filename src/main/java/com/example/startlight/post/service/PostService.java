@@ -8,6 +8,7 @@ import com.example.startlight.post.dao.PostDao;
 import com.example.startlight.post.dto.PostRequestDto;
 import com.example.startlight.post.dto.PostDetailedRepDto;
 import com.example.startlight.post.dto.PostResponseDto;
+import com.example.startlight.post.entity.Category;
 import com.example.startlight.post.entity.Post;
 import com.example.startlight.s3.service.S3Service;
 import jakarta.transaction.Transactional;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,9 +48,17 @@ public class PostService {
         return PostDetailedRepDto.toDto(postById, funeralDao);
     }
 
-    public List<PostResponseDto> getAllPosts() {
+    public List<PostResponseDto> getAllPosts(String category) {
         List<Post> allPost = postDao.findAllPost();
         return allPost.stream()
+                .filter(post -> {
+                    if (category == null || category.equalsIgnoreCase("all")) return true;
+                    try {
+                        return post.getCategory().equals(Category.valueOf(category.toUpperCase()));
+                    } catch (IllegalArgumentException e) {
+                        return false;  // 잘못된 category 값이면 필터링
+                    }
+                })
                 .map(PostResponseDto::toResponseDto)  // Post → PostRequestDto 변환
                 .collect(Collectors.toList());
     }

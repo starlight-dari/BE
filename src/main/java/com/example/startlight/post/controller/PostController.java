@@ -31,8 +31,8 @@ public class PostController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<PostResponseDto>> getAll(){
-        List<PostResponseDto> posts = postService.getAllPosts();
+    public ResponseEntity<List<PostResponseDto>> getAll(@RequestParam String category){
+        List<PostResponseDto> posts = postService.getAllPosts(category);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 }

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Table(name = "Post")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long post_id;
 
     @ManyToOne

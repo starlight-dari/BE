@@ -27,6 +27,6 @@ public class PostDao {
         throw new NoSuchElementException("Post not found with id: " + id);
     }
     public List<Post> findAllPost() {
-        return postRepository.findAll();
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 }

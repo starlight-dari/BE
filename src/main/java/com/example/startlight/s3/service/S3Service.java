@@ -1,5 +1,6 @@
 package com.example.startlight.s3.service;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,19 @@ public class S3Service {
         return uploadFileUrl;
     }
 
+    public void deleteMemoryImg(Long memoryId) {
+        // 업로드할 때 사용한 파일 키와 동일한 형식으로 경로 생성
+        String key = "memoryImgs/" + memoryId.toString() + ".jpg";
+
+        try {
+            // S3에서 파일 삭제
+            amazonS3Client.deleteObject(bucketName, key);
+            System.out.println("Image deleted successfully from S3: " + key);
+        } catch (AmazonServiceException e) {
+            throw new RuntimeException("Failed to delete file from S3", e);
+        }
+    }
+
     public String uploadPostImg(MultipartFile file, Long postId) throws IOException {
         // 사용자 ID와 고정 파일 이름을 결합하여 고유한 경로 생성
         String key = "postImgs/" + postId.toString() + ".jpg";
@@ -80,6 +94,19 @@ public class S3Service {
         }
 
         return uploadFileUrl;
+    }
+
+    public void deletePostImg(Long postId) {
+        // 업로드할 때 사용한 파일 키와 동일한 형식으로 경로 생성
+        String key = "postImgs/" + postId.toString() + ".jpg";
+
+        try {
+            // S3에서 파일 삭제
+            amazonS3Client.deleteObject(bucketName, key);
+            System.out.println("Image deleted successfully from S3: " + key);
+        } catch (AmazonServiceException e) {
+            throw new RuntimeException("Failed to delete file from S3", e);
+        }
     }
 
     private String getUrlFromKey(String key) {

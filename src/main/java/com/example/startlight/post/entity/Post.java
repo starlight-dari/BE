@@ -3,10 +3,7 @@ package com.example.startlight.post.entity;
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.post.dto.PostRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -32,19 +29,32 @@ public class Post {
     @Column(nullable = false)
     private Category category;
 
-    @Column(nullable = false)
     private Long funeral_id;
 
     @Column(nullable = false)
     private Long report;
 
+    @Setter
+    private String img_url;
+
     public static Post toEntity(PostRequestDto postRequestDto, Member member) {
-        return Post.builder()
-                .member(member)
-                .title(postRequestDto.getTitle())
-                .content(postRequestDto.getContent())
-                .category(postRequestDto.getCategory())
-                .funeral_id(postRequestDto.getFuneral_id())
-                .report(0L).build();
+        if(postRequestDto.getFuneral_id() != null) {
+            return Post.builder()
+                    .member(member)
+                    .title(postRequestDto.getTitle())
+                    .content(postRequestDto.getContent())
+                    .category(postRequestDto.getCategory())
+                    .funeral_id(postRequestDto.getFuneral_id())
+                    .report(0L).build();
+        }
+        else {
+            return Post.builder()
+                    .member(member)
+                    .title(postRequestDto.getTitle())
+                    .content(postRequestDto.getContent())
+                    .category(postRequestDto.getCategory())
+                    .report(0L).build();
+        }
+
     }
 }

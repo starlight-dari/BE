@@ -4,12 +4,17 @@ import com.example.startlight.member.entity.Member;
 import com.example.startlight.post.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Post")
 public class Post {
     @Id
@@ -36,6 +41,9 @@ public class Post {
 
     @Setter
     private String img_url;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     public static Post toEntity(PostRequestDto postRequestDto, Member member) {
         if(postRequestDto.getFuneral_id() != null) {

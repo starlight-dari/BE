@@ -2,13 +2,15 @@ package com.example.startlight.post.dto;
 
 import com.example.startlight.funeral.dao.FuneralDao;
 import com.example.startlight.funeral.entity.Funeral;
-import com.example.startlight.funeral.repository.FuneralRepository;
 import com.example.startlight.post.entity.Category;
 import com.example.startlight.post.entity.Post;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -27,6 +29,9 @@ public class PostDetailedRepDto {
     @Nullable
     private Funeral funeral;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime createdAt;
+
     public static PostDetailedRepDto toDto(Post post, FuneralDao funeralDao) {
         if (post.getFuneral_id() == null) {
             return PostDetailedRepDto.builder()
@@ -37,6 +42,7 @@ public class PostDetailedRepDto {
                     .category(post.getCategory())
                     .report(post.getReport())
                     .img_url(post.getImg_url())
+                    .createdAt(post.getCreatedAt())
                     .build();
         }
         else {
@@ -49,6 +55,7 @@ public class PostDetailedRepDto {
                     .report(post.getReport())
                     .img_url(post.getImg_url())
                     .funeral(funeralDao.selectById(post.getFuneral_id()))
+                    .createdAt(post.getCreatedAt())
                     .build();
         }
     }

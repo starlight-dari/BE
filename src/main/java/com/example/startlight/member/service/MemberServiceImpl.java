@@ -1,6 +1,7 @@
 package com.example.startlight.member.service;
 
 import com.example.startlight.kakao.dto.KakaoUserCreateDto;
+import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.dto.MemberDto;
 import com.example.startlight.member.entity.Member;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -48,8 +50,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDto updateMemberName(Long id, String nickname) {
-        Member member = memberDao.updateMemberName(id, nickname);
+    public MemberDto updateMemberName(String nickname) {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        Member member = memberDao.updateMemberName(userId,nickname);
         return MemberDto.toDto(member);
     }
 
@@ -68,9 +73,17 @@ public class MemberServiceImpl implements MemberService{
         else {
             Member member = Member.builder().member_id(kakaoUserCreateDto.getId())
                     .kk_nickname(kakaoUserCreateDto.getNickName())
+                    .email(kakaoUserCreateDto.getEmail())
                     .profile_img(kakaoUserCreateDto.getProfileImageUrl()).build();
             memberDao.createMember(member);
             return MemberDto.toDto(member);
         }
+    }
+
+    @Override
+    public void updateMemberMemory() {
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        memberDao.updateMemberMemory(userId);
     }
 }

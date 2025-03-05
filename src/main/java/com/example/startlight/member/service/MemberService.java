@@ -8,9 +8,11 @@ public interface MemberService {
 
     MemberDto selectCurrentMember();
 
-    MemberDto updateMemberName(Long id, String nickname);
+    MemberDto updateMemberName(String nickname);
 
     void deleteMember(Long id);
 
     MemberDto loginMember(KakaoUserCreateDto kakaoUserCreateDto);
+
+    void updateMemberMemory();
 }

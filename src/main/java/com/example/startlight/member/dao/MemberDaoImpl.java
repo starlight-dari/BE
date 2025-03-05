@@ -41,4 +41,10 @@ public class MemberDaoImpl implements MemberDao{
         Member member = selectMember(id);
         memberRepository.delete(member);
     }
+
+    @Override
+    public void updateMemberMemory(Long id) {
+        Member member = selectMember(id);
+        member.updateMemoryNum();
+    }
 }

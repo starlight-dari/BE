@@ -11,13 +11,19 @@ public class MemberDto {
 
     private String profile_img;
 
+    private String email;
+
     private String st_nickname;
+
+    private Long memory_num;
 
     public static MemberDto toDto(Member member) {
         return MemberDto.builder()
                 .kk_nickname(member.getKk_nickname())
                 .profile_img(member.getProfile_img())
+                .email(member.getEmail())
                 .st_nickname(member.getSt_nickname())
+                .memory_num(member.getMemory_num())
                 .build();
     }
 

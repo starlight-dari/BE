@@ -10,4 +10,6 @@ public interface MemberDao {
     Member updateMemberName(Long id, String nickname);
 
     void deleteMember(Long id);
+
+    void updateMemberMemory(Long id);
 }

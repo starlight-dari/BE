@@ -13,6 +13,9 @@ jobs:
 
       - name: application-private.properties 덮어쓰기
         run: |
+          echo ${{ secrets.APPLICATION }} | base64 --decode
+          echo ${{ secrets.APPLICATION }}| base64 --decode > ./src/main/resources/application-private.properties
+          cat ./src/main/resources/application-private.properties
           touch ./src/main/resources/application-private.properties
         shell: bash
 

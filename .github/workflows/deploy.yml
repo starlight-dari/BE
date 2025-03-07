@@ -11,6 +11,9 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v3
 
+      - name: Print working directory
+        run: pwd
+        
       - name: application-private.properties 덮어쓰기
         run: |
           cd ./src/main/resources

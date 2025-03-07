@@ -22,32 +22,32 @@ public class PostController {
     private final PostService postService;
     private final PostCommentService postCommentService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<PostDetailedRepDto> create(@ModelAttribute PostRequestDto postRequestDto) throws IOException {
         PostDetailedRepDto post = postService.createPost(postRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(post);
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<PostDetailedRepDto> get(@RequestParam Long id) throws IOException {
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDetailedRepDto> get(@PathVariable Long id) throws IOException {
         PostDetailedRepDto post = postService.getPost(id);
         return ResponseEntity.status(HttpStatus.OK).body(post);
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<PostResponseDto>> getAll(@RequestParam String category){
+    @GetMapping()
+    public ResponseEntity<List<PostResponseDto>> getAll(@RequestParam(required = false) String category){
         List<PostResponseDto> posts = postService.getAllPosts(category);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
-    @PatchMapping("/update")
+    @PatchMapping()
     public ResponseEntity<PostDetailedRepDto> update(@ModelAttribute PostUpdateReqDto postRequestDto) throws IOException {
         PostDetailedRepDto postDetailedRepDto = postService.updatePost(postRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(postDetailedRepDto);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(@RequestParam Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
         postService.deletePost(id);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted post id : " + id);
     }

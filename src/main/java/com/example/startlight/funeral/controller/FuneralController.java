@@ -18,7 +18,7 @@ import java.util.List;
 public class FuneralController {
     private final FuneralDao funeralDao;
 
-    @PostMapping("/get")
+    @PostMapping()
     public ResponseEntity<List<Funeral>> findByName(@RequestParam("name") String name) {
         List<Funeral> byName = funeralDao.findByName(name);
         return ResponseEntity.status(HttpStatus.OK).body(byName);

@@ -8,24 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post/comment")
+@RequestMapping("/post/comments")
 public class PostCommentController {
     private final PostCommentService postCommentService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<PostCommentRepDto> postComment(@RequestBody PostCommentReqDto postCommentReqDto) {
         PostCommentRepDto postComment = postCommentService.createPostComment(postCommentReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(postComment);
     }
 
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteComment(@RequestParam Long commentId) {
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
         postCommentService.deletePostComment(commentId);
-        return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted comment");
+        return ResponseEntity.noContent().build();  // 204 No Content 반환
     }
 }

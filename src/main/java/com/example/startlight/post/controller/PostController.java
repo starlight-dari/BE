@@ -3,6 +3,7 @@ package com.example.startlight.post.controller;
 import com.example.startlight.post.dto.PostRequestDto;
 import com.example.startlight.post.dto.PostDetailedRepDto;
 import com.example.startlight.post.dto.PostResponseDto;
+import com.example.startlight.post.dto.PostUpdateReqDto;
 import com.example.startlight.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,17 @@ public class PostController {
     public ResponseEntity<List<PostResponseDto>> getAll(@RequestParam String category){
         List<PostResponseDto> posts = postService.getAllPosts(category);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<PostDetailedRepDto> update(@ModelAttribute PostUpdateReqDto postRequestDto) throws IOException {
+        PostDetailedRepDto postDetailedRepDto = postService.updatePost(postRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(postDetailedRepDto);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@RequestParam Long id){
+        postService.deletePost(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted post id : " + id);
     }
 }

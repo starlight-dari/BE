@@ -1,8 +1,11 @@
 package com.example.startlight.post.dao;
 
+import com.example.startlight.exception.UnauthorizedAccessException;
 import com.example.startlight.post.dto.PostRequestDto;
+import com.example.startlight.post.dto.PostUpdateReqDto;
 import com.example.startlight.post.entity.Post;
 import com.example.startlight.post.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -28,5 +31,28 @@ public class PostDao {
     }
     public List<Post> findAllPost() {
         return postRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    @Transactional
+    public Post updatePost(Long userId, PostUpdateReqDto postRequestDto) {
+        Post postById = findPostById(postRequestDto.getPostId());
+        if (postById.getMember().getMember_id().equals(userId)) {
+            postById.updatePost(postRequestDto);
+            return postById;
+        }
+        else {
+            throw new UnauthorizedAccessException("자신이 작성한 글만 수정할 수 있습니다.");
+        }
+
+    }
+
+    public void deletePost(Long userId, Long postId) {
+        Post postById = findPostById(postId);
+        if (postById.getMember().getMember_id().equals(userId)) {
+            postRepository.deleteById(postId);
+        }
+        else {
+            throw new UnauthorizedAccessException("자신이 작성한 글만 삭제할 수 있습니다.");
+        }
     }
 }

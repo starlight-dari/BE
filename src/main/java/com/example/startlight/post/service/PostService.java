@@ -8,6 +8,7 @@ import com.example.startlight.post.dao.PostDao;
 import com.example.startlight.post.dto.PostRequestDto;
 import com.example.startlight.post.dto.PostDetailedRepDto;
 import com.example.startlight.post.dto.PostResponseDto;
+import com.example.startlight.post.dto.PostUpdateReqDto;
 import com.example.startlight.post.entity.Category;
 import com.example.startlight.post.entity.Post;
 import com.example.startlight.s3.service.S3Service;
@@ -61,5 +62,25 @@ public class PostService {
                 })
                 .map(PostResponseDto::toResponseDto)  // Post → PostRequestDto 변환
                 .collect(Collectors.toList());
+    }
+
+    public PostDetailedRepDto updatePost(PostUpdateReqDto postRequestDto) throws IOException {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        Post post = postDao.updatePost(userId, postRequestDto);
+        if(postRequestDto.getImage() != null) {
+            s3Service.deletePostImg(postRequestDto.getPostId());
+            s3Service.uploadPostImg(postRequestDto.getImage(), post.getPost_id());
+        }
+        return PostDetailedRepDto.toDto(post, funeralDao);
+    }
+
+    public void deletePost(Long postId) {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        postDao.deletePost(userId, postId);
+        s3Service.deletePostImg(postId);
     }
 }

@@ -2,9 +2,11 @@ package com.example.startlight.post.entity;
 
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.post.dto.PostRequestDto;
+import com.example.startlight.post.dto.PostUpdateReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -45,6 +47,9 @@ public class Post {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     public static Post toEntity(PostRequestDto postRequestDto, Member member) {
         if(postRequestDto.getFuneral_id() != null) {
             return Post.builder()
@@ -63,6 +68,14 @@ public class Post {
                     .category(postRequestDto.getCategory())
                     .report(0L).build();
         }
+    }
 
+    public void updatePost(PostUpdateReqDto updateReqDto) {
+        this.title = updateReqDto.getTitle();
+        this.content = updateReqDto.getContent();
+        this.category = updateReqDto.getCategory();
+        if(updateReqDto.getFuneral_id() != null) {
+            this.funeral_id = updateReqDto.getFuneral_id();
+        }
     }
 }

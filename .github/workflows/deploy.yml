@@ -13,10 +13,7 @@ jobs:
 
       - name: application-private.properties 덮어쓰기
         run: |
-          run: echo ${{ secrets.APPLICATION_PRIVATE }} | base64 --decode
           touch ./src/main/resources/application-private.properties
-          echo ${{ secrets.APPLICATION }}| base64 --decode > ./src/main/resources/application-private.properties
-          cat ./src/main/resources/application-private.properties
         shell: bash
 
       - name: JDK 17 사용

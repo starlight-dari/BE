@@ -23,10 +23,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
       - name: Gradle Wrapper 실행 권한 추가
         run: chmod +x gradlew
       - name: Gradle로 빌드(CI)
         run: ./gradlew build
+
       - name: 도커허브에 로그인
         uses: docker/login-action@v1
         with:

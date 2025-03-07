@@ -15,7 +15,8 @@ jobs:
         run: |
           cd ./src/main/resources
           touch ./application-private.properties
-          echo "${{ secrets.PROPERTIES }}" > ./application-private.properties
+          echo ${{ secrets.APPLICATION }}| base64 --decode > ./src/main/resources/application-private.properties
+          cat ./src/main/resources/application-private.properties
         shell: bash
 
       - name: JDK 17 사용

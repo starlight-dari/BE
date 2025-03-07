@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PostCommentRepository extends JpaRepository<PostComment, Long> {
 
-    @Query("SELECT pc FROM PostComment pc WHERE pc.post.post_id = :postId")
+    @Query("SELECT pc FROM PostComment pc WHERE pc.post.post_id = :postId ORDER BY pc.createdAt DESC")
     List<PostComment> findAllByPostId(@Param("postId") Long postId);
 }

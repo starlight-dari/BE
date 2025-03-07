@@ -5,6 +5,8 @@ import com.example.startlight.post.dto.PostDetailedRepDto;
 import com.example.startlight.post.dto.PostResponseDto;
 import com.example.startlight.post.dto.PostUpdateReqDto;
 import com.example.startlight.post.service.PostService;
+import com.example.startlight.postComment.dto.PostCommentRepDto;
+import com.example.startlight.postComment.service.PostCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/post")
 public class PostController {
     private final PostService postService;
+    private final PostCommentService postCommentService;
 
     @PostMapping("/create")
     public ResponseEntity<PostDetailedRepDto> create(@ModelAttribute PostRequestDto postRequestDto) throws IOException {
@@ -47,5 +50,11 @@ public class PostController {
     public ResponseEntity<String> delete(@RequestParam Long id){
         postService.deletePost(id);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted post id : " + id);
+    }
+
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<PostCommentRepDto>> getAllPostComment(@PathVariable Long postId) {
+        List<PostCommentRepDto> allComments = postCommentService.getAllComments(postId);
+        return ResponseEntity.status(HttpStatus.OK).body(allComments);
     }
 }

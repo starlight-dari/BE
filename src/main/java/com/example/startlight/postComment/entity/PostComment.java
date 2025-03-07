@@ -27,7 +27,7 @@ public class PostComment {
     private Long comment_id;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId")
     private Post post;
 
     @Column(nullable = false)

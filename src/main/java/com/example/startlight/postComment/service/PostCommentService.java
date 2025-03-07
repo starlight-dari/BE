@@ -7,7 +7,6 @@ import com.example.startlight.postComment.dao.PostCommentDao;
 import com.example.startlight.postComment.dto.PostCommentRepDto;
 import com.example.startlight.postComment.dto.PostCommentReqDto;
 import com.example.startlight.postComment.entity.PostComment;
-import com.example.startlight.postComment.repository.PostCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class PostCommentService {
     private final PostDao postDao;
     private final MemberDao memberDao;
 
-    public List<PostCommentRepDto> createPostComment(PostCommentReqDto postCommentReqDto) {
+    public PostCommentRepDto createPostComment(PostCommentReqDto postCommentReqDto) {
         try {
             // TODO: 실제 사용자 ID를 가져와야 함
             Long userId = 3879188713L; // `UserUtil.getCurrentUserId();` 로 변경 가능
@@ -33,17 +32,24 @@ public class PostCommentService {
 
             // 댓글 객체 생성
             PostComment postComment = PostComment.toEntity(postCommentReqDto, postDao, member);
-
-            // 댓글 저장 및 해당 게시글의 전체 댓글 목록 가져오기
-            List<PostComment> postCommentList = postCommentDao.createPostCommentAndGetAll(postCommentReqDto.getPostId(), postComment);
-
-            // `PostCommentRepDto` 리스트로 변환 후 반환
-            return postCommentList.stream()
-                    .map(PostCommentRepDto::toDto)
-                    .collect(Collectors.toList());
+            PostComment postComment1 = postCommentDao.createPostComment(postComment);
+            return PostCommentRepDto.toDto(postComment1);
 
         } catch (Exception e) {
             throw new RuntimeException("댓글 작성 중 오류 발생", e);
         }
+    }
+
+    public void deletePostComment(Long commentId) {
+        // TODO: 실제 사용자 ID를 가져와야 함
+        Long userId = 3879188713L; // `UserUtil.getCurrentUserId();` 로 변경 가능
+        postCommentDao.deletePostComment(commentId, userId);
+    }
+
+    public List<PostCommentRepDto> getAllComments(Long postId) {
+        List<PostComment> allPostComment = postCommentDao.getAllPostComment(postId);
+        return allPostComment.stream()
+                .map(PostCommentRepDto::toDto)
+                .collect(Collectors.toList());
     }
 }

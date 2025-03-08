@@ -53,6 +53,12 @@ jobs:
             # 기존 백엔드 이미지 삭제
             docker rmi ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be || true
             docker pull ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be
-           
-            # docker-compose 에서 backend 컨테이너만 재시작
-             docker-compose -f /home/ubuntu/docker-compose.backend.yml up -d --force-recreate --build
+            
+            # 백엔드 컨테이너만 재시작
+            echo "🔄 백엔드 컨테이너 재시작"
+            docker compose up -d --force-recreate --build backend
+      
+            # 상태 확인 및 로그 출력
+            echo "✅ 상태 확인"
+            docker ps -a
+            docker logs backend

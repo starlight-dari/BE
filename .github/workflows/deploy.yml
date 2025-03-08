@@ -55,4 +55,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be
            
             # docker-compose 에서 backend 컨테이너만 재시작
-             docker-compose -f docker-compose.backend.yml up -d --force-recreate --build
+             docker compose -f docker-compose.backend.yml up -d --force-recreate --build

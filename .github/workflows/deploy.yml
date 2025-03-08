@@ -39,6 +39,15 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be .
       - name: 도커허브에 이미지 푸시
         run: docker push ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be
+      - name: 소스 코드 및 docker-compose 파일 EC2에 전송
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AWS_IP }}
+          username: ubuntu
+          key: ${{ secrets.AWS_KEY }}
+          port: 22
+          source: "."
+          target: "~/starlight"
       - name: AWS EC2에 ssh 접속 후 배포
         uses: appleboy/ssh-action@master
         with:
@@ -54,5 +63,5 @@ jobs:
             docker rmi ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be || true
             docker pull ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be
            
-            # docker-compost에서 backend 컨테이너만 재시작
+            # docker-compose 에서 backend 컨테이너만 재시작
              docker-compose -f docker-compose.yml up -d --force-recreate --build

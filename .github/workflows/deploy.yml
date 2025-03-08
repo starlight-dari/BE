@@ -47,13 +47,12 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
           script: |
-            # 기존 백엔드 컨테이너 중지 및 삭제
             docker stop backend || true
             docker rm backend || true
             
             # 기존 백엔드 이미지 삭제
             docker rmi ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be || true
             docker pull ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-be
-            
+           
             # docker-compost에서 backend 컨테이너만 재시작
-            docker-compose up -d --force-recreate --build backend
+             docker-compose -f docker-compose.yml up -d --force-recreate --build

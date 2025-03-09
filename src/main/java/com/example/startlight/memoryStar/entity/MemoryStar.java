@@ -74,6 +74,8 @@ public class MemoryStar {
     @Setter
     private String img_url;
 
+    private Boolean isAnimal;
+
     @OneToMany
     private List<MemComment> memComments;
 

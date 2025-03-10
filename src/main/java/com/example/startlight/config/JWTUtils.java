@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +23,9 @@ import java.util.Map;
 @Component
 public class JWTUtils {
     private static final Logger logger = LoggerFactory.getLogger(JWTUtils.class);
-    private static final long TOKEN_VALIDITY = 86400000L;
-    private static final long TOKEN_VALIDITY_REMEMBER = 2592000000L;
+
+    private static final Duration TOKEN_VALIDITY = Duration.ofDays(1); // 1일
+    private static final Duration TOKEN_VALIDITY_REMEMBER = Duration.ofDays(30); // 30一
     private final Key key;
 
     public JWTUtils(@Value("${app.jwtSecret}") String secret) {
@@ -32,14 +34,15 @@ public class JWTUtils {
 
     public String createToken(KakaoUserInfoResponseDto userInfoResponseDto, String kakaoAccessToken, boolean rememberMe) {
         long now = (new Date()).getTime();
-        Date validity = rememberMe ? new Date(now + TOKEN_VALIDITY_REMEMBER) : new Date(now + TOKEN_VALIDITY);
+        // ✅ rememberMe에 따른 만료 시간 설정
+        Date validity = new Date(now + (rememberMe ? TOKEN_VALIDITY_REMEMBER.toMillis() : TOKEN_VALIDITY.toMillis()));
 
         return Jwts.builder()
                 .setSubject(String.valueOf(userInfoResponseDto.getId())) // id를 Subject로 설정
                 .claim("id", userInfoResponseDto.getId()) // id 클레임 추가
                 .claim("nickname", userInfoResponseDto.getKakaoAccount().profile.nickName) // 추가 정보 예시
                 .claim("kakaoAccessToken", kakaoAccessToken)
-                .setIssuedAt(new Date())
+                .setIssuedAt(new Date(now))
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
@@ -49,6 +52,7 @@ public class JWTUtils {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
+                    .setAllowedClockSkewSeconds(60) // ✅ 허용 시간 오차 설정 (60초)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
@@ -77,6 +81,7 @@ public class JWTUtils {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
+                    .setAllowedClockSkewSeconds(60) // ✅ 허용 시간 오차 설정 (60초)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();

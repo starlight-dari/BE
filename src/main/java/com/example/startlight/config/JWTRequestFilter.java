@@ -21,7 +21,8 @@ import java.util.Arrays;
 public class JWTRequestFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JWTRequestFilter.class);
     private final JWTUtils jwtUtils;
-    
+
+    @Autowired
     public JWTRequestFilter(JWTUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }

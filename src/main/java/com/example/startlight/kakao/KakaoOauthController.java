@@ -38,6 +38,7 @@ public class KakaoOauthController {
         try {
             // 1. Access Token 가져오기
             String accessToken = kakaoService.getAccessTokenFromKakao(code);
+            log.info("accessToken: {}", accessToken);
 
             // 2. 사용자 정보 가져오기
             KakaoUserInfoResponseDto userInfo = kakaoService.getUserInfo(accessToken);

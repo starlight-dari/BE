@@ -35,8 +35,8 @@ public class MemoryStarDao {
     }
 
     @Transactional
-    public MemoryStar updateMemoryStar(Long userId, MemoryStarUpdateDto memoryStarUpdateDto) {
-        Optional<MemoryStar> starOptional = memoryStarRepository.findById(memoryStarUpdateDto.getMemory_id());
+    public MemoryStar updateMemoryStar(Long userId, Long memoryId, MemoryStarUpdateDto memoryStarUpdateDto) {
+        Optional<MemoryStar> starOptional = memoryStarRepository.findById(memoryId);
         if(starOptional.isPresent()) {
             MemoryStar memoryStar = starOptional.get();
             if (memoryStar.getWriter_id().equals(userId)) {
@@ -47,7 +47,7 @@ public class MemoryStarDao {
                 throw new UnauthorizedAccessException("자신이 작성한 글만 수정할 수 있습니다.");
             }
         }
-        throw new NoSuchElementException("Memory Star not found with id: " + memoryStarUpdateDto.getMemory_id());
+        throw new NoSuchElementException("Memory Star not found with id: " + memoryId);
     }
 
     public void deleteMemoryStarById(Long userId, Long id) {
@@ -62,6 +62,10 @@ public class MemoryStarDao {
 
     public List<MemoryStar> getAllPublicMemoryStar() {
         return memoryStarRepository.findBySharedTrue();
+    }
+
+    public List<MemoryStar> getAllMyMemoryStar(Long userId) {
+        return memoryStarRepository.findAllByWriterId(userId);
     }
 
     //like

@@ -13,9 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class PetUpdateReqDto {
 
-    @NotBlank
-    private Long pet_id;
-
     private String pet_name;
 
     private String species;

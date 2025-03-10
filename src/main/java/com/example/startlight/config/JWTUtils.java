@@ -1,4 +1,4 @@
-package com.example.startlight.kakao.config;
+package com.example.startlight.config;
 
 import com.example.startlight.kakao.dto.KakaoUserInfoResponseDto;
 import io.jsonwebtoken.*;

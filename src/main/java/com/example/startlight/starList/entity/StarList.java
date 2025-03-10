@@ -20,14 +20,16 @@ public class StarList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long star_id;
 
+    private Integer index_id;
+
     @ManyToOne
     private Pet pet;
 
     @Column(nullable = false)
-    private Long x_star;
+    private Integer x_star;
 
     @Column(nullable = false)
-    private Long y_star;
+    private Integer y_star;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT false")
     @Builder.Default

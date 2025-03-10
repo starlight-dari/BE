@@ -15,7 +15,7 @@ public class MemberDto {
 
     private String st_nickname;
 
-    private Long memory_num;
+    private Integer memory_num;
 
     public static MemberDto toDto(Member member) {
         return MemberDto.builder()

@@ -20,14 +20,11 @@ public class StarListService {
     private final PetDao petDao;
     private final StarListMapper mapper = StarListMapper.INSTANCE;
 
-    public List<StarListRepDto> createList(Long petId, List<StarListReqDto> starListReqDtos) {
+    public List<StarListRepDto> createList(Long petId, List<List<Integer>> majorPoints) {
         Pet selectedPet = petDao.selectPet(petId);
 
-        // DTO → Entity 변환
-        List<StarList> starLists = mapper.toEntityList(starListReqDtos, selectedPet);
-
         // DB 저장
-        List<StarList> createdStarList = starListDao.createStarList(starLists);
+        List<StarList> createdStarList = starListDao.createStarList(majorPoints, selectedPet);
 
         // Entity → DTO 변환
         return mapper.toDtoList(createdStarList);

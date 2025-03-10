@@ -1,6 +1,7 @@
 package com.example.startlight.pet.dao;
 
 import com.example.startlight.pet.dto.PetUpdateReqDto;
+import com.example.startlight.pet.entity.Edge;
 import com.example.startlight.pet.entity.Pet;
 import com.example.startlight.pet.repository.PetRepository;
 import jakarta.transaction.Transactional;
@@ -37,8 +38,8 @@ public class PetDaoImpl implements PetDao{
 
     @Override
     @Transactional
-    public Pet updatePet(PetUpdateReqDto petUpdateReqDto) {
-        Optional<Pet> selectedPet = petRepository.findById(petUpdateReqDto.getPet_id());
+    public Pet updatePet(Long petId, PetUpdateReqDto petUpdateReqDto) {
+        Optional<Pet> selectedPet = petRepository.findById(petId);
         if(selectedPet.isPresent()) {
             Pet pet = selectedPet.get();
             Optional.ofNullable(petUpdateReqDto.getPet_name()).ifPresent(pet::setPet_name);
@@ -49,6 +50,17 @@ public class PetDaoImpl implements PetDao{
             Optional.ofNullable(petUpdateReqDto.getPersonality()).ifPresent(pet::setPersonality);
             return pet;
         }
-        throw new NoSuchElementException("Member not found with id: " + petUpdateReqDto.getPet_id());
+        throw new NoSuchElementException("Member not found with id: " + petId);
+    }
+
+    @Override
+    public List<Edge> getEdgesByPetId(Long petId) {
+        return petRepository.findEdgesByPetId(petId);
+    }
+
+    @Override
+    public void deletePet(Long petId) {
+        Pet selectedPet = selectPet(petId);
+        petRepository.delete(selectedPet);
     }
 }

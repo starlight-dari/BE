@@ -1,6 +1,6 @@
 package com.example.startlight.kakao;
 
-import com.example.startlight.kakao.config.JWTUtils;
+import com.example.startlight.config.JWTUtils;
 import com.example.startlight.kakao.dto.KakaoUserCreateDto;
 import com.example.startlight.kakao.dto.KakaoUserInfoResponseDto;
 import com.example.startlight.member.service.MemberService;

@@ -31,8 +31,9 @@ public class Member {
 
     private String st_nickname;
 
+    @Builder.Default
     @ColumnDefault("0")
-    private Long memory_num;
+    private Integer memory_num = 0;
 
     @OneToMany
     private List<Post> posts;

@@ -1,5 +1,6 @@
 package com.example.startlight.memoryStar.service;
 
+import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.memComment.dto.MemCommentRepDto;
 import com.example.startlight.memComment.dto.MemCommentUpdateReqDto;
 import com.example.startlight.memComment.service.MemCommentService;
@@ -33,10 +34,7 @@ public class MemoryStarService {
 
     public MemoryStarRepWithComDto selectStarById(Long id) {
         MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(id);
-
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         boolean ifLiked = memoryStarDao.findIfLiked(id, userId);
         System.out.println(ifLiked);
         MemoryStarRepDto mapperDto = mapper.toDto(memoryStar);
@@ -53,9 +51,7 @@ public class MemoryStarService {
 
     public MemoryStarRepDto createMemoryStar(MemoryStarReqDto memoryStarReqDto) throws IOException {
         StarList starListById = starListDao.findStarListById(memoryStarReqDto.getStar_id());
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         memoryStarReqDto.setWriter_id(userId);
         MemoryStar memoryStar = mapper.toEntity(memoryStarReqDto, starListById);
         MemoryStar createdStar = memoryStarDao.createMemoryStar(memoryStar);
@@ -66,12 +62,10 @@ public class MemoryStarService {
         return mapper.toDto(createdStar);
     }
 
-    public MemoryStarRepWithComDto updateMemoryStar(MemoryStarUpdateDto memoryStarUpdateDto) throws IOException {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
-        MemoryStar memoryStar = memoryStarDao.updateMemoryStar(userId, memoryStarUpdateDto);
-        String uploadMemoryImg = s3Service.uploadMemoryImg(memoryStarUpdateDto.getImg_url(), memoryStarUpdateDto.getMemory_id());
+    public MemoryStarRepWithComDto updateMemoryStar(Long memoryId, MemoryStarUpdateDto memoryStarUpdateDto) throws IOException {
+        Long userId = UserUtil.getCurrentUserId();
+        MemoryStar memoryStar = memoryStarDao.updateMemoryStar(userId, memoryId, memoryStarUpdateDto);
+        String uploadMemoryImg = s3Service.uploadMemoryImg(memoryStarUpdateDto.getImg_url(), memoryId);
         memoryStar.setImg_url(uploadMemoryImg);
         MemoryStarRepDto dto = mapper.toDto(memoryStar);
         List<MemCommentRepDto> allByMemoryId = memCommentService.findAllByMemoryId(memoryStar.getMemory_id());
@@ -82,9 +76,7 @@ public class MemoryStarService {
     }
 
     public void deleteMemoryStar(Long id) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         memoryStarDao.deleteMemoryStarById(userId, id);
         s3Service.deleteMemoryImg(id);
     }
@@ -92,6 +84,14 @@ public class MemoryStarService {
     public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {
         List<MemoryStar> allPublicMemoryStar = memoryStarDao.getAllPublicMemoryStar();
         return mapper.toSimpleRepDtoList(allPublicMemoryStar);
+    }
+
+    public List<MemoryStarSimpleRepDto> findAllMyMemoryStar() {
+        //TODO
+        // Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        List<MemoryStar> allMyMemoryStar = memoryStarDao.getAllMyMemoryStar(userId);
+        return mapper.toSimpleRepDtoList(allMyMemoryStar);
     }
 
     public MemoryStarRepDto createLike(Long id) {

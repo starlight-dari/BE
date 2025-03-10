@@ -51,9 +51,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public MemberDto updateMemberName(String nickname) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         Member member = memberDao.updateMemberName(userId,nickname);
         return MemberDto.toDto(member);
     }
@@ -82,14 +80,13 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public void updateMemberMemory() {
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         memberDao.updateMemberMemory(userId);
     }
 
     @Override
     public Integer getMemoryNumber() {
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         return memberDao.getMemoryNum(userId);
     }
 }

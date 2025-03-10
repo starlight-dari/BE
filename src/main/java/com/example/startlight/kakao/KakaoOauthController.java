@@ -85,11 +85,13 @@ public class KakaoOauthController {
             }
 
             // 6. 응답 반환
-            return ResponseEntity.ok(Map.of(
-                    "message", "Login successful!",
-                    "user", userInfo,
-                    "token", jwtToken
-            ));
+//            return ResponseEntity.ok(Map.of(
+//                    "message", "Login successful!",
+//                    "user", userInfo,
+//                    "token", jwtToken
+//            ));
+            String redirectUri = "http://3.37.55.176:3000/mypage";
+            return ResponseEntity.ok().body(Map.of("redirectUri", redirectUri));
 
         } catch (Exception e) {
             log.error("Error during Kakao login", e);

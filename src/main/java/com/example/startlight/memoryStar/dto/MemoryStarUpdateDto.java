@@ -11,9 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class MemoryStarUpdateDto {
 
-    @NotBlank
-    private Long memory_id;
-
     private String name;
 
     private ActivityCtg activityCtg;

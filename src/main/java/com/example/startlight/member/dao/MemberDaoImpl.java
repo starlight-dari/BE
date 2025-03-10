@@ -47,4 +47,10 @@ public class MemberDaoImpl implements MemberDao{
         Member member = selectMember(id);
         member.updateMemoryNum();
     }
+
+    @Override
+    public Integer getMemoryNum(Long id) {
+        Member member = selectMember(id);
+        return member.getMemory_num();
+    }
 }

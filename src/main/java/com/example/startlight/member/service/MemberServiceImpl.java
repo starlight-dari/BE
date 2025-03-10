@@ -86,4 +86,10 @@ public class MemberServiceImpl implements MemberService{
         Long userId = 3879188713L;
         memberDao.updateMemberMemory(userId);
     }
+
+    @Override
+    public Integer getMemoryNumber() {
+        Long userId = 3879188713L;
+        return memberDao.getMemoryNum(userId);
+    }
 }

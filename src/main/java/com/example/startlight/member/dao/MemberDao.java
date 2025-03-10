@@ -12,4 +12,6 @@ public interface MemberDao {
     void deleteMember(Long id);
 
     void updateMemberMemory(Long id);
+
+    Integer getMemoryNum(Long id);
 }

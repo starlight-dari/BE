@@ -1,6 +1,6 @@
 package com.example.startlight.memoryStar.contoller;
 
-import com.example.startlight.memComment.dto.MemCommentRepDto;
+import com.example.startlight.member.service.MemberService;
 import com.example.startlight.memoryStar.dto.*;
 import com.example.startlight.memoryStar.service.MemoryStarService;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +14,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/memory")
+@RequestMapping("/memory-stars")
 public class MemoryStarContoller {
     private final MemoryStarService memoryStarService;
+    private final MemberService memberService;
 
-    @PostMapping(path = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MemoryStarRepDto> createMemoryStar(
             @ModelAttribute MemoryStarReqDto memoryStarReqDto
     ) throws IOException {
@@ -26,21 +27,22 @@ public class MemoryStarContoller {
         return ResponseEntity.status(HttpStatus.OK).body(memoryStar);
     }
 
-    @GetMapping("/selectEach")
-    public ResponseEntity<MemoryStarRepWithComDto> selectMemoryStar(@RequestParam Long memoryId) {
+    @GetMapping("/{memoryId}")
+    public ResponseEntity<MemoryStarRepWithComDto> selectMemoryStar(@PathVariable Long memoryId) {
         MemoryStarRepWithComDto memoryStarRepDto = memoryStarService.selectStarById(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
     }
 
-    @PatchMapping("/update")
+    @PatchMapping("/{memoryId}")
     public ResponseEntity<MemoryStarRepWithComDto> updateMemoryStar(
+            @PathVariable Long memoryId,
             @ModelAttribute MemoryStarUpdateDto memoryStarReqDto
     ) throws IOException {
-        MemoryStarRepWithComDto memoryStar = memoryStarService.updateMemoryStar(memoryStarReqDto);
+        MemoryStarRepWithComDto memoryStar = memoryStarService.updateMemoryStar(memoryId, memoryStarReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStar);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{memoryId}")
     public ResponseEntity<String> deleteMemoryStar(
             @RequestParam Long memoryId
     ) {
@@ -48,22 +50,33 @@ public class MemoryStarContoller {
         return ResponseEntity.status(HttpStatus.OK).body("Success delete memory star id : " + memoryId);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/public")
     public ResponseEntity<List<MemoryStarSimpleRepDto>> getAllMemoryStar() {
         List<MemoryStarSimpleRepDto> allPublicMemoryStar = memoryStarService.findAllPublicMemoryStar();
         return ResponseEntity.status(HttpStatus.OK).body(allPublicMemoryStar);
     }
 
+    @GetMapping()
+    public ResponseEntity<MemoryStarListWithNumDto> getMyMemoryStar() {
+        List<MemoryStarSimpleRepDto> allPublicMemoryStar = memoryStarService.findAllMyMemoryStar();
+        Integer memoryNumber = memberService.getMemoryNumber();
+        MemoryStarListWithNumDto buildDto = MemoryStarListWithNumDto.builder()
+                .memoryNumber(memoryNumber)
+                .memoryStarSimpleRepDtoList(allPublicMemoryStar)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(buildDto);
+    }
+
     //like
 
-    @PostMapping("/createLike")
-    public ResponseEntity<MemoryStarRepDto> createLikeMemoryStar(@RequestParam Long memoryId) {
+    @PostMapping("/{memoryId}/likes")
+    public ResponseEntity<MemoryStarRepDto> createLikeMemoryStar(@PathVariable Long memoryId) {
         MemoryStarRepDto memoryStarRepDto = memoryStarService.createLike(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
     }
 
-    @PostMapping("/deleteLike")
-    public ResponseEntity<MemoryStarRepDto> deleteLikeMemoryStar(@RequestParam Long memoryId) {
+    @DeleteMapping("/{memoryId}/likes")
+    public ResponseEntity<MemoryStarRepDto> deleteLikeMemoryStar(@PathVariable Long memoryId) {
         MemoryStarRepDto memoryStarRepDto = memoryStarService.deleteLike(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
     }

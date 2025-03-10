@@ -15,4 +15,6 @@ public interface MemberService {
     MemberDto loginMember(KakaoUserCreateDto kakaoUserCreateDto);
 
     void updateMemberMemory();
+
+    Integer getMemoryNumber();
 }

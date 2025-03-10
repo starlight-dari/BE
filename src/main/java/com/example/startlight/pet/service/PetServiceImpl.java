@@ -65,11 +65,9 @@ public class PetServiceImpl implements PetService{
                 .petId(pet.getPet_id()).build();
     }
 
-
-
     @Override
-    public PetRepDto updatePet(PetUpdateReqDto petUpdateReqDto) {
-        Pet pet = petDao.updatePet(petUpdateReqDto);
+    public PetRepDto updatePet(Long petId, PetUpdateReqDto petUpdateReqDto) {
+        Pet pet = petDao.updatePet(petId, petUpdateReqDto);
         return PetRepDto.toDto(pet);
     }
 
@@ -91,6 +89,11 @@ public class PetServiceImpl implements PetService{
                 .starList(list)
                 .edges(edgesByPetId)
                 .build();
+    }
+
+    @Override
+    public void deletePet(Long petId) {
+        petDao.deletePet(petId);
     }
 
 

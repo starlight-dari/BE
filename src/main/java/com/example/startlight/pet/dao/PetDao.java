@@ -13,7 +13,9 @@ public interface PetDao {
 
     Pet selectPet(Long pet_id);
 
-    Pet updatePet(PetUpdateReqDto petUpdateReqDto);
+    Pet updatePet(Long petId, PetUpdateReqDto petUpdateReqDto);
 
     List<Edge> getEdgesByPetId(Long petId);
+
+    void deletePet(Long petId);
 }

@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface PetService {
     PetIdRepDto createPet(PetReqDto petReqDto) throws IOException;
-    PetRepDto updatePet(PetUpdateReqDto petUpdateReqDto);
+    PetRepDto updatePet(Long petId, PetUpdateReqDto petUpdateReqDto);
     List<PetRepDto> getPets();
     PetStarListRepDto getPetStarList(Long petId);
+    void deletePet(Long petId);
 }

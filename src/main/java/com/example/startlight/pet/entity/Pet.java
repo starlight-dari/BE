@@ -6,6 +6,8 @@ import com.example.startlight.pet.dto.PetReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Entity
@@ -38,6 +40,12 @@ public class Pet {
     private String death_date;
 
     private Personality personality;
+
+    private String svg_path;
+
+    @ElementCollection
+    @CollectionTable(name = "starlist_edges", joinColumns = @JoinColumn(name = "pet_id"))
+    private List<Edge> edges = new ArrayList<>();
 
     public static Pet toEntity(PetReqDto dto, Long userId, MemberRepository memberRepository) {
         Optional<Member> member = memberRepository.findById(userId);

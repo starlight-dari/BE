@@ -17,15 +17,15 @@ import java.util.List;
 public class StarListController {
     private final StarListService starListService;
 
-    @PostMapping("/create")
-    public ResponseEntity<StarListCreateResponse> createStarList(@RequestBody StarListCreateRequest request) {
-        List<StarListRepDto> list = starListService.createList(request.getPetId(), request.getStarList());
-        StarListCreateResponse response = StarListCreateResponse.builder()
-                .petId(request.getPetId())
-                .starList(list).build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<StarListCreateResponse> createStarList(@RequestBody StarListCreateRequest request) {
+//        List<StarListRepDto> list = starListService.createList(request.getPetId(), request.getStarList());
+//        StarListCreateResponse response = StarListCreateResponse.builder()
+//                .petId(request.getPetId())
+//                .starList(list).build();
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(response);
+//    }
 
     @GetMapping("/getList")
     public ResponseEntity<StarListCreateResponse> getList(@RequestParam Long petId) {

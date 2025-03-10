@@ -9,7 +9,8 @@ import lombok.Setter;
 @Builder
 public class StarListRepDto {
     private Long star_id;
-    private Long x_star;
-    private Long y_star;
+    private Integer index_id;
+    private Integer x_star;
+    private Integer y_star;
     private Boolean written;
 }

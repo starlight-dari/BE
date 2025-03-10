@@ -1,5 +1,6 @@
 package com.example.startlight.pet.controller;
 
+import com.example.startlight.pet.dto.PetIdRepDto;
 import com.example.startlight.pet.dto.PetRepDto;
 import com.example.startlight.pet.dto.PetReqDto;
 import com.example.startlight.pet.dto.PetUpdateReqDto;
@@ -24,10 +25,10 @@ public class PetController {
     private final PetService petService;
 
     @PostMapping(path = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PetRepDto> createPet(
+    public ResponseEntity<PetIdRepDto> createPet(
             @ModelAttribute PetReqDto petReqDto
     ) throws IOException {
-        PetRepDto responsePetRepDto = petService.createPet(petReqDto);
+        PetIdRepDto responsePetRepDto = petService.createPet(petReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(responsePetRepDto);
     }
 

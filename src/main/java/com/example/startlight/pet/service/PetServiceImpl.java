@@ -169,4 +169,17 @@ public class PetServiceImpl implements PetService{
                 .map(PetRepDto::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public PetStarListRepDto getPetStarList(Long petId) {
+        List<Edge> edgesByPetId = petDao.getEdgesByPetId(petId);
+        List<StarListRepDto> list = starListService.getList(petId);
+        return PetStarListRepDto.builder()
+                .petId(petId)
+                .starList(list)
+                .edges(edgesByPetId)
+                .build();
+    }
+
+
 }

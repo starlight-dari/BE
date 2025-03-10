@@ -1,9 +1,6 @@
 package com.example.startlight.pet.service;
 
-import com.example.startlight.pet.dto.PetIdRepDto;
-import com.example.startlight.pet.dto.PetRepDto;
-import com.example.startlight.pet.dto.PetReqDto;
-import com.example.startlight.pet.dto.PetUpdateReqDto;
+import com.example.startlight.pet.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,4 +10,5 @@ public interface PetService {
     PetIdRepDto createPet(PetReqDto petReqDto) throws IOException;
     PetRepDto updatePet(PetUpdateReqDto petUpdateReqDto);
     List<PetRepDto> getPets();
+    PetStarListRepDto getPetStarList(Long petId);
 }

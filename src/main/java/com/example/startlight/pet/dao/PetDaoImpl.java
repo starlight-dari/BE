@@ -1,6 +1,7 @@
 package com.example.startlight.pet.dao;
 
 import com.example.startlight.pet.dto.PetUpdateReqDto;
+import com.example.startlight.pet.entity.Edge;
 import com.example.startlight.pet.entity.Pet;
 import com.example.startlight.pet.repository.PetRepository;
 import jakarta.transaction.Transactional;
@@ -50,5 +51,10 @@ public class PetDaoImpl implements PetDao{
             return pet;
         }
         throw new NoSuchElementException("Member not found with id: " + petUpdateReqDto.getPet_id());
+    }
+
+    @Override
+    public List<Edge> getEdgesByPetId(Long petId) {
+        return petRepository.findEdgesByPetId(petId);
     }
 }

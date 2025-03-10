@@ -30,7 +30,9 @@ public class KakaoOauthController {
 
     @GetMapping("/callback")
     public ResponseEntity<?> kakaoLogin(HttpServletRequest request, HttpServletResponse response) {
+        log.debug("kakao login");
         String code = request.getParameter("code");
+        log.debug("Received code: {}", code); // 디버그 출력 추가
         if (code == null || code.isEmpty()) {
             return ResponseEntity.badRequest().body("Authorization code is missing");
         }

@@ -28,6 +28,8 @@ public class MemoryStarReqDto {
 
     private MultipartFile img_url;
 
+    private Boolean isAnimal;
+
     private Boolean shared;
 
 }

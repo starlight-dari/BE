@@ -32,6 +32,10 @@ public class PetServiceImpl implements PetService{
         Pet pet = petDao.createPet(Pet.toEntity(petReqDto,userId,memberRepository));
         String uploadFile = s3Service.uploadPetImg(petReqDto.getPet_img(), String.valueOf(pet.getPet_id()));
         pet.setPet_img(uploadFile);
+
+        //Flask 서버 연결
+        String flaskApiUrl = "http://localhost:5000/process";
+        
         return PetRepDto.toDto(pet);
     }
 

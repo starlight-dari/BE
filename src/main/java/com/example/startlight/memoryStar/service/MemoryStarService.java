@@ -86,6 +86,7 @@ public class MemoryStarService {
         // Long userId = UserUtil.getCurrentUserId();
         Long userId = 3879188713L;
         memoryStarDao.deleteMemoryStarById(userId, id);
+        s3Service.deleteMemoryImg(id);
     }
 
     public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {

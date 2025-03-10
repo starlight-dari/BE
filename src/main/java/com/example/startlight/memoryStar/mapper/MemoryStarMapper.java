@@ -1,7 +1,6 @@
 package com.example.startlight.memoryStar.mapper;
 
 import com.example.startlight.memoryStar.dto.MemoryStarRepDto;
-import com.example.startlight.memoryStar.dto.MemoryStarRepWithComDto;
 import com.example.startlight.memoryStar.dto.MemoryStarReqDto;
 import com.example.startlight.memoryStar.dto.MemoryStarSimpleRepDto;
 import com.example.startlight.memoryStar.entity.MemoryStar;

@@ -34,9 +34,9 @@ public class MemoryStarRepDto {
 
     private Boolean updated;
 
-    private Long likes;
+    private Integer likes;
 
-    private Long commentNumber;
+    private Integer commentNumber;
 
     @Builder.Default
     private Boolean isLiked = false; // ✅ 기본값 설정

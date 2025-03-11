@@ -34,10 +34,8 @@ public class MemoryStarService {
 
     public MemoryStarRepWithComDto selectStarById(Long id) {
         MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(id);
-        //Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         boolean ifLiked = memoryStarDao.findIfLiked(id, userId);
-        System.out.println(ifLiked);
         MemoryStarRepDto mapperDto = mapper.toDto(memoryStar);
 
         List<MemCommentRepDto> allByMemoryId = memCommentService.findAllByMemoryId(id);
@@ -52,8 +50,7 @@ public class MemoryStarService {
 
     public MemoryStarRepDto createMemoryStar(MemoryStarReqDto memoryStarReqDto) throws IOException {
         StarList starListById = starListDao.findStarListById(memoryStarReqDto.getStar_id());
-        //Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         memoryStarReqDto.setWriter_id(userId);
         MemoryStar memoryStar = mapper.toEntity(memoryStarReqDto, starListById);
         MemoryStar createdStar = memoryStarDao.createMemoryStar(memoryStar);
@@ -102,23 +99,23 @@ public class MemoryStarService {
         return mapper.toSimpleRepDtoList(allMyMemoryStar);
     }
 
-    public MemoryStarRepDto createLike(Long id) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+    public MemoryStarLikeDto createLike(Long id) {
+        Long userId = UserUtil.getCurrentUserId();
         MemoryStar memoryStar = memoryStarDao.pressLike(id, userId);
-        MemoryStarRepDto dto = mapper.toDto(memoryStar);
-        dto.setIsLiked(true);
-        return dto;
+        return MemoryStarLikeDto.builder()
+                .memoryId(memoryStar.getMemory_id())
+                .isLiked(true)
+                .likes(memoryStar.getLikes())
+                .build();
     }
 
-    public MemoryStarRepDto deleteLike(Long id) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+    public MemoryStarLikeDto deleteLike(Long id) {
+        Long userId = UserUtil.getCurrentUserId();
         MemoryStar memoryStar = memoryStarDao.deleteLike(id, userId);
-        MemoryStarRepDto dto = mapper.toDto(memoryStar);
-        dto.setIsLiked(false);
-        return dto;
+        return MemoryStarLikeDto.builder()
+                .memoryId(memoryStar.getMemory_id())
+                .isLiked(false)
+                .likes(memoryStar.getLikes())
+                .build();
     }
 }

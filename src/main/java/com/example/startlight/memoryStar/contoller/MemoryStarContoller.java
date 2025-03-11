@@ -70,14 +70,14 @@ public class MemoryStarContoller {
     //like
 
     @PostMapping("/{memoryId}/likes")
-    public ResponseEntity<MemoryStarRepDto> createLikeMemoryStar(@PathVariable Long memoryId) {
-        MemoryStarRepDto memoryStarRepDto = memoryStarService.createLike(memoryId);
+    public ResponseEntity<MemoryStarLikeDto> createLikeMemoryStar(@PathVariable Long memoryId) {
+        MemoryStarLikeDto memoryStarRepDto = memoryStarService.createLike(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
     }
 
     @DeleteMapping("/{memoryId}/likes")
-    public ResponseEntity<MemoryStarRepDto> deleteLikeMemoryStar(@PathVariable Long memoryId) {
-        MemoryStarRepDto memoryStarRepDto = memoryStarService.deleteLike(memoryId);
+    public ResponseEntity<MemoryStarLikeDto> deleteLikeMemoryStar(@PathVariable Long memoryId) {
+        MemoryStarLikeDto memoryStarRepDto = memoryStarService.deleteLike(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
     }
 }

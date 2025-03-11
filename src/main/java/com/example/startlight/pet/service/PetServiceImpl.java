@@ -81,6 +81,14 @@ public class PetServiceImpl implements PetService{
     }
 
     @Override
+    public List<PetSimpleRepDto> getPetSimple(Long userId) {
+        List<Pet> pets = petDao.selectAllPet(userId);
+        return pets.stream()
+                .map(PetSimpleRepDto::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public PetStarListRepDto getPetStarList(Long petId) {
         List<Edge> edgesByPetId = petDao.getEdgesByPetId(petId);
         List<StarListRepDto> list = starListService.getList(petId);

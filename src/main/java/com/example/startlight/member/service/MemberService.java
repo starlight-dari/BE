@@ -2,6 +2,7 @@ package com.example.startlight.member.service;
 
 import com.example.startlight.kakao.dto.KakaoUserCreateDto;
 import com.example.startlight.member.dto.MemberDto;
+import com.example.startlight.member.dto.MemberWithPetDto;
 
 public interface MemberService {
     MemberDto createMember(MemberDto memberDto);
@@ -17,4 +18,6 @@ public interface MemberService {
     void updateMemberMemory();
 
     Integer getMemoryNumber();
+
+    MemberWithPetDto getMemberWithPet();
 }

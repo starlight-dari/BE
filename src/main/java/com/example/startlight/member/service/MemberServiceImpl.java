@@ -4,21 +4,21 @@ import com.example.startlight.kakao.dto.KakaoUserCreateDto;
 import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.dto.MemberDto;
+import com.example.startlight.member.dto.MemberWithPetDto;
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.member.repository.MemberRepository;
+import com.example.startlight.pet.dto.PetSimpleRepDto;
+import com.example.startlight.pet.service.PetService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -27,6 +27,7 @@ import java.util.UUID;
 public class MemberServiceImpl implements MemberService{
     private final MemberDao memberDao;
     private final MemberRepository memberRepository;
+    private final PetService petService;
 
     @Override
     public MemberDto createMember(MemberDto memberDto) {
@@ -90,5 +91,17 @@ public class MemberServiceImpl implements MemberService{
     public Integer getMemoryNumber() {
         Long userId = UserUtil.getCurrentUserId();
         return memberDao.getMemoryNum(userId);
+    }
+
+    @Override
+    public MemberWithPetDto getMemberWithPet() {
+        //Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
+        String kkNickname = memberDao.selectMember(userId).getKk_nickname();
+        List<PetSimpleRepDto> petSimple = petService.getPetSimple(userId);
+        return MemberWithPetDto.builder()
+                .name(kkNickname)
+                .petList(petSimple)
+                .build();
     }
 }

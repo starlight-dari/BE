@@ -2,6 +2,7 @@ package com.example.startlight.member.controller;
 
 import com.example.startlight.member.dto.MemberDto;
 import com.example.startlight.member.dto.MemberRequestDto;
+import com.example.startlight.member.dto.MemberWithPetDto;
 import com.example.startlight.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,12 @@ public class MemberController {
     ) {
         memberService.deleteMember(id);
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 삭제되었습니다.");
+    }
+
+    // 내비게이션 바 정보
+    @GetMapping("/nav")
+    public ResponseEntity<MemberWithPetDto> getMemberWithPet() {
+        MemberWithPetDto memberWithPet = memberService.getMemberWithPet();
+        return ResponseEntity.status(HttpStatus.OK).body(memberWithPet);
     }
 }

@@ -10,6 +10,7 @@ public interface PetService {
     PetIdRepDto createPet(PetReqDto petReqDto) throws IOException;
     PetRepDto updatePet(Long petId, PetUpdateReqDto petUpdateReqDto);
     List<PetRepDto> getPets();
+    List<PetSimpleRepDto> getPetSimple(Long userId);
     PetStarListRepDto getPetStarList(Long petId);
     void deletePet(Long petId);
 }

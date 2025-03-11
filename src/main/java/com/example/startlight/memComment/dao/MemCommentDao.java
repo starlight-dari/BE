@@ -38,7 +38,7 @@ public class MemCommentDao {
     }
 
     @Transactional
-    public void delete(Long comment_id, Long user_id) {
+    public void delete(Long user_id, Long comment_id) {
         MemComment memComment = memCommentRepository.findById(comment_id)
                 .orElseThrow(() -> new EntityNotFoundException("댓글을 찾을 수 없습니다. ID: " + comment_id));
 
@@ -52,6 +52,6 @@ public class MemCommentDao {
     }
 
     public List<MemComment> findAllByMemoryId(Long memory_id) {
-        return memCommentRepository.findAllByMemoryStar_Memory_id(memory_id);
+        return memCommentRepository.findAllByMemoryIdDesc(memory_id);
     }
 }

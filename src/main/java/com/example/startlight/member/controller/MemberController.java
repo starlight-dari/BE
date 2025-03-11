@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<MemberDto> createUser(
             @RequestBody MemberDto memberDto
     ) {
@@ -22,13 +22,13 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(responseMemberDto);
     }
 
-    @GetMapping("/select")
+    @GetMapping()
     public ResponseEntity<MemberDto> selectUser() {
         MemberDto memberDto = memberService.selectCurrentMember();
         return ResponseEntity.status(HttpStatus.OK).body(memberDto);
     }
 
-    @PutMapping("/updateName")
+    @PutMapping("/name")
     public ResponseEntity<MemberDto> updateUserName(
             @RequestBody MemberRequestDto memberRequestDto
             ) {

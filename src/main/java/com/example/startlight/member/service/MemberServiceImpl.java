@@ -71,6 +71,8 @@ public class MemberServiceImpl implements MemberService{
         else {
             Member member = Member.builder().member_id(kakaoUserCreateDto.getId())
                     .kk_nickname(kakaoUserCreateDto.getNickName())
+                    // 최초 로그인 시 시스템 닉네임을 카카오 닉네임으로 설정
+                    .st_nickname(kakaoUserCreateDto.getNickName())
                     .email(kakaoUserCreateDto.getEmail())
                     .profile_img(kakaoUserCreateDto.getProfileImageUrl()).build();
             memberDao.createMember(member);

@@ -1,5 +1,6 @@
 package com.example.startlight.memComment.service;
 
+import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.memComment.dao.MemCommentDao;
 import com.example.startlight.memComment.dto.MemCommentRepDto;
 import com.example.startlight.memComment.dto.MemCommentReqDto;
@@ -8,7 +9,6 @@ import com.example.startlight.memComment.entity.MemComment;
 import com.example.startlight.memComment.mapper.MemCommentMapper;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.entity.MemoryStar;
-import com.example.startlight.memoryStar.mapper.MemoryStarMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +23,7 @@ public class MemCommentService {
     private final MemoryStarDao memoryStarDao;
 
     public MemCommentRepDto saveMemComment(MemCommentReqDto memCommentReqDto) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(memCommentReqDto.getMemory_id());
         MemComment memComment = MemComment.builder()
                 .content(memCommentReqDto.getContent())
@@ -37,17 +35,13 @@ public class MemCommentService {
     }
 
     public MemCommentRepDto updateMemComment(MemCommentUpdateReqDto dto) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         MemComment memComment = memCommentDao.update(dto.getComment_id(), userId, dto.getContent());
         return mapper.toDto(memComment);
     }
 
     public void deleteMemComment(Long comment_id) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         memCommentDao.delete(userId, comment_id);
     }
 

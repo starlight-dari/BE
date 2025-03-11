@@ -47,9 +47,6 @@ public class MemoryStar {
 
     private String content;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
@@ -64,12 +61,12 @@ public class MemoryStar {
     @Builder.Default
     @ColumnDefault("0")
     @Column(nullable = false)
-    private Long likes = 0L;  // 기본값 설정
+    private Integer likes = 0;  // 기본값 설정
 
     @Builder.Default
     @ColumnDefault("0")
     @Column(nullable = false)
-    private Long commentNumber = 0L;  // 기본값 설정
+    private Integer commentNumber = 0;  // 기본값 설정
 
     @Setter
     private String img_url;

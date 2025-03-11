@@ -10,25 +10,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/memory/comment")
+@RequestMapping("/memory-stars/comment")
 @RequiredArgsConstructor
 public class MemCommentController {
     private final MemCommentService memCommentService;
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<MemCommentRepDto> createMemComment(@RequestBody MemCommentReqDto memCommentReqDto) {
         MemCommentRepDto memCommentRepDto = memCommentService.saveMemComment(memCommentReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(memCommentRepDto);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     public ResponseEntity<MemCommentRepDto> updateMemComment(@RequestBody MemCommentUpdateReqDto memCommentReqDto) {
         MemCommentRepDto memCommentRepDto = memCommentService.updateMemComment(memCommentReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(memCommentRepDto);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteMemComment(@RequestParam Long commentId) {
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<String> deleteMemComment(@PathVariable Long commentId) {
         memCommentService.deleteMemComment(commentId);
         return ResponseEntity.status(HttpStatus.OK).body("success delete comment id : " + commentId);
     }

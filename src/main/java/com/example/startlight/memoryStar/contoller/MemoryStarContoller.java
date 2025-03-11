@@ -1,5 +1,7 @@
 package com.example.startlight.memoryStar.contoller;
 
+import com.example.startlight.memComment.dto.MemCommentRepDto;
+import com.example.startlight.memComment.service.MemCommentService;
 import com.example.startlight.member.service.MemberService;
 import com.example.startlight.memoryStar.dto.*;
 import com.example.startlight.memoryStar.service.MemoryStarService;
@@ -18,6 +20,7 @@ import java.util.List;
 public class MemoryStarContoller {
     private final MemoryStarService memoryStarService;
     private final MemberService memberService;
+    private final MemCommentService memCommentService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MemoryStarRepDto> createMemoryStar(
@@ -44,7 +47,7 @@ public class MemoryStarContoller {
 
     @DeleteMapping("/{memoryId}")
     public ResponseEntity<String> deleteMemoryStar(
-            @RequestParam Long memoryId
+            @PathVariable Long memoryId
     ) {
         memoryStarService.deleteMemoryStar(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body("Success delete memory star id : " + memoryId);
@@ -70,14 +73,21 @@ public class MemoryStarContoller {
     //like
 
     @PostMapping("/{memoryId}/likes")
-    public ResponseEntity<MemoryStarRepDto> createLikeMemoryStar(@PathVariable Long memoryId) {
-        MemoryStarRepDto memoryStarRepDto = memoryStarService.createLike(memoryId);
+    public ResponseEntity<MemoryStarLikeDto> createLikeMemoryStar(@PathVariable Long memoryId) {
+        MemoryStarLikeDto memoryStarRepDto = memoryStarService.createLike(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
     }
 
     @DeleteMapping("/{memoryId}/likes")
-    public ResponseEntity<MemoryStarRepDto> deleteLikeMemoryStar(@PathVariable Long memoryId) {
-        MemoryStarRepDto memoryStarRepDto = memoryStarService.deleteLike(memoryId);
+    public ResponseEntity<MemoryStarLikeDto> deleteLikeMemoryStar(@PathVariable Long memoryId) {
+        MemoryStarLikeDto memoryStarRepDto = memoryStarService.deleteLike(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
+    }
+
+    //comments
+    @GetMapping("/{memoryId}/comments")
+    public ResponseEntity<List<MemCommentRepDto>> getAllComments(@PathVariable Long memoryId) {
+        List<MemCommentRepDto> allByMemoryId = memCommentService.findAllByMemoryId(memoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(allByMemoryId);
     }
 }

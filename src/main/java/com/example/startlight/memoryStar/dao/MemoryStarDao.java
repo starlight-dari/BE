@@ -50,10 +50,9 @@ public class MemoryStarDao {
         throw new NoSuchElementException("Memory Star not found with id: " + memoryId);
     }
 
-    public void deleteMemoryStarById(Long userId, Long id) {
-        MemoryStar memoryStar = memoryStarRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Memory Star not found with id: " + id));
+    public void deleteMemoryStarById(Long userId, MemoryStar memoryStar) {
         if (memoryStar.getWriter_id().equals(userId)) {
-            memoryStarRepository.deleteById(id);
+            memoryStarRepository.delete(memoryStar);
         }
         else {
             throw new UnauthorizedAccessException("자신이 작성한 글만 삭제할 수 있습니다.");

@@ -28,20 +28,18 @@ public class MemoryStarRepDto {
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime createdAt;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime updatedAt;
 
     private Boolean shared;
 
     private Boolean updated;
 
-    private Long likes;
+    private Integer likes;
 
-    private Long commentNumber;
+    private Integer commentNumber;
 
-    private Boolean isLiked;
+    @Builder.Default
+    private Boolean isLiked = false; // ✅ 기본값 설정
 
     private String img_url;
 }

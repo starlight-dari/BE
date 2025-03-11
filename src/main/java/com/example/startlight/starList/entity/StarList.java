@@ -35,7 +35,9 @@ public class StarList {
     @Builder.Default
     private Boolean written = false;
 
-    public void updateStarList() {
+    public void updateStarWritten() {
         this.written = Boolean.TRUE;
     }
+
+    public void updateStarUnWritten() {this.written = Boolean.FALSE;}
 }

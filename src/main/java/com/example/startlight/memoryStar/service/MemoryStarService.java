@@ -80,10 +80,15 @@ public class MemoryStarService {
                 .memComments(allByMemoryId).build();
     }
 
-    public void deleteMemoryStar(Long id) {
+    public void deleteMemoryStar(Long memoryId) {
         Long userId = UserUtil.getCurrentUserId();
-        memoryStarDao.deleteMemoryStarById(userId, id);
-        s3Service.deleteMemoryImg(id);
+        MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(memoryId);
+        Long starId = memoryStar.getStarList().getStar_id();
+        memoryStarDao.deleteMemoryStarById(userId, memoryStar);
+        s3Service.deleteMemoryImg(memoryId);
+
+        //star에서 unwritten 처리
+        starListDao.setStarUnWritten(starId);
     }
 
     public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {

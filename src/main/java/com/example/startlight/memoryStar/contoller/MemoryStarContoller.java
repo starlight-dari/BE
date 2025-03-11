@@ -44,7 +44,7 @@ public class MemoryStarContoller {
 
     @DeleteMapping("/{memoryId}")
     public ResponseEntity<String> deleteMemoryStar(
-            @RequestParam Long memoryId
+            @PathVariable Long memoryId
     ) {
         memoryStarService.deleteMemoryStar(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body("Success delete memory star id : " + memoryId);

@@ -96,9 +96,12 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public MemberWithPetDto getMemberWithPet() {
         Long userId = UserUtil.getCurrentUserId();
-        String kkNickname = memberDao.selectMember(userId).getKk_nickname();
+        Member member = memberDao.selectMember(userId);
+        String profileUrl = member.getProfile_img();
+        String kkNickname = member.getKk_nickname();
         List<PetSimpleRepDto> petSimple = petService.getPetSimple(userId);
         return MemberWithPetDto.builder()
+                .profileUrl(profileUrl)
                 .name(kkNickname)
                 .petList(petSimple)
                 .build();

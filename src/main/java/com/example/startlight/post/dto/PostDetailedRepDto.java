@@ -30,7 +30,9 @@ public class PostDetailedRepDto {
     private Funeral funeral;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    private Boolean updated;
 
     public static PostDetailedRepDto toDto(Post post, FuneralDao funeralDao) {
         if (post.getFuneral_id() == null) {
@@ -42,7 +44,8 @@ public class PostDetailedRepDto {
                     .category(post.getCategory())
                     .report(post.getReport())
                     .img_url(post.getImg_url())
-                    .createdAt(post.getCreatedAt())
+                    .updatedAt(post.getUpdatedAt())
+                    .updated(post.getUpdated())
                     .build();
         }
         else {
@@ -55,7 +58,8 @@ public class PostDetailedRepDto {
                     .report(post.getReport())
                     .img_url(post.getImg_url())
                     .funeral(funeralDao.selectById(post.getFuneral_id()))
-                    .createdAt(post.getCreatedAt())
+                    .updatedAt(post.getUpdatedAt())
+                    .updated(post.getUpdated())
                     .build();
         }
     }

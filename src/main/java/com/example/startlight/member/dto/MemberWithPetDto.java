@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @Builder
 public class MemberWithPetDto {
+    private String profileUrl;
     private String name;
     private List<PetSimpleRepDto> petList;
 }

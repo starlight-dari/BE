@@ -44,11 +44,11 @@ public class Post {
     @Setter
     private String img_url;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Builder.Default
+    private Boolean updated = false;
 
     public static Post toEntity(PostRequestDto postRequestDto, Member member) {
         if(postRequestDto.getFuneral_id() != null) {
@@ -74,6 +74,7 @@ public class Post {
         this.title = updateReqDto.getTitle();
         this.content = updateReqDto.getContent();
         this.category = updateReqDto.getCategory();
+        this.updated = true;
         if(updateReqDto.getFuneral_id() != null) {
             this.funeral_id = updateReqDto.getFuneral_id();
         }

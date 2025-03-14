@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -57,8 +59,7 @@ public class ChatMessageService {
         requestBody.put("route_num", chatMessageReqDto.getCategory());
         requestBody.put("query", chatMessageReqDto.getQuestion());
 
-//        Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         Member member = memberDao.selectMember(userId);
         ResponseEntity<String> response = sendPostRequest(apiUrl, requestBody, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -82,5 +83,25 @@ public class ChatMessageService {
         else {
             throw new RuntimeException("추가 Flask 서버 응답 실패: " + response.getStatusCode());
         }
+    }
+
+    public List<ChatMessageRepDto> getChatMessages() {
+        Long userId = UserUtil.getCurrentUserId();
+        List<ChatMessage> messageByUserId = chatMessageDao.findMessageByUserId(userId);
+        return messageByUserId.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    // 매핑 로직 작성
+    private ChatMessageRepDto convertToDto(ChatMessage entity) {
+        return ChatMessageRepDto.builder()
+                .chatId(entity.getChat_id())
+                .category(entity.getCategory())
+                .question(entity.getQuestion())
+                .createdAt(entity.getCreatedAt())
+                .answer(entity.getAnswer())
+                .memberId(entity.getMember().getMember_id())
+                .build();
     }
 }

@@ -11,10 +11,14 @@ import com.example.startlight.starList.dto.StarListRepDto;
 import com.example.startlight.starList.service.StarListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,9 +38,8 @@ public class PetServiceImpl implements PetService{
         String uploadFile = s3Service.uploadPetImg(petReqDto.getPet_img(), String.valueOf(pet.getPet_id()));
         pet.setPet_img(uploadFile);
 
-        /*
         // Step 1: 첫 번째 Flask API 호출
-        String flaskApiUrl = "http://localhost:4000/stars_run_pidinet";
+        String flaskApiUrl = flaskService.apiUrl+ "/stars_run_pidinet";
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("image_url", uploadFile);
 
@@ -45,24 +48,22 @@ public class PetServiceImpl implements PetService{
         if (response.getStatusCode() == HttpStatus.OK) {
             System.out.println("✅ Flask 서버에서 응답 성공: " + response.getBody());
             // Step 2: 응답이 200일 경우 추가 Flask API 호출
-            FlaskResponseDto flaskResponseDto = processImgFlaskApi(uploadFile, petReqDto.getSelected_x(), petReqDto.getSelected_y());
+            FlaskResponseDto flaskResponseDto = flaskService.processImgFlaskApi(uploadFile, petReqDto.getSelected_x(), petReqDto.getSelected_y());
             System.out.println("✅ 추가 Flask 응답 성공: " + flaskResponseDto.toString());
+
+            //별자리 정보 저장
+            pet.setSvg_path(flaskResponseDto.getSvgPath());
+            List<Edge> edges = flaskResponseDto.getEdges().stream()
+                    .map(e -> new Edge(e.get(0), e.get(1)))
+                    .collect(Collectors.toList());
+            pet.setEdges(edges);
+            List<StarListRepDto> list = starListService.createList(pet.getPet_id(), flaskResponseDto.getMajorPoints());
+            return PetIdRepDto.builder()
+                    .petId(pet.getPet_id()).build();
         } else {
             System.out.println("❌ Flask 서버에서 응답 실패: " + response.getStatusCode());
             throw new RuntimeException("Flask 서버 응답 실패");
         }
-        */
-        FlaskResponseDto responseDto = flaskService.testMLApi();
-
-        //별자리 정보 저장
-        pet.setSvg_path(responseDto.getSvgPath());
-        List<Edge> edges = responseDto.getEdges().stream()
-                .map(e -> new Edge(e.get(0), e.get(1)))
-                .collect(Collectors.toList());
-        pet.setEdges(edges);
-        List<StarListRepDto> list = starListService.createList(pet.getPet_id(), responseDto.getMajorPoints());
-        return PetIdRepDto.builder()
-                .petId(pet.getPet_id()).build();
     }
 
     @Override

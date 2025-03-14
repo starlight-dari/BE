@@ -11,6 +11,7 @@ import com.example.startlight.starList.dto.StarListRepDto;
 import com.example.startlight.starList.service.StarListService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PetServiceImpl implements PetService{
     private final PetDao petDao;
@@ -48,7 +50,12 @@ public class PetServiceImpl implements PetService{
         if (response.getStatusCode() == HttpStatus.OK) {
             System.out.println("✅ Flask 서버에서 응답 성공: " + response.getBody());
             // Step 2: 응답이 200일 경우 추가 Flask API 호출
-            FlaskResponseDto flaskResponseDto = flaskService.processImgFlaskApi(uploadFile, petReqDto.getSelected_x(), petReqDto.getSelected_y());
+            log.info("x,y double : " + String.valueOf(petReqDto.getSelected_x()) +  String.valueOf(petReqDto.getSelected_y()));
+            int x = petReqDto.getSelected_x().intValue();
+            int y = petReqDto.getSelected_y().intValue();
+            log.info("x,y int : " + String.valueOf(x) +  String.valueOf(y));
+
+            FlaskResponseDto flaskResponseDto = flaskService.processImgFlaskApi(uploadFile, x, y);
             System.out.println("✅ 추가 Flask 응답 성공: " + flaskResponseDto.toString());
 
             //별자리 정보 저장

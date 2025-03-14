@@ -30,10 +30,18 @@ public class MemoryStarContoller {
         return ResponseEntity.status(HttpStatus.OK).body(memoryStar);
     }
 
+    // 댓글이랑 같이 조회
     @GetMapping("/{memoryId}")
-    public ResponseEntity<MemoryStarRepWithComDto> selectMemoryStar(@PathVariable Long memoryId) {
+    public ResponseEntity<MemoryStarRepWithComDto> selectMemoryStarWithCom(@PathVariable Long memoryId) {
         MemoryStarRepWithComDto memoryStarRepDto = memoryStarService.selectStarById(memoryId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryStarRepDto);
+    }
+
+    //글만 조회
+    @GetMapping("/{memoryId}/memory")
+    public ResponseEntity<MemoryStarRepDto> selectMemoryStarByMemId(@PathVariable Long memoryId) {
+        MemoryStarRepDto starById = memoryStarService.getStarById(memoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(starById);
     }
 
     @PatchMapping("/{memoryId}")

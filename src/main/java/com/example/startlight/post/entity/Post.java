@@ -73,7 +73,6 @@ public class Post {
     public void updatePost(PostUpdateReqDto updateReqDto) {
         this.title = updateReqDto.getTitle();
         this.content = updateReqDto.getContent();
-        this.category = updateReqDto.getCategory();
         this.updated = true;
         if(updateReqDto.getFuneral_id() != null) {
             this.funeral_id = updateReqDto.getFuneral_id();

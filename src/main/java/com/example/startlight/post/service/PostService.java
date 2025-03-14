@@ -2,6 +2,7 @@ package com.example.startlight.post.service;
 
 import com.example.startlight.funeral.dao.FuneralDao;
 import com.example.startlight.funeral.entity.Funeral;
+import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.post.dao.PostDao;
@@ -31,9 +32,7 @@ public class PostService {
     private final S3Service s3Service;
 
     public PostDetailedRepDto createPost(PostRequestDto postRequestDto) throws IOException {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         Member member = memberDao.selectMember(userId);
         Post post = Post.toEntity(postRequestDto, member);
         Post createdPost = postDao.createPost(post);
@@ -65,9 +64,7 @@ public class PostService {
     }
 
     public PostDetailedRepDto updatePost(PostUpdateReqDto postRequestDto) throws IOException {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         Post post = postDao.updatePost(userId, postRequestDto);
         if(postRequestDto.getImage() != null) {
             s3Service.deletePostImg(postRequestDto.getPostId());
@@ -77,9 +74,7 @@ public class PostService {
     }
 
     public void deletePost(Long postId) {
-        //TODO
-        // Long userId = UserUtil.getCurrentUserId();
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         postDao.deletePost(userId, postId);
         s3Service.deletePostImg(postId);
     }

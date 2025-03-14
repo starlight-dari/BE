@@ -14,7 +14,6 @@ public class PostUpdateReqDto {
     private Long postId;
     private String title;
     private String content;
-    private Category category;
 
     @Nullable
     private Long funeral_id;

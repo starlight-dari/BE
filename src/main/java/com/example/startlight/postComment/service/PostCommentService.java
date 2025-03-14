@@ -1,5 +1,6 @@
 package com.example.startlight.postComment.service;
 
+import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.post.dao.PostDao;
@@ -22,8 +23,7 @@ public class PostCommentService {
 
     public PostCommentRepDto createPostComment(PostCommentReqDto postCommentReqDto) {
         try {
-            // TODO: 실제 사용자 ID를 가져와야 함
-            Long userId = 3879188713L; // `UserUtil.getCurrentUserId();` 로 변경 가능
+            Long userId = UserUtil.getCurrentUserId();
             Member member = memberDao.selectMember(userId);
 
             if (member == null) {
@@ -41,8 +41,7 @@ public class PostCommentService {
     }
 
     public void deletePostComment(Long commentId) {
-        // TODO: 실제 사용자 ID를 가져와야 함
-        Long userId = 3879188713L; // `UserUtil.getCurrentUserId();` 로 변경 가능
+        Long userId = UserUtil.getCurrentUserId();
         postCommentDao.deletePostComment(commentId, userId);
     }
 

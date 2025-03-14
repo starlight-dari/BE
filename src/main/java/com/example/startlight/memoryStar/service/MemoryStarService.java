@@ -48,6 +48,15 @@ public class MemoryStarService {
         return dto;
     }
 
+    public MemoryStarRepDto getStarById(Long id) {
+        MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(id);
+        Long userId = UserUtil.getCurrentUserId();
+        boolean ifLiked = memoryStarDao.findIfLiked(id, userId);
+        MemoryStarRepDto dto = mapper.toDto(memoryStar);
+        dto.setIsLiked(ifLiked);
+        return dto;
+    }
+
     public MemoryStarRepDto createMemoryStar(MemoryStarReqDto memoryStarReqDto) throws IOException {
         StarList starListById = starListDao.findStarListById(memoryStarReqDto.getStar_id());
         Long userId = UserUtil.getCurrentUserId();

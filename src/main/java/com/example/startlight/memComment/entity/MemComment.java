@@ -12,7 +12,7 @@ import lombok.*;
 @Table(name="MemComment")
 public class MemComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long comment_id;
 
     @ManyToOne

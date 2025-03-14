@@ -39,12 +39,12 @@ public class FlaskService {
     /**
      * 추가 Flask API 호출
      */
-    public FlaskResponseDto processImgFlaskApi(String imageUrl, Integer selectedX, Integer selectedY) {
+    public FlaskResponseDto processImgFlaskApi(String imageUrl, Double selectedX, Double selectedY) {
         String additionalApiUrl = apiUrl + "/stars_process_image";
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("image_url", imageUrl);
-        requestBody.put("point", new Integer[]{selectedX, selectedY});
+        requestBody.put("point", new Double[]{selectedX, selectedY});
 
         ResponseEntity<String> response = sendPostRequest(additionalApiUrl, requestBody, String.class);
 

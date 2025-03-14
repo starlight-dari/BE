@@ -111,8 +111,10 @@ public class PetServiceImpl implements PetService{
     public PetStarListRepDto getPetStarList(Long petId) {
         List<Edge> edgesByPetId = petDao.getEdgesByPetId(petId);
         List<StarListRepDto> list = starListService.getList(petId);
+        String svgPath = petDao.selectPet(petId).getSvg_path();
         return PetStarListRepDto.builder()
                 .petId(petId)
+                .svgPath(svgPath)
                 .starList(list)
                 .edges(edgesByPetId)
                 .build();

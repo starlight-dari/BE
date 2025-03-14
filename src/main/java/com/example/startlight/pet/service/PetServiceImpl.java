@@ -40,6 +40,7 @@ public class PetServiceImpl implements PetService{
         String uploadFile = s3Service.uploadPetImg(petReqDto.getPet_img(), String.valueOf(pet.getPet_id()));
         pet.setPet_img(uploadFile);
 
+        /*
         // Step 1: 첫 번째 Flask API 호출
         String flaskApiUrl = flaskService.apiUrl+ "/stars_run_pidinet";
         Map<String, String> requestBody = new HashMap<>();
@@ -71,6 +72,16 @@ public class PetServiceImpl implements PetService{
             System.out.println("❌ Flask 서버에서 응답 실패: " + response.getStatusCode());
             throw new RuntimeException("Flask 서버 응답 실패");
         }
+         */
+        FlaskResponseDto flaskResponseDto = flaskService.testMLApi();
+        pet.setSvg_path(flaskResponseDto.getSvgPath());
+        List<Edge> edges = flaskResponseDto.getEdges().stream()
+                .map(e -> new Edge(e.get(0), e.get(1)))
+                .collect(Collectors.toList());
+        pet.setEdges(edges);
+        List<StarListRepDto> list = starListService.createList(pet.getPet_id(), flaskResponseDto.getMajorPoints());
+        return PetIdRepDto.builder()
+                .petId(pet.getPet_id()).build();
     }
 
     @Override

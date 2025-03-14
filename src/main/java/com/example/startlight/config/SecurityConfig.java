@@ -1,5 +1,6 @@
 package com.example.startlight.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,12 @@ public class SecurityConfig {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
+    @Value("${ml.api}")
+    private String mlUrl;
+
+    @Value("${aws.api}")
+    private String awsApiUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,10 +41,10 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers( "/api/auth/kakao/callback/**").permitAll()
-                        .requestMatchers("pets/**","star/**","memory-stars/{memoryId}/comments","memory-stars/public",
-                                "star/getList","uploads", "post/**", "post/get", "funeral/**").permitAll() //토큰 인증이 필요하지 않은경우 설정 -- 인증이 필요한 경로가 모두에게 허용되면 익명사용자 설정이 될 수 있
-                        .requestMatchers("/member","/member/name","/api/auth/kakao/logout", "/pets/create",
-                                "memory-stars/**").authenticated() //사용자 인증 필요한 경우
+                        .requestMatchers("star/**","memory-stars/{memoryId}/comments","memory-stars/public",
+                                "star/getList","uploads", "post/**", "post/get", "funeral/**","chat/**").permitAll() //토큰 인증이 필요하지 않은경우 설정 -- 인증이 필요한 경로가 모두에게 허용되면 익명사용자 설정이 될 수 있
+                        .requestMatchers("/member","/member/name","/api/auth/kakao/logout", 
+                                "memory-stars/**","pets/**").authenticated() //사용자 인증 필요한 경우
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -48,7 +55,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:8080",
-                "http://3.39.226.165:3000","http://3.39.226.165:8080"));
+                awsApiUrl+":3000",awsApiUrl+":8080",mlUrl));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.addAllowedMethod("*");
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type","X-Requested-With"));

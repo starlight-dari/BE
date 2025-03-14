@@ -48,7 +48,7 @@ public class PetServiceImpl implements PetService{
         if (response.getStatusCode() == HttpStatus.OK) {
             System.out.println("✅ Flask 서버에서 응답 성공: " + response.getBody());
             // Step 2: 응답이 200일 경우 추가 Flask API 호출
-            FlaskResponseDto flaskResponseDto = flaskService.processImgFlaskApi(uploadFile, Long.valueOf(petReqDto.getSelected_x()), Long.valueOf(petReqDto.getSelected_y()));
+            FlaskResponseDto flaskResponseDto = flaskService.processImgFlaskApi(uploadFile, petReqDto.getSelected_x(), petReqDto.getSelected_y());
             System.out.println("✅ 추가 Flask 응답 성공: " + flaskResponseDto.toString());
 
             //별자리 정보 저장

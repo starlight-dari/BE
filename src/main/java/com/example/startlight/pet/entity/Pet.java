@@ -19,10 +19,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class Pet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long pet_id;
 
     @ManyToOne
+    @JoinColumn(name="member_id")
     private Member member;
 
     private String pet_img;

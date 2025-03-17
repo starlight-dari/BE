@@ -9,6 +9,10 @@ import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.dto.*;
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import com.example.startlight.memoryStar.mapper.MemoryStarMapper;
+import com.example.startlight.memoryStar.repository.MemoryStarRepository;
+import com.example.startlight.pet.dao.PetDao;
+import com.example.startlight.pet.entity.Pet;
+import com.example.startlight.pet.service.PetService;
 import com.example.startlight.s3.service.S3Service;
 import com.example.startlight.starList.dao.StarListDao;
 import com.example.startlight.starList.entity.StarList;
@@ -26,11 +30,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemoryStarService {
     private final MemoryStarDao memoryStarDao;
+    private final MemoryStarRepository memoryStarRepository;
     private final StarListDao starListDao;
     private final MemCommentService memCommentService;
     private final MemberService memberService;
     private final S3Service s3Service;
     private final MemoryStarMapper mapper = MemoryStarMapper.INSTANCE;
+    private final PetDao petDao;
 
     public MemoryStarRepWithComDto selectStarById(Long id) {
         MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(id);
@@ -67,6 +73,13 @@ public class MemoryStarService {
         createdStar.setImg_url(memoryImgUrls);
         starListDao.updateStarWritten(memoryStarReqDto.getStar_id());
         memberService.updateMemberMemory();
+
+        //MemoryStar 개수 체크
+        Integer countStar = memoryStarRepository.countMemoryStarByPetId(memoryStar.getPet_id());
+        if(countStar == 5) {
+            Pet selectedPet = petDao.selectPet(memoryStar.getPet_id());
+            selectedPet.updateAlbumStarted();
+        }
         return mapper.toDto(createdStar);
     }
 

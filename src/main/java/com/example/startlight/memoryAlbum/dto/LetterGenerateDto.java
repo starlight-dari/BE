@@ -15,4 +15,7 @@ public class LetterGenerateDto {
     private List<String> texts;
     private Long pet_id;
     private Long letter_id;
+    private String pet_name;
+    private String member_name;
+    private String nickname;
 }

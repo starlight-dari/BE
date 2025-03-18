@@ -39,6 +39,9 @@ public class MemoryStar {
     private Long writer_id;
 
     @Column(nullable = false)
+    private String writer_name;
+
+    @Column(nullable = false)
     private Long pet_id;
 
     @Column(nullable = false)

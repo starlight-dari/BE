@@ -4,7 +4,10 @@ import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.memComment.dto.MemCommentRepDto;
 import com.example.startlight.memComment.dto.MemCommentUpdateReqDto;
 import com.example.startlight.memComment.service.MemCommentService;
+import com.example.startlight.member.dao.MemberDao;
+import com.example.startlight.member.entity.Member;
 import com.example.startlight.member.service.MemberService;
+import com.example.startlight.memoryAlbum.service.MemoryAlbumService;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.dto.*;
 import com.example.startlight.memoryStar.entity.MemoryStar;
@@ -34,6 +37,8 @@ public class MemoryStarService {
     private final StarListDao starListDao;
     private final MemCommentService memCommentService;
     private final MemberService memberService;
+    private final MemberDao memberDao;
+    private final MemoryAlbumService memoryAlbumService;
     private final S3Service s3Service;
     private final MemoryStarMapper mapper = MemoryStarMapper.INSTANCE;
     private final PetDao petDao;
@@ -66,7 +71,9 @@ public class MemoryStarService {
     public MemoryStarRepDto createMemoryStar(MemoryStarReqDto memoryStarReqDto) throws IOException {
         StarList starListById = starListDao.findStarListById(memoryStarReqDto.getStar_id());
         Long userId = UserUtil.getCurrentUserId();
+        Member member = memberDao.selectMember(userId);
         memoryStarReqDto.setWriter_id(userId);
+        memoryStarReqDto.setWriter_name(member.getSt_nickname());
         MemoryStar memoryStar = mapper.toEntity(memoryStarReqDto, starListById);
         MemoryStar createdStar = memoryStarDao.createMemoryStar(memoryStar);
         String memoryImgUrls = s3Service.uploadMemoryImg(memoryStarReqDto.getImg_url(), createdStar.getMemory_id());
@@ -79,6 +86,9 @@ public class MemoryStarService {
         if(countStar == 5) {
             Pet selectedPet = petDao.selectPet(memoryStar.getPet_id());
             selectedPet.updateAlbumStarted();
+
+            //앨범 생성 시작 명령
+            memoryAlbumService.createAlbum();
         }
         return mapper.toDto(createdStar);
     }

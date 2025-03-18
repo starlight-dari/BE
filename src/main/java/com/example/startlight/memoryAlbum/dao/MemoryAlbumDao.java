@@ -16,5 +16,7 @@ public class MemoryAlbumDao {
         return memoryAlbumRepository.save(memoryAlbum);
     }
 
-    public List<MemoryAlbum> findAllMemoryAlbum() {}
+    public List<MemoryAlbum> findByPetId(Long petId) {
+        return memoryAlbumRepository.findAllByPetId(petId);
+    }
 }

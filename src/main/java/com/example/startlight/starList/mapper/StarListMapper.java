@@ -18,6 +18,7 @@ public interface StarListMapper {
     @Mapping(source = "pet", target = "pet")
     StarList toEntity(StarListReqDto dto, Pet pet);
 
+    @Mapping(source = "memoryStar.memory_id", target = "memory_id")
     StarListRepDto toDto(StarList entity);
 
     default List<StarList> toEntityList(List<StarListReqDto> dtoList, Pet pet) {

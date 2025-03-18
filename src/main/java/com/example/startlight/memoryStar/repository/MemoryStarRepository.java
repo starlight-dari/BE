@@ -17,4 +17,7 @@ public interface MemoryStarRepository extends JpaRepository<MemoryStar, Long> {
 
     @Query("select count(m) from MemoryStar m where m.pet_id = :petId and m.isAnimal = true")
     Integer countMemoryStarByPetId(@Param("petId") Long petId);
+
+    @Query("select m from MemoryStar m where m.starList.star_id = :starId")
+    MemoryStar findByStarListId(@Param("starId") Long starId);
 }

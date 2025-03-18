@@ -68,6 +68,7 @@ public class MemoryStarService {
         return dto;
     }
 
+
     public MemoryStarRepDto createMemoryStar(MemoryStarReqDto memoryStarReqDto) throws IOException {
         StarList starListById = starListDao.findStarListById(memoryStarReqDto.getStar_id());
         Long userId = UserUtil.getCurrentUserId();
@@ -78,7 +79,7 @@ public class MemoryStarService {
         MemoryStar createdStar = memoryStarDao.createMemoryStar(memoryStar);
         String memoryImgUrls = s3Service.uploadMemoryImg(memoryStarReqDto.getImg_url(), createdStar.getMemory_id());
         createdStar.setImg_url(memoryImgUrls);
-        starListDao.updateStarWritten(memoryStarReqDto.getStar_id());
+        starListDao.updateStarWritten(createdStar, memoryStarReqDto.getStar_id());
         memberService.updateMemberMemory();
 
         //MemoryStar 개수 체크

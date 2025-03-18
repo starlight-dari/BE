@@ -1,5 +1,6 @@
 package com.example.startlight.starList.dao;
 
+import com.example.startlight.memoryStar.entity.MemoryStar;
 import com.example.startlight.pet.entity.Pet;
 import com.example.startlight.starList.entity.StarList;
 import com.example.startlight.starList.repository.StarListRepository;
@@ -41,9 +42,9 @@ public class StarListDao {
     }
 
     @Transactional
-    public void updateStarWritten(Long id) {
+    public void updateStarWritten(MemoryStar createdStar, Long id) {
         StarList starList = findStarListById(id);
-        starList.updateStarWritten();
+        starList.updateStarWritten(createdStar);
 
         // ✅ 성공 로그 출력
         log.info("✅ StarList [{}] - 상태: written 설정 완료", id);

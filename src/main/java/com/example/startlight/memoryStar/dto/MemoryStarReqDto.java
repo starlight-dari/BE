@@ -18,6 +18,10 @@ public class MemoryStarReqDto {
 
     private Long writer_id;
 
+    private String writer_name;
+
+    private Long pet_id;
+
     private String name;
 
     private ActivityCtg activityCtg;

@@ -2,10 +2,8 @@ package com.example.startlight.starList.service;
 
 import com.example.startlight.pet.dao.PetDao;
 import com.example.startlight.pet.entity.Pet;
-import com.example.startlight.pet.repository.PetRepository;
 import com.example.startlight.starList.dao.StarListDao;
 import com.example.startlight.starList.dto.StarListRepDto;
-import com.example.startlight.starList.dto.StarListReqDto;
 import com.example.startlight.starList.entity.StarList;
 import com.example.startlight.starList.mapper.StarListMapper;
 import lombok.RequiredArgsConstructor;

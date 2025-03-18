@@ -19,7 +19,11 @@ public class MemoryStarRepDto {
 
     private Long writer_id;
 
+    private String writer_name;
+
     private String name;
+
+    private Long pet_id;
 
     private ActivityCtg activityCtg;
 

@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -18,8 +20,8 @@ import java.time.LocalDateTime;
 @Table(name = "MemoryAlbum")
 public class MemoryAlbum {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long albumId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long letter_id;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
@@ -28,7 +30,9 @@ public class MemoryAlbum {
     @Column(nullable = false)
     private String content;
 
-    private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name = "memory_album_images", joinColumns = @JoinColumn(name = "letter_id"))
+    private List<String> images = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createdAt;

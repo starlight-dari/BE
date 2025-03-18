@@ -13,4 +13,5 @@ public class StarListRepDto {
     private Integer x_star;
     private Integer y_star;
     private Boolean written;
+    private Long memory_id;
 }

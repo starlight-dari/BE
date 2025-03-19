@@ -23,11 +23,11 @@ public class MemoryAlbumController {
     private final MemoryAlbumScheduleService memoryAlbumScheduleService;
     private final MemoryAlbumService memoryAlbumService;
 
-    @GetMapping()
-    public ResponseEntity<?> createMemoryAlbum() {
-        memoryAlbumFlaskService.generateMemoryAlbum();
-        return ResponseEntity.ok().build();
-    }
+//    @GetMapping()
+//    public ResponseEntity<?> createMemoryAlbum() {
+//        memoryAlbumFlaskService.generateMemoryAlbum();
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/status")
     public ResponseEntity<List<AlbumByPetRepDto>> getAllMemoryAlbumStatus() {
@@ -35,11 +35,11 @@ public class MemoryAlbumController {
         return ResponseEntity.ok(memoryAlbumStatusByPet);
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<?> testMemoryAlbum() {
-        memoryAlbumScheduleService.createAlbum(LocalDateTime.now());
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/test")
+//    public ResponseEntity<?> testMemoryAlbum() {
+//        memoryAlbumScheduleService.createAlbum(LocalDateTime.now());
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/pet/{petId}")
     public ResponseEntity<List<MemoryAlbumSimpleDto>> getMemoryAlbumByPetId(@PathVariable("petId") Long petId) {
@@ -49,7 +49,7 @@ public class MemoryAlbumController {
 
     @GetMapping("/letter/{letterId}")
     public ResponseEntity<MemoryAlbumRepDto> getMemoryAlbumByLetterId(@PathVariable("letterId") Long letterId) {
-        MemoryAlbumRepDto memoryAlbum = memoryAlbumService.getMemoryAlbum(letterId);
+        MemoryAlbumRepDto memoryAlbum = memoryAlbumService.getMemoryAlbumAndUpdateRead(letterId);
         return ResponseEntity.status(HttpStatus.OK).body(memoryAlbum);
     }
 

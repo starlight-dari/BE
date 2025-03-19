@@ -44,4 +44,8 @@ public class MemoryAlbum {
 
     @Builder.Default
     private Boolean opened = false;
+
+    public void setOpened() {
+        this.opened = true;
+    }
 }

@@ -13,11 +13,15 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class MemoryAlbumScheduleService {
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final MemoryAlbumFlaskService memoryAlbumFlaskService;
 
-    public void createAlbum(LocalDateTime albumStartedTime) {
+    private Long trainingPetId;
+
+    public void createAlbum(LocalDateTime albumStartedTime, Long petId) {
+        trainingPetId = petId;
+
         // ✅ 1. 처음에는 즉시 실행
         executor.execute(this::executeTask);
-
         // ✅ 2. 다음 실행까지 남은 시간 계산
         long initialDelay = getInitialDelay(albumStartedTime);
         //long period = TimeUnit.DAYS.toMillis(7); // 일주일 주기 설정
@@ -59,7 +63,7 @@ public class MemoryAlbumScheduleService {
     private void runMyTask() {
         System.out.println("🚀 Task is running...");
         // 실행할 로직 작성
-        //memoryAlbumFlaskService.generateMemoryAlbum();
+        memoryAlbumFlaskService.generateMemoryAlbum(trainingPetId);
     }
 
     // ✅ 작업 종료 (필요 시 호출)

@@ -26,6 +26,8 @@ public class PetReqDto {
 
     private Personality personality;
 
+    private String nickname;
+
     private Double selected_x;
 
     private Double selected_y;

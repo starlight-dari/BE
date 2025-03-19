@@ -65,6 +65,9 @@ public class MemoryStar {
     private Boolean updated = false;
 
     @Builder.Default
+    private Boolean usedToGenerate = false;
+
+    @Builder.Default
     @ColumnDefault("0")
     @Column(nullable = false)
     private Integer likes = 0;  // 기본값 설정
@@ -109,4 +112,6 @@ public class MemoryStar {
     public void deleteComment() {
         this.commentNumber--;
     }
+
+    public void updateUsedToGenerate() { this.usedToGenerate = true; }
 }

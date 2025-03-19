@@ -90,7 +90,7 @@ public class MemoryStarService {
             selectedPet.updateAlbumStarted();
 
             //앨범 생성 시작 명령
-            memoryAlbumScheduleService.createAlbum(selectedPet.getAlbumStartedTime());
+            memoryAlbumScheduleService.createAlbum(selectedPet.getAlbumStartedTime(), selectedPet.getPet_id());
         }
         return mapper.toDto(createdStar);
     }

@@ -30,6 +30,8 @@ public class PetRepDto {
 
     private Personality personality;
 
+    private String nickname;
+
     public static PetRepDto toDto(Pet pet) {
         return PetRepDto.builder()
                 .member_id(pet.getMember().getMember_id())
@@ -41,6 +43,7 @@ public class PetRepDto {
                 .birth_date(pet.getBirth_date())
                 .death_date(pet.getDeath_date())
                 .personality(pet.getPersonality())
+                .nickname(pet.getNickname())
                 .build();
     }
 }

@@ -9,12 +9,11 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class LetterGenerateDto {
+public class LetterGenerateWithFileDto {
     private String character;
     private String breed;
     private List<String> texts;
     private Long pet_id;
-    private Long letter_id;
     private String pet_name;
     private String member_name;
     private String nickname;

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "MemoryAlbum")
 public class MemoryAlbum {
     @Id
@@ -26,6 +28,9 @@ public class MemoryAlbum {
     @ManyToOne
     @JoinColumn(name = "pet_id")
     private Pet pet;
+
+    @Column(nullable = false)
+    private String title;
 
     @Column(nullable = false)
     private String content;
@@ -39,4 +44,8 @@ public class MemoryAlbum {
 
     @Builder.Default
     private Boolean opened = false;
+
+    public void setOpened() {
+        this.opened = true;
+    }
 }

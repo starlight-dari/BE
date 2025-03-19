@@ -43,6 +43,8 @@ public class Pet {
 
     private Personality personality;
 
+    private String nickname;
+
     private String svg_path;
 
     @Builder.Default

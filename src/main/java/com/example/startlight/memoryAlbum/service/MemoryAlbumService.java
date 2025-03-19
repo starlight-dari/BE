@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MemoryAlbumService {
-    private final MemoryAlbumFlaskService memoryAlbumFlaskService;
     private final MemoryAlbumRepository memoryAlbumRepository;
     private final MemoryAlbumDao memoryAlbumDao;
     private final PetDao petDao;

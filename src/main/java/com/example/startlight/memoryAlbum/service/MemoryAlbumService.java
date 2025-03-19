@@ -1,23 +1,33 @@
 package com.example.startlight.memoryAlbum.service;
 
+import com.example.startlight.member.dao.MemberDao;
+import com.example.startlight.member.entity.Member;
 import com.example.startlight.memoryAlbum.dao.MemoryAlbumDao;
-import com.example.startlight.memoryAlbum.dto.AlbumByPetRepDto;
+import com.example.startlight.memoryAlbum.dto.*;
 import com.example.startlight.memoryAlbum.entity.MemoryAlbum;
 import com.example.startlight.memoryAlbum.repository.MemoryAlbumRepository;
+import com.example.startlight.memoryStar.entity.MemoryStar;
+import com.example.startlight.memoryStar.repository.MemoryStarRepository;
 import com.example.startlight.pet.dao.PetDao;
 import com.example.startlight.pet.entity.Pet;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MemoryAlbumService {
     private final MemoryAlbumFlaskService memoryAlbumFlaskService;
     private final MemoryAlbumRepository memoryAlbumRepository;
+    private final MemoryAlbumDao memoryAlbumDao;
     private final PetDao petDao;
+    private final MemberDao memberDao;
+    private final MemoryStarRepository memoryStarRepository;
 
     public List<AlbumByPetRepDto> getMemoryAlbumStatusByPet() {
         Long userId = 3879188713L;
@@ -53,7 +63,78 @@ public class MemoryAlbumService {
        return albumByPetRepDtos;
     }
 
-    public void createAlbum() {
-        memoryAlbumFlaskService.generateMemoryAlbum();
+    public List<MemoryAlbumSimpleDto> getMemoryAlbumByPet(Long petId) {
+        List<MemoryAlbum> byPetId = memoryAlbumDao.findByPetId(petId);
+        return byPetId.stream()
+                .map(this::toSimpleDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public MemoryAlbumRepDto getMemoryAlbumAndUpdateRead(Long letterId) {
+        MemoryAlbum byId = memoryAlbumDao.findById(letterId);
+        byId.setOpened();
+        return toResponseDto(byId);
+
+    }
+
+    private MemoryAlbumSimpleDto toSimpleDto(MemoryAlbum memoryAlbum) {
+        return MemoryAlbumSimpleDto.builder()
+                .letter_id(memoryAlbum.getLetter_id())
+                .pet_id(memoryAlbum.getPet().getPet_id()) // Pet 엔티티에서 ID 매핑
+                .content(memoryAlbum.getContent())
+                .createdAt(memoryAlbum.getCreatedAt())
+                .opened(memoryAlbum.getOpened())
+                .build();
+    }
+
+    public MemoryAlbumRepDto createMemoryAlbum(MemoryAlbumReqDto memoryAlbumReqDto) {
+        Pet selectedPet = petDao.selectPet(memoryAlbumReqDto.getPet_id());
+        MemoryAlbum memoryAlbum = MemoryAlbum.builder()
+                .pet(selectedPet)
+                .content(memoryAlbumReqDto.getContent())
+                .images(memoryAlbumReqDto.getImages())
+                .build();
+        MemoryAlbum createdAlbum = memoryAlbumDao.createMemoryAlbum(memoryAlbum);
+        return toResponseDto(createdAlbum);
+    }
+
+    private MemoryAlbumRepDto toResponseDto(MemoryAlbum memoryAlbum) {
+        return MemoryAlbumRepDto.builder()
+                .letter_id(memoryAlbum.getLetter_id())
+                .pet_id(memoryAlbum.getPet().getPet_id())
+                .content(memoryAlbum.getContent())
+                .images(memoryAlbum.getImages())
+                .createdAt(memoryAlbum.getCreatedAt())
+                .opened(memoryAlbum.getOpened()).build();
+    }
+
+    public LetterGenerateWithFileDto generateDto(Long petId) {
+        Pet selectedPet = petDao.selectPet(petId);
+        Long userId = 3879188713L;
+        Member member = memberDao.selectMember(userId);
+
+        Pageable pageable = PageRequest.of(0, 1);
+        List<MemoryStar> unusedMemory = memoryStarRepository.findMemoryStarByPetIdUnused(petId, pageable);
+        if(!unusedMemory.isEmpty()) {
+            MemoryStar memoryStar = unusedMemory.get(0);
+            memoryStar.updateUsedToGenerate();
+
+            List<String> texts = new ArrayList<>();
+            String text = memoryStar.getContent();
+            texts.add(text);
+            return LetterGenerateWithFileDto.builder()
+                    .character(selectedPet.getPersonality().getDescription())
+                    .breed(selectedPet.getSpecies())
+                    .texts(texts)
+                    .pet_id(selectedPet.getPet_id())
+                    .pet_name(selectedPet.getPet_name())
+                    .member_name(member.getSt_nickname())
+                    .nickname(selectedPet.getNickname())
+                    .build();
+        }
+        else {
+            return null;
+        }
     }
 }

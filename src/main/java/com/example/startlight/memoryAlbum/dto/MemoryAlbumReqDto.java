@@ -9,6 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class ImgRequestDto {
-    List<String> images;
+public class MemoryAlbumReqDto {
+    private Long pet_id;
+    private String content;
+    private List<String> images;
 }

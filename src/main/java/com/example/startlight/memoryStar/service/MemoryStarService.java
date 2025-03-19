@@ -7,6 +7,7 @@ import com.example.startlight.memComment.service.MemCommentService;
 import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.member.service.MemberService;
+import com.example.startlight.memoryAlbum.service.MemoryAlbumScheduleService;
 import com.example.startlight.memoryAlbum.service.MemoryAlbumService;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.dto.*;
@@ -38,7 +39,7 @@ public class MemoryStarService {
     private final MemCommentService memCommentService;
     private final MemberService memberService;
     private final MemberDao memberDao;
-    private final MemoryAlbumService memoryAlbumService;
+    private final MemoryAlbumScheduleService memoryAlbumScheduleService;
     private final S3Service s3Service;
     private final MemoryStarMapper mapper = MemoryStarMapper.INSTANCE;
     private final PetDao petDao;
@@ -89,7 +90,7 @@ public class MemoryStarService {
             selectedPet.updateAlbumStarted();
 
             //앨범 생성 시작 명령
-            memoryAlbumService.createAlbum();
+            memoryAlbumScheduleService.createAlbum(selectedPet.getAlbumStartedTime(), selectedPet.getPet_id());
         }
         return mapper.toDto(createdStar);
     }

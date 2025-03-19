@@ -1,21 +1,18 @@
 package com.example.startlight.memoryAlbum.service;
 
-import com.example.startlight.memoryAlbum.dto.ImgRequestDto;
-import com.example.startlight.memoryAlbum.dto.LetterGenerateDto;
+import com.example.startlight.memoryAlbum.dao.MemoryAlbumDao;
+import com.example.startlight.memoryAlbum.dto.LetterGenerateWithFileDto;
 import com.example.startlight.pet.entity.Personality;
-import com.example.startlight.pet.service.FlaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -29,30 +26,37 @@ public class MemoryAlbumFlaskService {
     public String apiUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final FlaskService flaskService;
+    private final MemoryAlbumDao memoryAlbumDao;
+    private final MemoryAlbumService memoryAlbumService;
     private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 파싱용
 
     private boolean trainingInProgress = false;
     private ScheduledExecutorService executor;
+
+    private Long trainingPetId;
 
     @PostConstruct
     public void init() {
         executor = Executors.newSingleThreadScheduledExecutor(); // 스케줄러 초기화
     }
 
-    public void generateMemoryAlbum() {
+    public void generateMemoryAlbum(Long petId) {
         if (trainingInProgress) {
             System.out.println("Training is already in progress");
             return;
         }
 
-        List<String> images = List.of(
-                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong1.jpg",
-                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong2.jpg",
-                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong3.jpg",
-                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong4.jpg",
-                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong5.jpg"
-        );
+        trainingPetId = petId;
+
+//        List<String> images = List.of(
+//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong1.jpg",
+//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong2.jpg",
+//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong3.jpg",
+//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong4.jpg",
+//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong5.jpg"
+//        );
+
+        List<String> images = memoryAlbumDao.getRecent5ImgsByPetId(petId);
 
         Map<String, Object> requestBody = Map.of("images", images);
 
@@ -61,7 +65,6 @@ public class MemoryAlbumFlaskService {
         if (response.getStatusCode().is2xxSuccessful()) {
             System.out.println("Training started...");
             trainingInProgress = true;
-
             // ✅ training 시작 시 10초마다 상태 체크 실행
             executor.scheduleAtFixedRate(this::checkTrainingStatus, 0, 10, TimeUnit.SECONDS);
         } else {
@@ -87,7 +90,7 @@ public class MemoryAlbumFlaskService {
                     System.out.println("Training finished with status: " + status);
 
                     // ✅ training 완료 → letter 생성 실행
-                    String result = letterGenerate();
+                    String result = letterGenerate(trainingPetId);
                     System.out.println("Generated Letter: " + result);
 
                     // ✅ 상태 완료 후 스케줄 중지
@@ -105,7 +108,10 @@ public class MemoryAlbumFlaskService {
         }
     }
 
-    public String letterGenerate() {
+    public String letterGenerate(Long petId) {
+
+        LetterGenerateWithFileDto letterGenerateWithFileDto = memoryAlbumService.generateDto(petId);
+/*
         Personality personality = Personality.CALM;
         String breed = "고양이";
         String text = "택배라도 도착하는 날이면 넌 언제나 가장 먼저 달려와 상자를 차지했지. 아직 내용물을 다 꺼내지도 않았는데 벌써 네 몸을 쏙 집어넣고는 “이제 내 거야!”라고 말하는 듯한 표정을 지었어. 네 몸보다 작은 상자에도 어떻게든 들어가려고 애쓰는 모습이 너무 귀여워서, 나는 늘 카메라를 꺼내 들 수밖에 없었어.\n" +
@@ -117,22 +123,22 @@ public class MemoryAlbumFlaskService {
         String nickname = "언니";
         List<String> texts = new ArrayList<>();
         texts.add(text);
-        LetterGenerateDto generateDto = LetterGenerateDto.builder()
+        LetterGenerateWithFileDto generateDto = LetterGenerateWithFileDto.builder()
                 .character(personality.getDescription())
                 .breed(breed)
                 .texts(texts)
                 .pet_id(1L)
-                .letter_id(1L)
                 .pet_name(petName)
                 .member_name(memberName)
                 .nickname(nickname).build();
+ */
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
         // 요청 엔터티 생성
-        HttpEntity<LetterGenerateDto> requestEntity = new HttpEntity<>(generateDto, headers);
+        HttpEntity<LetterGenerateWithFileDto> requestEntity = new HttpEntity<>(letterGenerateWithFileDto, headers);
 
         // POST 요청 보내기
         ResponseEntity<String> response = restTemplate.exchange(

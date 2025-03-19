@@ -24,4 +24,6 @@ public class PetUpdateReqDto {
     private String death_date;
 
     private Personality personality;
+
+    private String nickname;
 }

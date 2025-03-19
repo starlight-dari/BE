@@ -32,6 +32,7 @@ public class MemoryAlbum {
     @Column(nullable = false)
     private String title;
 
+    @Lob
     @Column(nullable = false)
     private String content;
 

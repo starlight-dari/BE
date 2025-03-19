@@ -2,7 +2,9 @@ package com.example.startlight.memoryAlbum.service;
 
 import com.example.startlight.memoryAlbum.dao.MemoryAlbumDao;
 import com.example.startlight.memoryAlbum.dto.LetterGenerateWithFileDto;
+import com.example.startlight.memoryAlbum.dto.LetterGeneratedRepDto;
 import com.example.startlight.pet.entity.Personality;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +59,7 @@ public class MemoryAlbumFlaskService {
 //        );
 
         List<String> images = memoryAlbumDao.getRecent5ImgsByPetId(petId);
+        System.out.println(images);
 
         Map<String, Object> requestBody = Map.of("images", images);
 
@@ -90,9 +93,9 @@ public class MemoryAlbumFlaskService {
                     System.out.println("Training finished with status: " + status);
 
                     // ✅ training 완료 → letter 생성 실행
-                    String result = letterGenerate(trainingPetId);
-                    System.out.println("Generated Letter: " + result);
-
+                    LetterGeneratedRepDto letterGeneratedRepDto = letterGenerate(trainingPetId);
+                    System.out.println("Generated Letter: " + letterGeneratedRepDto.toString());
+                    memoryAlbumService.createMemoryAlbum(trainingPetId, letterGeneratedRepDto);
                     // ✅ 상태 완료 후 스케줄 중지
                     stopTraining();
                 } else if ("failed".equalsIgnoreCase(status)) {
@@ -108,30 +111,9 @@ public class MemoryAlbumFlaskService {
         }
     }
 
-    public String letterGenerate(Long petId) {
+    public LetterGeneratedRepDto letterGenerate(Long petId) throws JsonProcessingException {
 
         LetterGenerateWithFileDto letterGenerateWithFileDto = memoryAlbumService.generateDto(petId);
-/*
-        Personality personality = Personality.CALM;
-        String breed = "고양이";
-        String text = "택배라도 도착하는 날이면 넌 언제나 가장 먼저 달려와 상자를 차지했지. 아직 내용물을 다 꺼내지도 않았는데 벌써 네 몸을 쏙 집어넣고는 “이제 내 거야!”라고 말하는 듯한 표정을 지었어. 네 몸보다 작은 상자에도 어떻게든 들어가려고 애쓰는 모습이 너무 귀여워서, 나는 늘 카메라를 꺼내 들 수밖에 없었어.\n" +
-                "    이 날도 그랬지. 작은 상자를 바닥에 두자마자 네가 후다닥 달려와 쏙 들어가 앉았어. 그러고는 저렇게 나를 빤히 쳐다봤지. ‘이거 봐, 나 딱 맞지?’라는 듯한 자부심 가득한 표정으로. 사실 네 몸이 상자보다 살짝 커서 털이 삐죽삐죽 튀어나왔지만, 그건 중요하지 않았겠지. 네가 원한다면 그곳이 최고의 자리였을 테니까.\n" +
-                "    작은 공간을 찾아 꼭꼭 들어가 있던 너, 그 모습이 너무 익숙하고 사랑스러웠어. 지금도 어디선가 네가 꼭 맞는 작은 공간을 찾아 쏙 들어가, 나를 기다리고 있을 것만 같아.\n" +
-                "    어디에 있든, 네가 좋아하는 곳에서 편히 쉬고 있길 바라. \uD83D\uDC9B\uD83D\uDCE6\uD83D\uDC3E";
-        String petName = "콩이";
-        String memberName = "민경";
-        String nickname = "언니";
-        List<String> texts = new ArrayList<>();
-        texts.add(text);
-        LetterGenerateWithFileDto generateDto = LetterGenerateWithFileDto.builder()
-                .character(personality.getDescription())
-                .breed(breed)
-                .texts(texts)
-                .pet_id(1L)
-                .pet_name(petName)
-                .member_name(memberName)
-                .nickname(nickname).build();
- */
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -150,7 +132,14 @@ public class MemoryAlbumFlaskService {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             System.out.println("Response: " + response.getBody());
-            return response.getBody();
+
+            // 🔹 JSON 파싱 → DTO 변환
+            LetterGeneratedRepDto dto = objectMapper.readValue(response.getBody(), LetterGeneratedRepDto.class);
+
+            System.out.println("✅ Images: " + dto.getImages());
+            System.out.println("✅ Letter: " + dto.getLetter());
+            System.out.println("✅ Title: " + dto.getTitle());
+            return dto;
         } else {
             throw new RuntimeException("Failed to generate letter: " + response.getStatusCode());
         }

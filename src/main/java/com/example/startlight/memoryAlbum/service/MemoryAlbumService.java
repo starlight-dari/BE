@@ -1,5 +1,6 @@
 package com.example.startlight.memoryAlbum.service;
 
+import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.member.dao.MemberDao;
 import com.example.startlight.member.entity.Member;
 import com.example.startlight.memoryAlbum.dao.MemoryAlbumDao;
@@ -29,7 +30,7 @@ public class MemoryAlbumService {
     private final MemoryStarRepository memoryStarRepository;
 
     public List<AlbumByPetRepDto> getMemoryAlbumStatusByPet() {
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         List<Pet> pets = petDao.selectAllPet(userId);
         List<AlbumByPetRepDto> albumByPetRepDtos = new ArrayList<>();
         for (Pet pet : pets) {
@@ -87,12 +88,13 @@ public class MemoryAlbumService {
                 .build();
     }
 
-    public MemoryAlbumRepDto createMemoryAlbum(MemoryAlbumReqDto memoryAlbumReqDto) {
-        Pet selectedPet = petDao.selectPet(memoryAlbumReqDto.getPet_id());
+    public MemoryAlbumRepDto createMemoryAlbum(Long petId, LetterGeneratedRepDto letterGeneratedRepDto) {
+        Pet selectedPet = petDao.selectPet(petId);
         MemoryAlbum memoryAlbum = MemoryAlbum.builder()
                 .pet(selectedPet)
-                .content(memoryAlbumReqDto.getContent())
-                .images(memoryAlbumReqDto.getImages())
+                .content(letterGeneratedRepDto.getLetter())
+                .images(letterGeneratedRepDto.getImages())
+                .title(letterGeneratedRepDto.getTitle())
                 .build();
         MemoryAlbum createdAlbum = memoryAlbumDao.createMemoryAlbum(memoryAlbum);
         return toResponseDto(createdAlbum);
@@ -102,6 +104,7 @@ public class MemoryAlbumService {
         return MemoryAlbumRepDto.builder()
                 .letter_id(memoryAlbum.getLetter_id())
                 .pet_id(memoryAlbum.getPet().getPet_id())
+                .title(memoryAlbum.getTitle())
                 .content(memoryAlbum.getContent())
                 .images(memoryAlbum.getImages())
                 .createdAt(memoryAlbum.getCreatedAt())
@@ -110,7 +113,7 @@ public class MemoryAlbumService {
 
     public LetterGenerateWithFileDto generateDto(Long petId) {
         Pet selectedPet = petDao.selectPet(petId);
-        Long userId = 3879188713L;
+        Long userId = UserUtil.getCurrentUserId();
         Member member = memberDao.selectMember(userId);
 
         Pageable pageable = PageRequest.of(0, 1);

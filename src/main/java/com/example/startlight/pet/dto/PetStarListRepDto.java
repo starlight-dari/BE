@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class PetStarListRepDto {
     private Long petId;
+    private String petName;
     private String svgPath;
     private List<StarListRepDto> starList;
     private List<Edge> edges;

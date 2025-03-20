@@ -1,7 +1,9 @@
 package com.example.startlight.pet.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.startlight.kakao.util.UserUtil;
 import com.example.startlight.member.repository.MemberRepository;
+import com.example.startlight.memoryAlbum.service.MemoryAlbumScheduleService;
 import com.example.startlight.pet.dao.PetDao;
 import com.example.startlight.pet.dto.*;
 import com.example.startlight.pet.entity.Edge;
@@ -17,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,7 @@ public class PetServiceImpl implements PetService{
     private final S3Service s3Service;
     private final FlaskService flaskService;
     private final MemberRepository memberRepository;
+    private final MemoryAlbumScheduleService memoryAlbumScheduleService;
 
     @Override
     @Transactional
@@ -65,6 +69,10 @@ public class PetServiceImpl implements PetService{
                     .collect(Collectors.toList());
             pet.setEdges(edges);
             List<StarListRepDto> list = starListService.createList(pet.getPet_id(), flaskResponseDto.getMajorPoints());
+
+            //pet 생성 시 random scheduling 호출
+            memoryAlbumScheduleService.createAlbumRandom(pet.getPet_id());
+
             return PetIdRepDto.builder()
                     .petId(pet.getPet_id()).build();
         } else {
@@ -97,10 +105,26 @@ public class PetServiceImpl implements PetService{
     }
 
     @Override
-    public PetStarListRepDto getPetStarList(Long petId) {
+    public PetStarListRepDto getPetStarList(Long petId) throws AccessDeniedException {
+        Long userId = UserUtil.getCurrentUserId();
+
+        // ✅ 펫 조회 후 없으면 예외 발생
+        Pet selectedPet = petDao.selectPet(petId);
+        if (selectedPet == null) {
+            throw new NotFoundException("Pet with id " + petId + " not found");
+        }
+
+        // ✅ 권한 확인
+        if (!selectedPet.getMember().getMember_id().equals(userId)) {
+            throw new AccessDeniedException("You do not have permission to access this pet");
+        }
+
+        // ✅ Edges, StarList 조회
         List<Edge> edgesByPetId = petDao.getEdgesByPetId(petId);
         List<StarListRepDto> list = starListService.getList(petId);
-        String svgPath = petDao.selectPet(petId).getSvg_path();
+
+        // ✅ 응답 객체 생성 및 반환
+        String svgPath = selectedPet.getSvg_path();
         return PetStarListRepDto.builder()
                 .petId(petId)
                 .svgPath(svgPath)

@@ -82,6 +82,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public Long getLoginedUserId() {
+        return UserUtil.getCurrentUserId();
+    }
+
+    @Override
     public void updateMemberMemory() {
         Long userId = UserUtil.getCurrentUserId();
         memberDao.updateMemberMemory(userId);

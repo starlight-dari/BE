@@ -51,4 +51,11 @@ public class MemberController {
         MemberWithPetDto memberWithPet = memberService.getMemberWithPet();
         return ResponseEntity.status(HttpStatus.OK).body(memberWithPet);
     }
+
+    // 현재 로그인된 유저 정보
+    @GetMapping("/logined")
+    public ResponseEntity<Long> getLoginedUserId() {
+        Long loginedUserId = memberService.getLoginedUserId();
+        return ResponseEntity.status(HttpStatus.OK).body(loginedUserId);
+    }
 }

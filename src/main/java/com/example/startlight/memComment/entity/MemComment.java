@@ -25,6 +25,9 @@ public class MemComment {
     @Column(nullable = false)
     private Long writer_id;
 
+    @Column(nullable = false)
+    private String writer_name;
+
     public void updateContent(String content) {
         this.content = content;
     }

@@ -7,6 +7,8 @@ import com.example.startlight.memComment.dto.MemCommentReqDto;
 import com.example.startlight.memComment.dto.MemCommentUpdateReqDto;
 import com.example.startlight.memComment.entity.MemComment;
 import com.example.startlight.memComment.mapper.MemCommentMapper;
+import com.example.startlight.member.dao.MemberDao;
+import com.example.startlight.member.entity.Member;
 import com.example.startlight.memoryStar.dao.MemoryStarDao;
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +23,17 @@ public class MemCommentService {
     private final MemCommentDao memCommentDao;
     private final MemCommentMapper mapper = MemCommentMapper.INSTANCE;
     private final MemoryStarDao memoryStarDao;
+    private final MemberDao memberDao;
 
     public MemCommentRepDto saveMemComment(MemCommentReqDto memCommentReqDto) {
         Long userId = UserUtil.getCurrentUserId();
+        String stNickname = memberDao.selectMember(userId).getSt_nickname();
+
         MemoryStar memoryStar = memoryStarDao.selectMemoryStarById(memCommentReqDto.getMemory_id());
         MemComment memComment = MemComment.builder()
                 .content(memCommentReqDto.getContent())
                 .writer_id(userId)
+                .writer_name(stNickname)
                 .memoryStar(memoryStar)
                 .build();
         MemComment memComment1 = memCommentDao.create(memComment);

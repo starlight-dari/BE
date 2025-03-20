@@ -82,6 +82,7 @@ public class MemoryAlbumService {
         return MemoryAlbumSimpleDto.builder()
                 .letter_id(memoryAlbum.getLetter_id())
                 .pet_id(memoryAlbum.getPet().getPet_id()) // Pet 엔티티에서 ID 매핑
+                .title(memoryAlbum.getTitle())
                 .content(memoryAlbum.getContent())
                 .createdAt(memoryAlbum.getCreatedAt())
                 .opened(memoryAlbum.getOpened())

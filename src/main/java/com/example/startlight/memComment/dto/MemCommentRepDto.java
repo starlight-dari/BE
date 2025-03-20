@@ -12,4 +12,5 @@ public class MemCommentRepDto {
     private Long memory_id;
     private String content;
     private Long writer_id;
+    private String writer_name;
 }

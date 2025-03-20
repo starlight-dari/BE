@@ -4,6 +4,7 @@ import com.example.startlight.pet.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 public interface PetService {
@@ -11,6 +12,6 @@ public interface PetService {
     PetRepDto updatePet(Long petId, PetUpdateReqDto petUpdateReqDto);
     List<PetRepDto> getPets();
     List<PetSimpleRepDto> getPetSimple(Long userId);
-    PetStarListRepDto getPetStarList(Long petId);
+    PetStarListRepDto getPetStarList(Long petId) throws AccessDeniedException;
     void deletePet(Long petId);
 }

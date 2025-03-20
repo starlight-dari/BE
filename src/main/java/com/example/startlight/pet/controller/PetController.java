@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -41,8 +42,14 @@ public class PetController {
 
     @GetMapping("/{petId}/stars")
     public ResponseEntity<PetStarListRepDto> getList(@PathVariable Long petId) {
-        PetStarListRepDto petStarList = petService.getPetStarList(petId);
-        return ResponseEntity.status(HttpStatus.OK).body(petStarList);
+        try {
+            PetStarListRepDto petStarList = petService.getPetStarList(petId);
+            return ResponseEntity.status(HttpStatus.OK).body(petStarList);
+        } catch (AccessDeniedException e) {
+            // ✅ 접근 권한 없을 경우 403 반환
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(null);
+        }
     }
 
     @DeleteMapping("/{petId}")

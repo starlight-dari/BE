@@ -33,7 +33,7 @@ public class MemoryAlbum {
     private String title;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @ElementCollection

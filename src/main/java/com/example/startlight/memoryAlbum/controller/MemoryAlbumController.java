@@ -86,4 +86,16 @@ public class MemoryAlbumController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+
+    @GetMapping("/random")
+    public ResponseEntity<?> getRandomMemoryAlbum() {
+        memoryAlbumFlaskService.generateMemoryAlbum(102L,3);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/birth")
+    public ResponseEntity<?> getBirthMemoryAlbum() {
+        memoryAlbumFlaskService.generateMemoryAlbum(102L,1);
+        return ResponseEntity.ok().build();
+    }
 }

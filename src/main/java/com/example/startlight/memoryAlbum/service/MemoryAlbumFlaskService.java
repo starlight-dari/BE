@@ -52,15 +52,15 @@ public class MemoryAlbumFlaskService {
         trainingPetId = petId;
         trainingNum = num;
 
-//        List<String> images = List.of(
-//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong1.jpg",
-//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong2.jpg",
-//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong3.jpg",
-//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong4.jpg",
-//                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong5.jpg"
-//        );
+        List<String> images = List.of(
+                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong1.jpg",
+                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong2.jpg",
+                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong3.jpg",
+                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong4.jpg",
+                "https://starlightbucket.s3.amazonaws.com/ml_test/kkong5.jpg"
+        );
 
-        List<String> images = memoryAlbumDao.getRecent5ImgsByPetId(petId);
+        //List<String> images = memoryAlbumDao.getRecent5ImgsByPetId(petId);
         System.out.println(images);
 
         Map<String, Object> requestBody = Map.of("images", images);

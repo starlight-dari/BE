@@ -88,13 +88,24 @@ public class MemoryAlbumService {
                 .build();
     }
 
-    public MemoryAlbumRepDto createMemoryAlbum(Long petId, LetterGeneratedRepDto letterGeneratedRepDto) {
+    public MemoryAlbumRepDto createMemoryAlbum(Long petId, LetterGeneratedFileRepDto letterGeneratedFileRepDto) {
         Pet selectedPet = petDao.selectPet(petId);
         MemoryAlbum memoryAlbum = MemoryAlbum.builder()
                 .pet(selectedPet)
-                .content(letterGeneratedRepDto.getLetter())
-                .images(letterGeneratedRepDto.getImages())
-                .title(letterGeneratedRepDto.getTitle())
+                .content(letterGeneratedFileRepDto.getLetter())
+                .images(letterGeneratedFileRepDto.getImages())
+                .title(letterGeneratedFileRepDto.getTitle())
+                .build();
+        MemoryAlbum createdAlbum = memoryAlbumDao.createMemoryAlbum(memoryAlbum);
+        return toResponseDto(createdAlbum);
+    }
+
+    public MemoryAlbumRepDto createMemoryAlbumRandom(Long petId, LetterGenerateRepDto letterGenerateRepDto) {
+        Pet selectedPet = petDao.selectPet(petId);
+        MemoryAlbum memoryAlbum = MemoryAlbum.builder()
+                .pet(selectedPet)
+                .content(letterGenerateRepDto.getLetter())
+                .title(letterGenerateRepDto.getTitle())
                 .build();
         MemoryAlbum createdAlbum = memoryAlbumDao.createMemoryAlbum(memoryAlbum);
         return toResponseDto(createdAlbum);
@@ -111,7 +122,7 @@ public class MemoryAlbumService {
                 .opened(memoryAlbum.getOpened()).build();
     }
 
-    public LetterGenerateWithFileDto generateDto(Long petId) {
+    public LetterGenerateWithFileReqDto generateDtoWithFile(Long petId) {
         Pet selectedPet = petDao.selectPet(petId);
         Long userId = UserUtil.getCurrentUserId();
         Member member = memberDao.selectMember(userId);
@@ -125,7 +136,7 @@ public class MemoryAlbumService {
             List<String> texts = new ArrayList<>();
             String text = memoryStar.getContent();
             texts.add(text);
-            return LetterGenerateWithFileDto.builder()
+            return LetterGenerateWithFileReqDto.builder()
                     .character(selectedPet.getPersonality().getDescription())
                     .breed(selectedPet.getSpecies())
                     .texts(texts)
@@ -138,5 +149,43 @@ public class MemoryAlbumService {
         else {
             return null;
         }
+    }
+
+    public LetterGenerateWithFileReqDto generateDtoBirthDeath(Long petId, Integer num) {
+        Pet selectedPet = petDao.selectPet(petId);
+        Long userId = UserUtil.getCurrentUserId();
+        Member member = memberDao.selectMember(userId);
+
+        List<String> texts = new ArrayList<>();
+        if(num == 1) {
+            texts.add("생일");
+        }
+        else if(num == 2) {
+            texts.add("기일");
+        }
+
+        return LetterGenerateWithFileReqDto.builder()
+                    .character(selectedPet.getPersonality().getDescription())
+                    .breed(selectedPet.getSpecies())
+                    .texts(texts)
+                    .pet_id(selectedPet.getPet_id())
+                    .pet_name(selectedPet.getPet_name())
+                    .member_name(member.getSt_nickname())
+                    .nickname(selectedPet.getNickname())
+                    .build();
+    }
+
+    public LetterGenerateReqDto generateDtoRandom(Long petId) {
+        Pet selectedPet = petDao.selectPet(petId);
+        Long userId = UserUtil.getCurrentUserId();
+        Member member = memberDao.selectMember(userId);
+
+        return LetterGenerateReqDto.builder()
+                .character(selectedPet.getPersonality().getDescription())
+                .breed(selectedPet.getSpecies())
+                .pet_name(selectedPet.getPet_name())
+                .member_name(member.getSt_nickname())
+                .nickname(selectedPet.getNickname())
+                .build();
     }
 }

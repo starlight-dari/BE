@@ -4,7 +4,6 @@ import com.example.startlight.memoryAlbum.dto.*;
 import com.example.startlight.memoryAlbum.service.MemoryAlbumFlaskService;
 import com.example.startlight.memoryAlbum.service.MemoryAlbumScheduleService;
 import com.example.startlight.memoryAlbum.service.MemoryAlbumService;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -25,7 +23,7 @@ public class MemoryAlbumController {
 
     @GetMapping()
     public ResponseEntity<?> createMemoryAlbum() {
-        memoryAlbumFlaskService.generateMemoryAlbum(102L);
+        memoryAlbumFlaskService.generateMemoryAlbum(102L,0);
         return ResponseEntity.ok().build();
     }
 
@@ -37,7 +35,7 @@ public class MemoryAlbumController {
 
     @PostMapping("/test")
     public ResponseEntity<?> testMemoryAlbum() {
-        memoryAlbumScheduleService.createAlbum(LocalDateTime.now(),102L);
+        memoryAlbumScheduleService.createAlbumAfterOneDay(102L);
         return ResponseEntity.ok().build();
     }
 
@@ -73,7 +71,7 @@ public class MemoryAlbumController {
 
         try {
             // JSON -> LetterGeneratedRepDto 매핑
-            LetterGeneratedRepDto responseDto = objectMapper.readValue(jsonResponse, LetterGeneratedRepDto.class);
+            LetterGeneratedFileRepDto responseDto = objectMapper.readValue(jsonResponse, LetterGeneratedFileRepDto.class);
 
             // 매핑된 값 확인
             System.out.println("Title: " + responseDto.getTitle());

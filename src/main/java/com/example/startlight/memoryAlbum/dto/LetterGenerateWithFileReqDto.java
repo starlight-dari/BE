@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class LetterGenerateWithFileDto {
+public class LetterGenerateWithFileReqDto {
     private String character;
     private String breed;
     private List<String> texts;

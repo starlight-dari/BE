@@ -1,16 +1,14 @@
 package com.example.startlight.memoryAlbum.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class LetterGeneratedRepDto {
-    @JsonProperty("images")
-    List<String> images;
+@Builder
+public class LetterGenerateRepDto {
     @JsonProperty("letter")
     String letter;
     @JsonProperty("title")

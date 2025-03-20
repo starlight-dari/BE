@@ -71,7 +71,7 @@ public class PetServiceImpl implements PetService{
             List<StarListRepDto> list = starListService.createList(pet.getPet_id(), flaskResponseDto.getMajorPoints());
 
             //pet 생성 시 random scheduling 호출
-            memoryAlbumScheduleService.createAlbumRandom(pet.getPet_id());
+            //memoryAlbumScheduleService.createAlbumRandom(pet.getPet_id());
 
             return PetIdRepDto.builder()
                     .petId(pet.getPet_id()).build();

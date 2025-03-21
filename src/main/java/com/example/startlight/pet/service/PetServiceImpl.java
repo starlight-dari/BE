@@ -88,11 +88,11 @@ public class PetServiceImpl implements PetService{
     }
 
     @Override
-    public List<PetRepDto> getPets() {
+    public List<PetMyPageRepDto> getPets() {
         Long userId = UserUtil.getCurrentUserId();
         List<Pet> pets = petDao.selectAllPet(userId);
         return pets.stream()
-                .map(PetRepDto::toDto)
+                .map(PetMyPageRepDto::toPetMyPageRepDto)
                 .collect(Collectors.toList());
     }
 

@@ -23,7 +23,7 @@ public class MemoryAlbumController {
 
     @GetMapping()
     public ResponseEntity<?> createMemoryAlbum() {
-        memoryAlbumFlaskService.generateMemoryAlbum(102L,0);
+        memoryAlbumFlaskService.generateMemoryAlbum(52L,0);
         return ResponseEntity.ok().build();
     }
 
@@ -35,7 +35,7 @@ public class MemoryAlbumController {
 
     @PostMapping("/test")
     public ResponseEntity<?> testMemoryAlbum() {
-        memoryAlbumScheduleService.createAlbumAfterOneDay(102L);
+        memoryAlbumScheduleService.createAlbumAfterOneDay(52L);
         return ResponseEntity.ok().build();
     }
 

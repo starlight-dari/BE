@@ -35,8 +35,8 @@ public class PetController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<PetRepDto>> getAllPets() {
-        List<PetRepDto> petRepDtoList = petService.getPets();
+    public ResponseEntity<List<PetMyPageRepDto>> getAllPets() {
+        List<PetMyPageRepDto> petRepDtoList = petService.getPets();
         return ResponseEntity.status(HttpStatus.OK).body(petRepDtoList);
     }
 

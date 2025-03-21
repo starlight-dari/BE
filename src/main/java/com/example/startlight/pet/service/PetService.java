@@ -10,7 +10,7 @@ import java.util.List;
 public interface PetService {
     PetIdRepDto createPet(PetReqDto petReqDto) throws IOException;
     PetRepDto updatePet(Long petId, PetUpdateReqDto petUpdateReqDto);
-    List<PetRepDto> getPets();
+    List<PetMyPageRepDto> getPets();
     List<PetSimpleRepDto> getPetSimple(Long userId);
     PetStarListRepDto getPetStarList(Long petId) throws AccessDeniedException;
     void deletePet(Long petId);

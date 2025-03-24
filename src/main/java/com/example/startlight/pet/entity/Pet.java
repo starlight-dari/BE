@@ -68,6 +68,7 @@ public class Pet {
                 .pet_name(dto.getPet_name())
                 .species(dto.getSpecies())
                 .gender(dto.getGender())
+                .nickname(dto.getNickname())
                 .birth_date(dto.getBirth_date())
                 .death_date(dto.getDeath_date())
                 .personality(dto.getPersonality())

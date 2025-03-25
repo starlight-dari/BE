@@ -125,7 +125,8 @@ public class MemoryAlbumService {
 
     public LetterGenerateWithFileReqDto generateDtoWithFile(Long petId) {
         Pet selectedPet = petDao.selectPet(petId);
-        Long userId = UserUtil.getCurrentUserId();
+        //Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
         Member member = memberDao.selectMember(userId);
 
         Pageable pageable = PageRequest.of(0, 1);
@@ -154,7 +155,8 @@ public class MemoryAlbumService {
 
     public LetterGenerateWithFileReqDto generateDtoBirthDeath(Long petId, Integer num) {
         Pet selectedPet = petDao.selectPet(petId);
-        Long userId = UserUtil.getCurrentUserId();
+        //Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
         Member member = memberDao.selectMember(userId);
 
         List<String> texts = new ArrayList<>();
@@ -178,7 +180,8 @@ public class MemoryAlbumService {
 
     public LetterGenerateReqDto generateDtoRandom(Long petId) {
         Pet selectedPet = petDao.selectPet(petId);
-        Long userId = UserUtil.getCurrentUserId();
+        //Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
         Member member = memberDao.selectMember(userId);
 
         return LetterGenerateReqDto.builder()

@@ -89,8 +89,8 @@ public class MemoryAlbumController {
     }
 
     @GetMapping("/random/{petId}")
-    public ResponseEntity<?> getRandomMemoryAlbum(@PathVariable Long petId) {
-        memoryAlbumFlaskService.generateMemoryAlbum(petId,3);
+    public ResponseEntity<?> getRandomMemoryAlbum(@PathVariable Long petId) throws JsonProcessingException {
+        memoryAlbumFlaskService.generateRandomMemoryAlbum(petId,3);
         return ResponseEntity.ok().build();
     }
 

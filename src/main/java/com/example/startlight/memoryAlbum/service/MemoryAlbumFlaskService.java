@@ -69,6 +69,15 @@ public class MemoryAlbumFlaskService {
         }
     }
 
+    public void generateRandomMemoryAlbum(Long petId, Integer num) throws JsonProcessingException {
+        if(num == 3) {
+            //random
+            LetterGenerateRepDto letterGenerateRepDto = letterGenerateRandom(petId);
+            System.out.println("Generated Letter: " + letterGenerateRepDto.toString());
+            memoryAlbumService.createMemoryAlbumRandom(petId, letterGenerateRepDto);
+        }
+    }
+
     public void checkTrainingStatus() {
         if (!trainingInProgress) {
             return;

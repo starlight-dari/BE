@@ -22,7 +22,7 @@ import java.util.List;
 @Table(name = "MemoryAlbum")
 public class MemoryAlbum {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long letter_id;
 
     @ManyToOne

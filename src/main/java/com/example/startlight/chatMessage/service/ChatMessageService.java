@@ -53,6 +53,7 @@ public class ChatMessageService {
 
     @Transactional
     public ChatAnswerDto createChatAnswer(ChatMessageReqDto chatMessageReqDto) throws JsonProcessingException {
+        log.info("receive chat message request: {}", chatMessageReqDto);
         String apiUrl = mlUrl + "/rag_get_answer";
 
         Map<String, Object> requestBody = new HashMap<>();

@@ -137,6 +137,7 @@ public class PetServiceImpl implements PetService{
     @Override
     public void deletePet(Long petId) {
         petDao.deletePet(petId);
+        s3Service.deletePetImg(petId);
     }
 
 

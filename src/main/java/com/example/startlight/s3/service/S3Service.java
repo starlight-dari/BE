@@ -41,6 +41,28 @@ public class S3Service {
         return uploadFileUrl;
     }
 
+    public void deletePetImg(Long petId) {
+        // 업로드할 때 사용한 파일 키와 동일한 형식으로 경로 생성
+        String imgKey = "petImgs/" + petId.toString() + ".jpg";
+        String svgKey = "test_user/" + petId.toString() + ".svg";
+
+        try {
+            // S3에서 첫 번째 이미지 삭제
+            amazonS3Client.deleteObject(bucketName, imgKey);
+            System.out.println("Image deleted successfully from S3: " + imgKey);
+        } catch (AmazonServiceException e) {
+            System.err.println("Failed to delete image file from S3: " + imgKey + " - " + e.getMessage());
+        }
+
+        try {
+            // S3에서 두 번째 이미지 삭제
+            amazonS3Client.deleteObject(bucketName, svgKey);
+            System.out.println("SVG deleted successfully from S3: " + svgKey);
+        } catch (AmazonServiceException e) {
+            System.err.println("Failed to delete SVG file from S3: " + svgKey + " - " + e.getMessage());
+        }
+    }
+
     public String uploadMemoryImg(MultipartFile file, Long memoryId) throws IOException {
         // 사용자 ID와 고정 파일 이름을 결합하여 고유한 경로 생성
         String key = "memoryImgs/" + memoryId.toString() + ".jpg";

@@ -11,6 +11,7 @@ public interface PetService {
     PetIdRepDto createPet(PetReqDto petReqDto) throws IOException;
     PetRepDto updatePet(Long petId, PetUpdateReqDto petUpdateReqDto);
     List<PetMyPageRepDto> getPets();
+    PetRepDto getPetById(Long petId);
     List<PetSimpleRepDto> getPetSimple(Long userId);
     PetStarListRepDto getPetStarList(Long petId) throws AccessDeniedException;
     void deletePet(Long petId);

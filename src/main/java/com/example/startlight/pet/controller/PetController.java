@@ -40,6 +40,12 @@ public class PetController {
         return ResponseEntity.status(HttpStatus.OK).body(petRepDtoList);
     }
 
+    @GetMapping("/{petId}")
+    public ResponseEntity<PetRepDto> getPet(@PathVariable Long petId) {
+        PetRepDto petById = petService.getPetById(petId);
+        return ResponseEntity.status(HttpStatus.OK).body(petById);
+    }
+
     @GetMapping("/{petId}/stars")
     public ResponseEntity<PetStarListRepDto> getList(@PathVariable Long petId) {
         try {

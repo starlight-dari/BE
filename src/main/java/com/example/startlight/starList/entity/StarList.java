@@ -1,6 +1,5 @@
 package com.example.startlight.starList.entity;
 
-import com.example.startlight.memoryStar.dto.MemoryStarUpdateDto;
 import com.example.startlight.memoryStar.entity.MemoryStar;
 import com.example.startlight.pet.entity.Pet;
 import jakarta.persistence.*;
@@ -8,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -26,6 +24,7 @@ public class StarList {
     private Integer index_id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Pet pet;
 
     @Column(nullable = false)

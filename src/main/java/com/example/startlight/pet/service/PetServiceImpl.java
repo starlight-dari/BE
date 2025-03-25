@@ -97,6 +97,12 @@ public class PetServiceImpl implements PetService{
     }
 
     @Override
+    public PetRepDto getPetById(Long petId) {
+        Pet selectedPet = petDao.selectPet(petId);
+        return PetRepDto.toDto(selectedPet);
+    }
+
+    @Override
     public List<PetSimpleRepDto> getPetSimple(Long userId) {
         List<Pet> pets = petDao.selectAllPet(userId);
         return pets.stream()

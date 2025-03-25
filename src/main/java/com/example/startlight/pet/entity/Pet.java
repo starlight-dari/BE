@@ -5,6 +5,8 @@ import com.example.startlight.member.repository.MemberRepository;
 import com.example.startlight.pet.dto.PetReqDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

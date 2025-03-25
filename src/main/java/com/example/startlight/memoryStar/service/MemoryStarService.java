@@ -91,13 +91,15 @@ public class MemoryStarService {
         // 5번째 게시물 쓰기 시작한 시간으로부터 하루 뒤에 편지+이미지 보내주기
         // 그 뒤로는 게시물 계속 쓸 때마다 하루 뒤에 편지+이미지 보내주기
         if(selectedPet.getAlbumStarted()) {
-            memoryAlbumScheduleService.createAlbumAfterOneDay(selectedPet.getPet_id());
+            //memoryAlbumScheduleService.createAlbumAfterOneDay(selectedPet.getPet_id());
+            memoryAlbumScheduleService.createAlbumNow(selectedPet.getPet_id());
             return mapper.toDto(createdStar);
         }
         if(countStar == 5) {
             selectedPet.updateAlbumStarted();
             //앨범 생성 시작 명령
-            memoryAlbumScheduleService.createAlbumAfterOneDay(selectedPet.getPet_id());
+            //memoryAlbumScheduleService.createAlbumAfterOneDay(selectedPet.getPet_id());
+            memoryAlbumScheduleService.createAlbumNow(selectedPet.getPet_id());
             //생일, 기일 앨범 생성 시작 명령
             memoryAlbumScheduleService.createAlbumBirthDeath(selectedPet.getPet_id());
 

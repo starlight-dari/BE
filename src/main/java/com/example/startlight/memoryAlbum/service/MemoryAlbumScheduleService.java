@@ -36,6 +36,18 @@ public class MemoryAlbumScheduleService {
         );
     }
 
+    public void createAlbumNow(Long petId) {
+        long initialDelay = 0;
+        System.out.println("✅ Task will execute after: " + initialDelay + " ms");
+
+        // ✅ 한 번만 실행되도록 설정
+        executor.schedule(
+                () -> executeTask(petId), // ✅ 실행할 작업을 람다로 감싸기
+                initialDelay,
+                TimeUnit.MILLISECONDS
+        );
+    }
+
     // ✅ 처음 실행까지의 남은 시간 계산
     private long getInitialDelay(LocalDateTime albumStartedTime) {
         LocalDateTime now = LocalDateTime.now();

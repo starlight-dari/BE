@@ -10,4 +10,6 @@ public class MemoryStarSimpleRepDto {
     private String name;
     private String writer_name;
     private String img_url;
+    private Integer likes;
+    private Integer commentNumber;
 }

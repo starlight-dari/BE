@@ -7,6 +7,7 @@ import com.example.startlight.memoryAlbum.service.MemoryAlbumService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +22,9 @@ public class MemoryAlbumController {
     private final MemoryAlbumScheduleService memoryAlbumScheduleService;
     private final MemoryAlbumService memoryAlbumService;
 
-    @GetMapping()
-    public ResponseEntity<?> createMemoryAlbum() {
-        memoryAlbumFlaskService.generateMemoryAlbum(52L,0);
+    @GetMapping("/album/{petId}")
+    public ResponseEntity<?> createMemoryAlbum(@PathVariable Long petId) {
+        memoryAlbumFlaskService.generateMemoryAlbum(petId,0);
         return ResponseEntity.ok().build();
     }
 
@@ -87,15 +88,15 @@ public class MemoryAlbumController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @GetMapping("/random")
-    public ResponseEntity<?> getRandomMemoryAlbum() {
-        memoryAlbumFlaskService.generateMemoryAlbum(102L,3);
+    @GetMapping("/random/{petId}")
+    public ResponseEntity<?> getRandomMemoryAlbum(@PathVariable Long petId) {
+        memoryAlbumFlaskService.generateMemoryAlbum(petId,3);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/birth")
-    public ResponseEntity<?> getBirthMemoryAlbum() {
-        memoryAlbumFlaskService.generateMemoryAlbum(102L,1);
+    public ResponseEntity<?> getBirthMemoryAlbum(@PathVariable Long petId) {
+        memoryAlbumFlaskService.generateMemoryAlbum(petId,1);
         return ResponseEntity.ok().build();
     }
 }

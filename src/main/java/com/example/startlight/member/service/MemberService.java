@@ -19,6 +19,8 @@ public interface MemberService {
 
     void updateMemberMemory();
 
+    void deleteMemberMemory();
+
     Integer getMemoryNumber();
 
     MemberWithPetDto getMemberWithPet();

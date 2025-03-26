@@ -52,4 +52,6 @@ public class Member {
     public void updateMemoryNum() {
         this.memory_num += 1;
     }
+
+    public void deleteMemoryNum() { this.memory_num -= 1; }
 }

@@ -93,6 +93,12 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public void deleteMemberMemory() {
+        Long userId = UserUtil.getCurrentUserId();
+        memberDao.deleteMemberMemory(userId);
+    }
+
+    @Override
     public Integer getMemoryNumber() {
         Long userId = UserUtil.getCurrentUserId();
         return memberDao.getMemoryNum(userId);

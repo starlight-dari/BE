@@ -135,6 +135,8 @@ public class MemoryStarService {
 
         //star에서 unwritten 처리
         starListDao.setStarUnWritten(starId);
+
+        memberService.deleteMember(userId);
     }
 
     public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {

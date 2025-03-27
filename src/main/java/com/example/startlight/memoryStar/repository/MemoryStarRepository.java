@@ -16,6 +16,9 @@ public interface MemoryStarRepository extends JpaRepository<MemoryStar, Long> {
     @Query("select m from MemoryStar m where m.writer_id = :userId order by m.memory_id desc")
     List<MemoryStar> findAllByWriterId(@Param("userId") Long userId);
 
+    @Query("select m from MemoryStar m where m.pet_id = :petId")
+    List<MemoryStar> findAllByPetId(@Param("petId") Long petId);
+
     @Query("select count(m) from MemoryStar m where m.pet_id = :petId and m.isAnimal = true")
     Integer countMemoryStarByPetId(@Param("petId") Long petId);
 

@@ -67,6 +67,11 @@ public class MemoryStarDao {
         return memoryStarRepository.findAllByWriterId(userId);
     }
 
+    public void deleteMemoryStarByPetId(Long petId) {
+        List<MemoryStar> allByPetId = memoryStarRepository.findAllByPetId(petId);
+        memoryStarRepository.deleteAll(allByPetId);
+    }
+
     //like
 
     public MemoryStar pressLike(Long id, Long userId) {

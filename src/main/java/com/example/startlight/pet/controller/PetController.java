@@ -1,5 +1,6 @@
 package com.example.startlight.pet.controller;
 
+import com.example.startlight.memoryStar.service.MemoryStarService;
 import com.example.startlight.pet.dto.*;
 import com.example.startlight.pet.service.PetService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 public class PetController {
     private final PetService petService;
+    private final MemoryStarService memoryStarService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PetIdRepDto> createPet(
@@ -61,6 +63,7 @@ public class PetController {
     @DeleteMapping("/{petId}")
     public ResponseEntity<String> deletePet(@PathVariable Long petId) {
         petService.deletePet(petId);
+        memoryStarService.deletePetsMemoryStar(petId);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted pet with id " + petId);
     }
 }

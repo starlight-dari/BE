@@ -139,6 +139,10 @@ public class MemoryStarService {
         memberService.deleteMemberMemory();
     }
 
+    public void deletePetsMemoryStar(Long petId) {
+        memoryStarDao.deleteMemoryStarByPetId(petId);
+    }
+
     public List<MemoryStarSimpleRepDto> findAllPublicMemoryStar() {
         List<MemoryStar> allPublicMemoryStar = memoryStarDao.getAllPublicMemoryStar();
         return mapper.toSimpleRepDtoList(allPublicMemoryStar);

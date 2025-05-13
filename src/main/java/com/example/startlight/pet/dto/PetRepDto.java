@@ -44,6 +44,7 @@ public class PetRepDto {
                 .gender(pet.getGender())
                 .birth_date(pet.getBirth_date())
                 .death_date(pet.getDeath_date())
+                .live(pet.getLive())
                 .personality(pet.getPersonality())
                 .nickname(pet.getNickname())
                 .build();

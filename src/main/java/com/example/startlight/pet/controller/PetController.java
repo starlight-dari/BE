@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -65,5 +67,15 @@ public class PetController {
         petService.deletePet(petId);
         memoryStarService.deletePetsMemoryStar(petId);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted pet with id " + petId);
+    }
+
+    @GetMapping("/{petId}/live")
+    public ResponseEntity<Map<String, Object>> isPetLive(@PathVariable Long petId) {
+        PetRepDto petById = petService.getPetById(petId);
+        Boolean live = petById.getLive();
+        Map<String, Object> response = new HashMap<>();
+        response.put("petId", petId);
+        response.put("live",live);
+        return ResponseEntity.ok(response);
     }
 }

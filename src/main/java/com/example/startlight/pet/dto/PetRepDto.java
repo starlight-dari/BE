@@ -28,6 +28,8 @@ public class PetRepDto {
 
     private String death_date;
 
+    private Boolean live;
+
     private Personality personality;
 
     private String nickname;

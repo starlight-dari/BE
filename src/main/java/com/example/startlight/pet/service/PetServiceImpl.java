@@ -39,10 +39,13 @@ public class PetServiceImpl implements PetService{
     @Override
     @Transactional
     public PetIdRepDto createPet(PetReqDto petReqDto) throws IOException {
-        Long userId = UserUtil.getCurrentUserId();
+//        Long userId = UserUtil.getCurrentUserId();
+        Long userId = 3879188713L;
         Pet pet = petDao.createPet(Pet.toEntity(petReqDto, userId, memberRepository));
         String uploadFile = s3Service.uploadPetImg(petReqDto.getPet_img(), String.valueOf(pet.getPet_id()));
         pet.setPet_img(uploadFile);
+
+        /*
 
         // Step 1: 첫 번째 Flask API 호출
         String flaskApiUrl = flaskService.apiUrl + "/stars_run_pidinet";
@@ -79,6 +82,9 @@ public class PetServiceImpl implements PetService{
             System.out.println("❌ Flask 서버에서 응답 실패: " + response.getStatusCode());
             throw new RuntimeException("Flask 서버 응답 실패");
         }
+         */
+        return PetIdRepDto.builder()
+                .petId(pet.getPet_id()).build();
     }
 
     @Override

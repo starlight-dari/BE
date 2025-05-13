@@ -75,6 +75,7 @@ public class Pet {
                 .nickname(dto.getNickname())
                 .birth_date(dto.getBirth_date())
                 .death_date(dto.getDeath_date())
+                .live(dto.getLive())
                 .personality(dto.getPersonality())
                 .build();
     }

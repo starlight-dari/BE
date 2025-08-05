@@ -1,4 +1,4 @@
-package com.example.startlight.memoryStar.contoller;
+package com.example.startlight.memoryStar.controller;
 
 import com.example.startlight.memComment.dto.MemCommentRepDto;
 import com.example.startlight.memComment.service.MemCommentService;
@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/memory-stars")
-public class MemoryStarContoller {
+public class MemoryStarController {
     private final MemoryStarService memoryStarService;
     private final MemberService memberService;
     private final MemCommentService memCommentService;
